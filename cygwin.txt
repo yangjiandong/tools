@@ -1,0 +1,201 @@
+2011.01.15
+-----------
+
+1. CDargs
+   http://robertmarkbramprogrammer.blogspot.com/2010/09/using-cdargs-in-cygwin.html
+
+Put these in your .bashrc or .bash_profile.
+# cd to a cdargs bookmark.
+function mark() {
+   if [ $# -ne 1 ] ; then
+     echo Usage: mark cdargs-bookmark-name
+     return 2
+   fi
+   cdargs --add=:$1:` cygpath -u -a .`
+}
+ 
+# Create a bookmarks in cdargs for the current directory.
+function cdb() {
+   if [ $# -ne 1 ] ; then
+     echo Usage: cdb cdargs-bookmark-name
+     return 2
+   fi
+   cdargs "$1" && cd "`cat "$HOME/.cdargsresult"`" ;
+}
+Using them is easy enough too. 
+Use mark to create a cdargs entry 
+(stored in the plain text file ~/.cdargs - which you can even edit with a text editor). 
+Then use mark to go to (cd) a bookmarked directory. 
+If you ever need to be reminded what your bookmarks are, look at the ~/.cdargs file or just run cdargs.
+
+Example usage.
+cd /c/really/long/path/that/is/hard/to/type/and/remember
+mark bigPath
+Now you have bookmarked the directory against the key bigPath. 
+To get back to that directory easily, use the command cdb bigPath.
+
+
+2010.09.25
+-----------
+
+1. cygwin 下 sshd 配置，与类 Linux 平台的互通
+
+命令 1：chmod +r /etc/password
+命令 2：chmod +r /etc/group
+为 /var 目录添加 d..x..x..[xt] 访问权限。
+命令 3：chmod 755 /var
+
+运行 ssh-host-config 的配置脚本对 SSHD 服务进行配置，在配置过程中注意下面的配置选项：
+
+Should privilege separation be used 提示是否要为服务创建新的权限，
+   OpenSSH3.3 之后的 SSHD 服务器版本，默认是需要为其创建独立的权限，此处填 yes 之后输入回车键进入下一个选项。
+Do you want to install sshd as service 提示是否需要创建 SSHD 服务并注册为 Windows 服务，
+   此处填 yes 之后输入回车进入下一个选项。（实际操作时，输入yes后，需设置daemon ，以下操作不再需要）
+Do you want to use a different 提示是否需要使用其他的账户管理 SSHD 服务，
+   如果选择” no ”的话，会指定一个默认的用户作为管理 SSHD 服务的账号。
+   当然，用户也可以为 SSHD 服务建立一个新的账号，然后输入需要建立的用户名，在本例中选择新建一个账号，输入 sshadm 作为用户名。
+Create a new privileged user account: sshadmin 提示是否为用户指定新的权限，
+   推荐使用“ yes ”选项。这时要注意，如果选择“ yes ”的话，在配置 SSHD 服务的时候会使用独立的账号权限，
+   所以要注意在配置 SSHD 服务的过程中，一定不要使用需要在进行无密码访问过程中，用来登陆系统的用户来实现 SSHD 服务的控制。
+   否则，进行 SSH 访问的时候，只会读取该用户作为系统用户的权限，而不会读取它作为 SSHD 服务的权限，这样会导致访问 SSHD 服务失败。
+随后提示输入该用户名的密码。
+创建一个新的用户以后，需要在 cydwin 的命令环境中通过 su 命令检验用户的密码是否指定成功，如果密码设置不正确，SSHD 服务启动过程会失败，这就需要在特权账号下使用 passwd 命令修改其密码。
+
+完成配置过程后，就将 SSHD 服务添加到了 cygwin 的服务中，可以通过运行 cygrunsrv 命令查看，启动或停止该服务。
+查看 cygwin 中服务的命令：cygrunsrv -L
+启动 SSHD 服务的命令：cygrunsrv -S sshd
+停止 SSHD 服务的命令：cygrunsrv -E sshd
+
+如果配置后发现配置过程中存在问题，还可以删除 SSHD 服务，然后重新进行配置过程。删除 SSHD 服务的命令：cygrunsrv -R sshd
+另外，由于 SSHD 已经被加入到 windows 服务管理器中，因此，可以直接在在 windows 注册服务管理中，启动和停止 SSHD 服务。
+
+-- 使用
+首先在访问机上生成账户的密钥 (安装cygwin 的windows 客户机)
+1. 生成密钥
+-- cd ~
+-- mkdir .ssh
+ssh-keygen -N "" -t rsa -f ~/.ssh/id_rsa
+
+将密钥文件上传到被访问机上
+2. 复制密钥文件到目标机
+scp -q ~/.ssh/id_rsa.pub root@$target_host:/tmp/ausaod01_rpub_key
+
+将密钥内容添加到被访问机器的系统用户的 /.ssh/authorized_keys 文件中
+3. 写入密钥内容
+ssh root@$target_host  \n
+ "mkdir -p ~/.ssh; cat /tmp/ausaod01_rpub_key >> ~/.ssh/authorized_keys"
+
+至此，用户就可以在访问机上通过 ssh 命令直接访问被访问机，无需提示用户输入密码口令。
+利用 Cygwin 实现平台互通的例子
+对一个包含了 Linux 操作系统，Windows 2003 操作系统服务器的应用平台做性能数据采集，
+由于服务器数量比较多，因此，依次登录每台机器通过命令来采集服务器的性能数据即费时费力，
+产生的结果格式也不统一，不便于进行总结和分析。
+为此，开发了一个 shell 脚本在一台服务器上运行，通过远程访问命令在应用平台中的各个服务器上上传并运行 shell 脚本采集性能数据并将结果传送回服务器。
+由于平台中有无法直接运行 shell 脚本的 Windows 操作系统，因此，无法与服务器进行互通，所以，需要在 Windows 操作系统上安装本文介绍的 Cygwin 软件，来制造类 Linux 环境运行脚本并实现与 Unix、Linux 服务器的互通。
+首先，按照本文所述在 Windows 服务器上安装并配置 SSHD 服务，同时设置与性能数据采集服务器之间的无密码访问。
+
+清单 4. 平台互通脚本实例
+function startdetector {
+ SSH_OPTIONS="-o StrictHostKeyChecking=no -o PasswordAuthentication=no -o loglevel=QUIET"
+ ACCOUNTNAME='LogonAcc'
+ HOSTNAME='TestMachine'
+ PD_INSTALL_DIR='TestDIR'
+ PD_SRC_DIR='ScriptDIR'
+ SCRIPTNAME='TestScript'
+ MACHINE_resultdir='ResultCollectionDIR'
+ RESULTFILE='ResultFile'
+
+ # 拷贝脚本文件到远端机器
+ ssh ${SSH_OPTIONS} "${HOSTNAME}" "rm -rf ${PD_INSTALL_DIR};
+ mkdir -p ${PD_INSTALL_DIR}" &>/dev/null
+ scp ${SSH_OPTIONS} -r ${PD_SRC_DIR}/${SCRIPTNAME}
+ ${ACCOUNTNAME}@${HOSTNAME}:${PD_INSTALL_DIR}/${SCRIPTNAME}  \n
+        &>/dev/null
+
+    # 在本地创建结果目录
+
+    mkdir -p ${MACHINE_resultdir} &>/dev/null
+
+    # 执行远端脚本监控数据
+    (
+        ssh $SSH_OPTIONS $ACCOUNTNAME@$HOSTNAME "${PD_INSTALL_DIR}/${SCRIPTNAME}"
+    )
+
+    # 取回脚本执行结果
+    scp $SSH_OPTIONS ${ACCOUNTNAME}@${HOSTNAME}:${RESULTFILE}
+    ${MACHINE_resultdir}/ &>/dev/null
+
+ }
+
+该示例中定义了 SSH 命令参数，远端机器的用户名和机器名，本地脚本存放路径，脚本名，结果目录名，远端机器的脚本存放路径，结果保存目录等变量。实际的操作当中，完全可以将下面的操作该成循环的实现方式从而实现对多个远端服务器的监控。
+例子中提到的脚本 TestScript 可以由读者任意编写，它可以是运行在 Linux 环境下的任何命令组成的脚本文件，包括文件的处理，性能的监控等操作。下面的脚本实现只实现了本文所介绍的环境互通方面的功能。读者还可以扩充脚本实例的功能来提高平台互通之间的交互性。
+
+2010.05.21
+-----------
+
+1、minTty
+
+如果你在 Windows 中使用 Cygwin 环境的话，那么可能会对这个 MinTTY 感兴趣。
+MinTTY 是一款专用于 Cygwin 环境的终端模拟器，它兼容于 Xterm，支持 UTF-8、CJK 字体、Windows 输入法，可执行拖曳和复制/粘贴操作，具有原生的 Windows 外观及窗口透明等特性。
+
+2、使用cygwin，.bashrc不能生效问题的解决
+安装了cygwin后，为了使ls列出文件目录时能有颜色，需要在/etc/bash.bashrc或~/.bashrc中加入下面的命令：
+alias ls='ls -F -N --color=auto'
+如果想立即生效，可以执行
+source /etc/bash.bashrc。
+但我退出后再进入，总是不能生效，google了一下，发现可以在home目录下的.bash_profile中加入同样的语句。
+试了一下，这回行了，希望对遇到同样问题的人有点帮助。
+
+1、cygwin汉化
+
+bash-3.2$ cd
+bash-3.2$ pwd
+/cygdrive/k/Documents and Settings/zsb.ZSB-CYIVMWJNCZ0
+bash-3.2$ cat .inputrc
+set meta-flag on
+set convert-meta off
+set output-meta on
+set input-meta on
+set kanji-code sjjs
+
+bash-3.2$ cat .profile
+PS4='+{$LINENO:${FUNCNAME[0]}} '
+export PS4
+alias ls='/bin/ls --color=tty --show-control-chars'
+alias less='/bin/less -r'
+alias lf='/bin/ls -Fp --color=tty --show-control-chars'
+alias l='/bin/ls -lF --color=tty --show-control-chars'
+export LANG="zh_CN.GBK"
+export OUTPUT_CHARSET="GBK"
+
+#export LANG="ja_JP.SJIS"
+#export OUTPUT_CHARSET="sjis"
+
+2、直接使用cygwin 配置
+
+将以下内容导入到注册表中
+
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Cygnus Solutions]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Cygnus Solutions\Cygwin]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Cygnus Solutions\Cygwin\mounts v2]
+"cygdrive prefix"="/cygdrive"
+"cygdrive flags"=dword:00000022
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Cygnus Solutions\Cygwin\mounts v2\/]
+"native"="C:\\cygwin"
+"flags"=dword:0000000a
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Cygnus Solutions\Cygwin\mounts v2\/usr/bin]
+"native"="d:\\cygwin/bin"
+"flags"=dword:0000000a
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Cygnus Solutions\Cygwin\mounts v2\/usr/lib]
+"native"="d:\\cygwin/lib"
+"flags"=dword:0000000a
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Cygnus Solutions\Cygwin\Program Options]
+

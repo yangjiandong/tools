@@ -1,0 +1,20 @@
+rails.vim tip
+--------------
+
+:Rails!			Show the version of rails.vim installed.  If rails.vim
+			is active for the current buffer, also show the type
+			of Rails file detected.
+
+:Redit {file}		Edit {file}, relative to the application root.  Append
+			:line or #method to jump within the file, as in
+			:Redit app/controllers/users_controller.rb:12 or
+			:Redit app/models/user.rb#activate .
+
+:Rfind [{file}]		Find {file}.  Very similar to :find, but things like
+			BlogController are properly handled, and tab complete
+			works.
+
+gf     快速跳转到指定方法或文件
+
+other:
+https://github.com/tpope/vim-rails/blob/master/doc/rails.txt

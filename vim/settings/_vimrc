@@ -1,0 +1,189 @@
+set nocompatible
+set history=1000
+set browsedir=buffer
+set clipboard+=unnamed
+set viminfo+=!
+set isk+=$,%,#,-
+set confirm
+"set encoding=utf-8
+set ffs=unix,dos,mac
+set fenc=utf-8
+set fencs=utf-8,ucs-bom,euc-jp,gb18030,gbk,gb2312,cp936
+map Q gq
+
+filetype on
+filetype plugin on
+
+syntax on
+
+"-----------------------------------------------------------------------------
+" platform dependent
+"-----------------------------------------------------------------------------
+if has("win32")
+  let $VIMDATA  = $VIM.'/vimdata'
+  let $VIMFILES = $VIM.'/vimfiles'
+  let PYTHON_BIN_PATH = 'D:/PortablePython_1.1_py2.6.1/App/python.exe'  " ensure the path right
+else
+  let $VIMDATA  = $HOME.'/vimdata'
+  let $VIMFILES = $HOME.'/.vim'
+  let PYTHON_BIN_PATH = '/usr/bin/python'
+"  set guifont=courier\ 10
+"  set guifont=Fixedsys\ 12
+"  set guifont=Consolas\ 11
+
+endif
+set guifont=Consolas:h10:cDEFAULT
+"set guifont=Fixedsys:h10:cDEFAULT
+
+" ctags
+"let Tlist_Ctags_Cmd = $VIM.'/ctags56/ctags.exe'
+
+"-----------------------------------------------------------------------------
+" path/backup
+"-----------------------------------------------------------------------------
+set backup                     " make backup file and leave it around
+set backupdir=$HOME/backup  " where to put backup file
+set directory=$HOME/temp    " where to put swap file
+set runtimepath+=$VIMDATA      " add this path to rtp, support GLVS
+set path=.,/usr/include/*,,    " where gf, ^Wf, :find will search
+set tags=./tags,tags,$VIMRUNTIME/doc/tags,$VIMFILES/doc/tags,d:/gtk/include/tags " used by CTRL-]					 
+set makeef=error.err           " the errorfile for :make and :grep
+
+if has("gui_running")
+  colo desert
+  set lines=45         " window tall and wide, only if gui_running,
+  set columns=80       " or vim under console behaves badly
+endif
+
+"-----------------------------------------------------------------------------
+" Vim UI
+"-----------------------------------------------------------------------------
+set linespace=1         " space it out a little more (easier to read)
+set wildmenu            " type :h and press <Tab> to look what happens
+set ruler               " always show current position along the bottom
+set cmdheight=2         " use 2 screen lines for command-line
+set lazyredraw          " do not redraw while executing macros (much faster)
+"set onumber            " don't print line number
+set number
+set hid                 " allow to change buffer without saving
+set backspace=2         " make backspace work normal
+set whichwrap+=<,>,h,l  " allow backspace and cursor keys to wrap
+set mouse=a             " use mouse in all modes
+set shortmess=atI       " shorten messages to avoid 'press a key' prompt
+set report=0            " tell us when anything is changed via :...
+set fillchars=vert:\ ,stl:\ ,stlnc:\
+                        " make the splitters between windows be blank
+
+"-----------------------------------------------------------------------------
+" visual cues
+"-----------------------------------------------------------------------------
+set showmatch           " show matching paren
+set matchtime=5         " 1/10 second to show the matching paren
+"set nohlsearch          " do not highlight searched for phrases
+set hlsearch
+set incsearch           " BUT do highlight where the typed pattern matches
+set scrolloff=10        " minimal number of screen lines to keep above/below the cursor
+set novisualbell        " use visual bell instead of beeping
+set noerrorbells        " do not make noise
+set laststatus=2        " always show the status line
+set listchars=tab:\|\ ,trail:.,extends:>,precedes:<,eol:$ " how :set list show
+"set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-14.(%l,%c%V%)\ %P
+"set statusline=%{VimBuddy()}\ %F%m%r%h%w\ [%{&ff}]\ [%Y]\ [\%03.3b\ \%02.2B]\ [%02v\ %03l\ %L\ %p%%]
+                        " need vimbuddy.vim, dislike it? just remove it
+
+set statusline ="%F%m%r%h%w\ [%{&ff}]\ [%Y]\ [%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]\ %=[%{GitBranch()}]"
+                        "-----------------------------------------------------------------------------
+" text formatting/layout
+"-----------------------------------------------------------------------------
+set ai                  " autoindent
+set si                  " smartindent
+set cindent             " do C-style indenting
+set fo=tcrqn            " see help (complex)
+set tabstop=4           " tab spacing
+set softtabstop=4       " unify it
+set shiftwidth=4        " unify it
+set expandtab           " real tabs please!
+set smarttab            " use tabs at the start of a line, spaces elsewhere
+set nowrap              " do not wrap lines
+set formatoptions+=mM   " thus vim can reformat multibyte text (e.g. Chinese)
+
+"-----------------------------------------------------------------------------
+" folding
+"-----------------------------------------------------------------------------
+set foldenable          " turn on folding
+set foldmethod=indent   " make folding indent sensitive
+set foldlevel=100       " don't autofold anything, but can still fold manually
+set foldopen -=search   " don't open folds when you search into them
+set foldopen -=undo     " don't open folds when you undo stuff
+
+"中文help
+if version >= 603
+set helplang=cn
+endif
+
+" 查找结果高亮度显示，立即匹配
+set hlsearch
+set showmatch
+set incsearch
+
+"---------------------------------------------
+" ruby
+" --------------------------------------------
+"autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+"autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+"autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+
+" 滚动 ctrl-c stop
+map <F8>  <C-E>:sleep 500m<CR><C-E>:redraw<CR><F8>
+
+" F9 :NERDTree<CR>
+map <F9> :NERDTree<CR>  
+" 把 CTRL-S 映射为 保存,因为这个操作做得太习惯了  
+imap <C-S> <C-C>:w<CR>  
+
+" 象firefox那样切换标签(tab)
+:nmap <C-S-tab> :tabprevious<cr>
+:nmap <C-tab> :tabnext<cr>
+:map <C-S-tab> :tabprevious<cr>
+:map <C-tab> :tabnext<cr>
+:imap <C-S-tab> <ESC>:tabprevious<cr>i
+:imap <C-tab> <ESC>:tabnext<cr>i
+:nmap <C-A> :tabnew<cr>
+:imap <C-A> <ESC>:tabnew<cr>
+
+" 当前文件所在目录下的另一个文件
+" 你在normal模式下敲 ,e 你就可以使用tab键自动完成功能来找到你的文件
+if has("unix")
+    map ,e :e <C-R>=expand("%:p:h") . "/" <CR>
+else
+    map ,e :e <C-R>=expand("%:p:h") . "\\" <CR>
+endif
+
+" textMate 
+let g:snip_set_textmate_cp=1
+
+" Tlist的内部变量。函数列表。
+let Tlist_Use_Right_Window=1
+let Tlist_File_Fold_Auto_Close=1
+" 打开当前目录文件列表
+map <F3> :Explore<CR>
+" 函数和变量列表
+map <F4> :TlistToggle<CR>
+" 搜索当前词，并打开quickfix窗口
+"map <F5> :call Search_Word()<CR>
+" 全能补全
+"inoremap <F8> <C-x><C-o>
+" 没事，鼠标画线玩的。
+"noremap <F9> :call ToggleSketch()<CR>
+" 启动函数变量快速浏览的时间设置
+set updatetime=100
+
+let g:pydiction_location = 'D:/PortablePython_1.1_py2.6.1/App/pydiction-1.2/complete-dict'
+let g:pydiction_menu_height = 20
+if has("autocmd")
+  autocmd FileType python set dictionary+=D:\PortablePython_1.1_py2.6.1\App\pydiction-1.2
+  autocmd FileType python set complete+=kD:\PortablePython_1.1_py2.6.1\App\pydiction-1.2 iskeyword+=.,(
+endif
+
+" 编辑.eml文件,每次退出插入模式时自动保存
+au InsertLeave *.eml write

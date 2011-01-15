@@ -1,0 +1,11 @@
+VERSION	300
+file	stats	{'word': 'doc\readme.txt', 'pattern': 'doc\'}
+file	stats	{'word': 'doc\', 'pattern': '**/do'}
+file	stats	{'word': 'src\main\webapp\WEB-INF\Gemfile', 'pattern': 'src\main\webapp\WEB-INF\'}
+file	stats	{'word': 'src\main\webapp\WEB-INF\', 'pattern': 'src\main\webapp\'}
+file	stats	{'word': 'src\main\webapp\', 'pattern': 'src\main\'}
+file	stats	{'word': 'src\main\', 'pattern': 'src\'}
+file	stats	{'word': 'src\', 'pattern': '**/'}
+file	stats	{'word': 'jetty-debug.bat', 'pattern': '*'}
+file	stats	{'word': 'doc\readme.txt', 'pattern': '**/'}
+file	stats	{'word': 'readm.txt', 'pattern': 'readm.txt'}
