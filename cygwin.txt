@@ -5,6 +5,8 @@
    http://robertmarkbramprogrammer.blogspot.com/2010/09/using-cdargs-in-cygwin.html
 
 Put these in your .bashrc or .bash_profile.
+最后加到home/.profile 才有效果
+
 # cd to a cdargs bookmark.
 function mark() {
    if [ $# -ne 1 ] ; then
