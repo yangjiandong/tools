@@ -1,0 +1,13 @@
+vim tip
+==========
+
+1. vim 下排版
+   gg=G or =}
+
+   javascript extjs 排版效果还不是很好,用jsbeautify,<F5>
+
+
+   --END
+
+
+
