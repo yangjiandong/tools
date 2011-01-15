@@ -1,0 +1,268 @@
+git
+====
+
+2011.01.15
+----------
+
+1. 可最小粒度的管理你的代码
+
+git flow
+
+https://github.com/nvie/gitflow 
+
+Manual installation(cygwin)
+
+If you prefer a manual installation, please use the following instructions. 
+After downloading the sources from Github, also fetch the submodules:
+
+$ git submodule init
+$ git submodule update
+Then, you can install git-flow, using:
+
+$ sudo make install
+
+install -m 0644 git-flow-init git-flow-feature git-flow-hotfix git-flow-release git-flow-support git-flow-version gitflo
+w-common gitflow-shFlags /usr/local/bin
+
+  注意,最后需将usr/local/bin 下生成的文件考到cygwin/binary
+
+2. use git flow
+
+安装完git-flow后，你可以在当前目录下创建一个全新的仓库或把一个现有的仓库转换成新的分支结构：
+
+$ git flow init
+它会问你一系列的问题，蛋定！尽量使用它的默认值就好了：
+
+No branches exist yet. Base branches must be created now.
+Branch name for production releases: [master]
+Branch name for "next release" development: [develop]
+How to name your supporting branch prefixes?
+Feature branches? [feature/]
+Release branches? [release/]
+Hotfix branches? [hotfix/]
+Support branches? [support/]
+Version tag prefix? []
+回答完问题后，git flow会自动地把develop(或随便你重命名它为神马)分支设置为默认分支，此后，你大部份时间都会一直在这个分支上面码代码了。
+
+现在，像往常那样使用Git吧，但只限于develop分支上面的一些小的功能哦。
+如果你要开始开发一个稍大的功能点，就基于develop创建一个功能分支吧，假设你要增加一个登录(login)页面：
+
+$ git flow feature start login
+该命令会基于我们的develop分支创建一个feature/login分支，并切换到该分支上。你在该分支上开发并提交代码，当你完成登录页面的开发后，这样来结束它：
+
+$ git flow feature finish login
+该命令将会把feature/login合并到develope分支，然后删除功能(feature)分支。
+
+当你的功能点都完成时（需要发布新版本了），就基于develop创建一个发布(release)分支，然后升级版本号并在最后发布日期前把Bug Fix掉吧：
+
+$ git flow release start v0.1.0
+当你在完成（finish)一个发布分支时，它会把你所作的修改合并到master分支，同时合并回develop分支，所以，你不需要担心你的master分支比develop分支更加超前。
+
+最后一件让git-flow显得威武的事情是它处理热修复（即时的BugFix）的能力，
+你可以像其他分支一样地创建和完成一个热修复分支，区别是它基于master分支，因此你可以在产品出现问题时快速修复，
+然后通过”finish”命令把修改合并回master和develop分支。
+
+
+2010.07.26
+----------
+
+1、branch
+   --建立分支，推到服务器上
+   git branch 3.3.2
+   git push origin 3.3.2
+
+   --其他用户checkout分支
+   git fetch (origin)
+   git checkout -b 3.3.2 origin/3.3.2
+
+
+2. tag
+   git tag -a spring3.02
+
+   --推送到remote
+   git push origin spring3.02
+
+   --或全部tag
+   git push origin --tags
+
+2010.05.20
+----------
+
+1、建立跟踪分支
+   git checkout --track github/example1
+   本地分支 example1 直接关联到远程的分支 example1，自动推送和提取远程数据
+
+   -- 本地commit时，自动提交到服务器
+   -- 还不是很明白这种用法的好处
+
+2010.05.13
+----------
+
+1、http://progit.org/book/zh
+
+2010.05.11
+----------
+
+1、git config --global
+   定义的文件在home/.gitconfig
+
+2、alias
+$ git config --global alias.co checkout
+$ git config --global alias.br branch
+$ git config --global alias.ci commit
+$ git config --global alias.st status
+$ git config --global color.diff.meta "blue black bold"
+使用这种技术还可以创造出新的命令，比方说取消暂存文件时的输入比较繁琐，可以自己设置一下：
+
+$ git config --global alias.unstage 'reset HEAD --'
+
+这样一来，下面的两条命令完全等同：
+
+$ git unstage fileA
+$ git reset HEAD fileA
+
+显然，使用别名的方式看起来更清楚。另外，我们还经常设置 last 命令：
+
+$ git config --global alias.last 'log -1 HEAD'
+
+然后要看最后一次的提交信息，就变得简单多了：
+
+$ git last
+
+2010.05.10
+----------
+
+1、支持中文文件名
+
+git config (--global) core.quotepath false
+
+2、git为显示加上颜色
+$ git config color.(branch|diff|interactive|status) auto，
+或者$ git config color.ui true
+
+2010.05.08
+----------
+
+1、git + apache
+save/git.http.txt
+
+2010.05.05
+----------
+
+1、fetch and merge,dont pull
+http://longair.net/blog/2009/04/16/git-fetch-and-merge/
+git fetch
+git merge origin/master
+
+2010.05.04
+-----------
+
+1、查看branch
+
+The easiest way is just to use the git branch commands’ various options.
+-a shows all local and remote branches,
+while -r shows only remote branches.
+
+2010.04.30
+-----------
+
+1、gitosis 方式，clone时报以下信息
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that the RSA host key has just been changed.
+The fingerprint for the RSA key sent by the remote host is
+5c:9b:16:56:a6:cd:11:10:3a:cd:1b:a2:91:cd:e5:1c.
+Please contact your system administrator.
+Add correct host key in /home/user/.ssh/known_hosts to get rid of this message.
+Offending key in /home/user/.ssh/known_hosts:1
+RSA host key for ras.mydomain.com has changed and you have requested strict checking.
+Host key verification failed.
+
+解决：
+$ ssh-keygen -R server.example.com
+
+2010.04.26
+----------
+
+1、pro git book
+   http://github.com/progit/progit.git
+
+2、搭建git服务
+   --需观察下实际效果，如果行，以后放弃hg,采用该方式管理自己的项目
+   save/gitosis.txt
+
+2010.04.25
+----------
+
+1、TODO 搭建git服务
+
+sudo adduser git(password 123)
+sud git
+cd
+mkdir .ssh
+
+save/git.server.txt
+
+--注意采用了cygwin,产生的文件在D:\cygwin\home\yang\.ssh
+XP/2003用户c:\Documents and Settings\登陆名\.ssh
+Vista用户c:\Users\登陆名\.ssh
+
+--以上方式的问题1、取消了git用户shell功能后，以后git如何增加项目，2每个操作员的读写权限如何分配
+
+2010.04.10
+-----------
+
+1、save/Why Git is Better Than X
+
+2010.04.04
+----------
+
+1、还原
+   --return to the last committed state
+   git reset --hard
+
+   --revert the last commit
+   git revert HEAD
+   --revert specific commit
+   git revert $id
+
+2010.03.18
+----------
+
+1、save/git-cheat-sheet-medium.png
+
+2010.03.09
+----------
+
+1、save/Why Git better Than X.htm
+
+2010.03.06
+----------
+
+1、Git的Windows版本Msysgit对中文的支持不够好
+当使用时，会出现以下三种情况的中文乱码：
+
+a.ls不能显示中文目录
+  解决办法：在git/git-completion.bash中增加一行：
+alias ls='ls --show-control-chars --color=auto'
+b.git commit不能提交中文注释
+  解决办法：修改git/inputrc中对应的行：
+   set output-meta on
+   set convert-meta off
+c.git log无法显示中文注释
+  解决办法：在git/profile中增加一行：
+   export LESSCHARSET=iso8859
+
+2008.06.23
+----------
+
+1、giv_svn
+
+   save/git_svn.html
+
+2、winxp下git
+
+   http://code.google.com/p/msysgit/downloads/list
+
+   -- End
+

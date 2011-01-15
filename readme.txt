@@ -5,6 +5,8 @@
 
 2. vim (for portable)
 
+3. vcn 版本控制
+
    --END
 
 

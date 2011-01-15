@@ -1,0 +1,444 @@
+svn
+====
+
+2010.06.03
+----------
+
+1、更改svn服务器地址
+在C:\WINDOWS\system32\drivers\etc \hosts文件最后一行添加
+192.168.1.254   svnserver
+经过上面的设置后，svn的地址变为http://svnserver/svn/,这样以后如果svn的地址改变就只需要修改hosts文件
+
+2009.06.16
+----------
+
+1、svn eclipse plugin
+   site-1.6.2.zip
+   ftp://61.132.90.250/dd/java/eclipse/site-1.6.2.zip
+   -解压在 X:\Java\eclipse\dropins\svnclipse\ 下。
+   -同时删svnclipse根目录下其他文件, 只保留features和plugins两个目录下的内容。
+
+2009.06.12
+----------
+
+1、svnsync
+
+* Create your local repository: svnadmin create
+* Create an empty pre-revprop-change hook script: echo "#!/bin/bash" > PATH/hooks/pre-revprop-change
+* Make the pre-revprop-change hook script executable: chmod +x PATH/hooks/pre-revprop-change
+* Initialize svnsync: svnsync init file:???PATH URL_TO_REPO_ROOT_TO_CLONE
+* Synchronize: svnsync sync DEST_URL
+
+2、自动同步
+
+在svn主机上:
+    /sv/hooks/post-commit
+    你看一下其中加了1一句：
+    svnsync sync --non-interactive   http://221.181.65.64:82/repo/ --username jlk --password 123
+
+2009.04.22
+----------
+
+1、从svn仓库导出更新的文件。
+   -比如更新了ofbiz的svn仓库，想把更新后的文件更新到自己的hg库中，
+   a.先同步，产生更新文件列表，拷贝产生文件svn.list
+   b.cmd状态下，winrar a svn.rar @svn.list 注意，有可能删除或增加文件。
+
+2009.03.27
+----------
+
+1、删除.svn
+
+for /r . %a in (.) do @if exist "%a\.svn" rd /s /q "%a\.svn"
+
+这里用到了 for /r 来遍历 . 目录（当前目录），然后检查目录下是否存在名为 .svn 的目录，如果存在，则调用 rd /s /q 直接删除之。
+
+你也可以把这个命令写成 bat 文件：
+
+@echo On
+@Rem 删除SVN版本控制目录
+@PROMPT [Com]#
+
+@for /r . %%a in (.) do @if exist "%%a\.svn" rd /s /q "%%a\.svn"
+@Rem for /r . %%a in (.) do @if exist "%%a\.svn" @echo "%%a\.svn"
+
+@echo Mission Completed.
+@pause
+
+2009.02.10
+-----------
+
+1、源码中增加版本信息
+
+http://dev.juokaz.com/php/automatic-svn-revision-number-in-source-code
+
+Then go to console and set SVN property:
+svn propset svn:keywords "Rev" style.css
+Now, after each commit to repository, this keyword will be replaced by $Rev: NUMBER $, where NUMBER is current revision number
+
+http://jay-notes.blogspot.com/2007/06/svn-propset.html
+
+Subversion 中可以使用的 Keyword 包括下面这些。
+
+    * Id
+      这是一种综合的格式，例如“$Id: svn.txt,v 1.2 2010-07-01 01:59:08 adong Exp $”。
+    * LastChangedDate
+      最后被修改的时间，这个属性也可以缩写为 Date。
+    * LastChangedBy
+      最后修改该源代码文件的用户名，这个属性也可以被缩写为 Author。
+    * LastChangedRevision
+      最后修订的版本号，这个属性也可以被缩写为 Revision 或者 Rev。
+    * HeadURL
+      该源代码文件所位于的 Repository 上的绝对 URL 地址，这个属性也可以被缩写为 URL。
+
+
+Subversion 只会对你明确设置了 Keyword 进行更新，比如如果你对某个源代码文件执行了下面这条指令。
+
+svn propset svn:keywords "Id Date" V2EXCore.php
+
+
+则在 V2EXCore.php 中所有的 $Id: svn.txt,v 1.2 2010-07-01 01:59:08 adong Exp $ 和 $Date: 2010-07-01 01:59:08 $ 都会被替换，而 $Author: adong $ 之类的没有被设置的属性则不会发生替换。
+
+2008.12.11
+----------
+
+1、建立新仓库
+
+  sudo htpasswd -c /etc/apache2/dav_svn_yogurt.passwd yang
+
+  sudo mkdir /svn_yogurt
+  sudo svnadmin create /svn_yogurt
+  sudo chown -R www-data:www-data /svn_yogurt
+  sudo svn mkdir -m 'setup trunk' file:///svn_yogurt/trunk
+  sudo svn mkdir -m 'setup branches' file:///svn_yogurt/branches
+  sudo svn mkdir -m 'setup tags' file:///svn_yogurt/tags
+
+  建立/etc/apache2/mods-available/dav_svn_yogurt.conf
+  sudo ln -s /etc/apache2/mods-available/dav_svn_yogurt.conf /etc/apache2/mods-enabled/dav_svn_yogurt.conf
+
+
+2008.07.28
+----------
+
+1、增加svn用户
+
+  sudo htpasswd /etc/apache2/dav_svn.passwd huangjc(pass:123)
+
+2、svn权限
+
+  sudo vim /etc/apache2/dav_svn.authz
+
+[groups]
+ekman=fzx,yang,cx,zyy,hjq
+his=huangjc
+other=guest
+
+[/]
+@ekman=rw
+
+[/hiscode]
+@his=rw
+
+[/Divo]
+@other=rw
+
+2008.04.16
+----------
+
+1、删除.svn
+
+for /r . %a in (.) do @if exist "%a\.svn" rd /s /q "%a\.svn"
+
+这里用到了 for /r 来遍历 . 目录（当前目录），然后检查目录下是否存在名为 .svn 的目录，如果存在，则调用 rd /s /q 直接删除之。
+
+你也可以把这个命令写成 bat 文件：
+
+@echo On
+@Rem 删除SVN版本控制目录
+@PROMPT [Com]#
+
+@for /r . %%a in (.) do @if exist "%%a\.svn" rd /s /q "%%a\.svn"
+@Rem for /r . %%a in (.) do @if exist "%%a\.svn" @echo "%%a\.svn"
+
+@echo Mission Completed.
+@pause
+
+2007.03.18
+----------
+删除用户
+  htpasswd -D /etc/apache2/dav_svn.passwd lyc
+
+2007.03.11
+----------
+新建用户
+  htpasswd2 /etc/apache2/dav_svn.passwd lyc(pass:lyc123)
+
+2007.03.07
+----------
+新建用户
+  htpasswd2 /etc/apache2/dav_svn.passwd guest(pass:123)
+
+权限控制
+
+  sudo vim /etc/apache2/mod-available/dav_svn.conf
+  <Location /repo>
+
+  # Uncomment this to enable the repository,
+  DAV svn
+
+  # Set this to the path to your repository
+  SVNPath /svn
+  #SVNParentPath /var/lib/svn
+  #SVNIndexXSLT "/svnindex.xsl"
+
+  # The following allows for basic http authentication.  Basic authentication
+  # should not be considered secure for any particularly rigorous definition of
+  # secure.
+
+  # to create a passwd file
+  # # rm -f /etc/apache2/dav_svn.passwd
+  # # htpasswd2 -c /etc/apache2/dav_svn.passwd dwhedon
+  # New password:
+  # Re-type new password:
+  # Adding password for user dwhedon
+  # #
+
+  # Uncomment the following 3 lines to enable Basic Authentication
+  AuthType Basic
+  AuthName "/svn"
+  AuthUserFile /etc/apache2/dav_svn.passwd
+
+  # Uncomment the following line to enable Authz Authentication
+  # 主要是这里修改，将以下设置注释去掉
+  AuthzSVNAccessFile /etc/apache2/dav_svn.authz
+
+  # The following three lines allow anonymous read, but make
+  # committers authenticate themselves.
+
+  #<LimitExcept GET PROPFIND OPTIONS REPORT>
+    Require valid-user
+  #</LimitExcept>
+
+  </Location>
+
+  sudo vim /etc/apache2/dav_svn.authz
+
+[groups]
+ekman=fzx,yang,cx,zyy,hjq
+other=guest
+
+[/]
+@ekman=rw
+
+[/Divo]
+@other=rw
+
+2007.04.18
+----------
+新建用户
+  htpasswd2 /etc/apache2/dav_svn.passwd zyx(pass:123)
+
+2006.12.05
+----------
+新建用户
+  htpasswd2 /etc/apache2/dav_svn.passwd xu(pass:123)
+
+2006.07.21
+----------
+
+新建用户
+  htpasswd2 /etc/apache2/dav_svn.passwd xq(pass:xq123)
+  htpasswd2 /etc/apache2/dav_svn.passwd ybc(pass:ybc123)
+  htpasswd2 /etc/apache2/dav_svn.passwd dlx(pass:dlx123)
+
+2006.05.09
+----------
+新建仓库
+
+  sudo mkdir /var/local/tcd/svn
+  sudo svnadmin create /var/local/tcd/svn
+  sudo chown -R www-data:www-data /var/local/tcd/svn
+  sudo svn mkdir -m 'setup trunk' file:///var/local/tcd/svn/trunk
+  sudo svn mkdir -m 'setup branches' file:///var/local/tcd/svn/branches
+  sudo svn mkdir -m 'setup tags' file:///var/local/tcd/svnsvn/tags
+
+  建立/etc/apache2/mods-available/dav_svn_tcd.conf(sav/dav_svn_tcd.conf)
+  sudo ln -s /etc/apache2/mods-available/dav_svn_tcd.conf /etc/apache2/mods-enabled/dav_svn_tcd.conf
+
+  建立用户
+    htpasswd2 -c /etc/apache2/dav_svn_tcd.passwd tcd
+    htpasswd2 /etc/apache2/dav_svn_tcd.passwd other
+    user:tcd,pass:123456789
+    user:fzx,pass:123456789
+
+  sudo /etc/init.d/apache2 restart
+  http://61.132.90.250/tcdrepo
+
+2006.04.17
+----------
+删除svn用户
+
+htpasswd2 -D /etc/apache2/dav_svn.passwd username
+
+2006.03.16
+----------
+SubVersion定期完整备份脚本(Linux)
+说明:请根据自己需要调整.此脚本是没有任何保障的,请慎重使用.
+脚本功能: 定期对一些项目进行完整备份.
+
+project.lst 文件格式如下:
+project1
+project2
+
+备份脚本如下:
+
+#!/bin/sh
+#
+# subversion data backup script
+# by scud http://www.jscud.com
+# 2005-11-27
+#
+# subversion完整备份的脚本,调整好后使用crontab -e 放到自动执行里面即可.
+#
+
+#备份日志文件
+LogFile=/backup/svn/svnbak.log
+
+DATE=`date +%Y%m%d`
+
+#备份目录
+BakDir=/backup/svn/data
+
+#日常备份目录,如果有
+DailyDir=/backup/svn/daily
+
+#要备份的项目列表文件,只有项目名
+ProjectLst=/backup/svn/project.lst
+
+#所有项目都保存在这个目录下
+SvnDir=/var/svn
+
+#svnadmin程序的路径
+SVNADMIN=/app/subversion/bin/svnadmin
+
+echo " " >> $LogFile
+echo " " >> $LogFile
+echo "-------------------------------------------" >> $LogFile
+echo $(date +"%y-%m-%d %H:%M:%S") >> $LogFile
+echo "--------------------------" >> $LogFile
+
+cd $BakDir
+
+#读取项目列表
+PROJECTLIST=`cat $ProjectLst`
+
+
+for project in  $PROJECTLIST
+do
+    projectdata=$SvnDir/$project
+    destdir=$BakDir/$project
+    dumpfile=$DATE.$project.tgz
+
+
+    if [ -f $BakDir/$dumpfile ]
+    then
+        echo "backup file have exist!" >>$LogFile
+    else
+
+     $SVNADMIN hotcopy $projectdata $destdir --clean-logs
+
+     tar czvf $dumpfile $destdir >/dev/null
+
+     rm -fr $project
+
+ echo "backup $project done into $dumpfile ">>$LogFile
+
+    fi
+
+    ## delete old tgz 此处根据crontab的时间调整,例如一周一次备份,此处保留了5份备份,以前的删除
+    oldfile="$BakDir/"$(date +%y%m%d --date=’28 days ago’).$project.tgz
+
+ if [ -f $oldfile ]
+ then
+   rm -f $oldfile >> $LogFile 2>&1
+   echo "[$oldfile]Delete Old File Success!" >> $LogFile
+ else
+   echo "[$oldfile]No Old Backup File!" >> $LogFile
+ fi
+
+done
+
+#delete previous daily backup files
+cd $DailyDir
+rm -f *
+
+2006.03.07
+----------
+
+1、升级到1.3版本 http://svn.haxx.se/dev/archive-2006-01/0399.shtml
+    具体文档 svn13Ubuntu.htm
+
+    增加/etc/apt/sources.list:
+
+    deb http://www-devel.orcaware.com/packages/ubuntu/ breezy/
+    deb-src http://www-devel.orcaware.com/packages/ubuntu/ breezy/
+
+    $ apt-get update
+    $ apt-get upgrade (提示你升级apache)
+    $ apt-get install subversion
+    $ apt-get install libapache2-svn
+
+2、分支版本
+  http://lists.gnu.org/archive/html/eev/2006-01/msg00005.html
+
+  仓库建好后，建立以下分支，标记，主干目录
+
+    sudo svn mkdir -m 'setup trunk' file:///svn/trunk
+    sudo svn mkdir -m 'setup branches' file:///svn/branches
+    sudo svn mkdir -m 'setup tags' file:///svn/tags
+
+3、建立adong_repo
+
+  仓库 /var/local/adong/svn
+
+  口令文件 /etc/apache2/dav_svn_adong.passwd
+    user:adong,pass:123456789
+
+  配置 /etc/apache2/mods-available/dav_svn_adong.conf
+
+  svn: http://61.132.90.250/adong_repo
+
+2006.03.06
+----------
+
+sudo apt-get install subversion
+sudo apt-get install libapache2-svn
+sudo mkdir -p /svn
+sudo svnadmin create /svn
+sudo chown -R www-data:www-data /svn
+
+编辑 /etc/apache2/mods-available/dav_svn.conf 打开仓库
+
+sudo /etc/init.d/apache2 restart
+完成！
+
+如果你是通过squid代理出去的，请修改
+/etc/squid/squid.conf
+
+增加：
+extension_methods REPORT MERGE MKACTIVITY CHECKOUT
+
+关于帐号管理使用
+
+htpasswd2 -c /etc/apache2/dav_svn.passwd username
+
+来创建一个新的帐号文件
+
+htpasswd2 /etc/apache2/dav_svn.passwd username
+
+来增加用户。
+
+因此它的帐号是与系统无关的方便管理。
+
+   --END
+
