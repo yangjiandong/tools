@@ -1,0 +1,1696 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0052)http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="http://txt2tags.sf.net">
+<title>Txt2tags用户指南 摘录</title>
+</head><body bgcolor="white" text="black">
+<p align="center"></p><center><h1>Txt2tags用户指南 摘录</h1>
+<font size="4">
+<i>原著：Aurelio Marinho Jargas &lt;verde@aurelio.net&gt; </i><br>
+摘录：Abby Pan &lt;abbypan@mail.ustc.edu.cn&gt;
+</font></center>
+
+<hr noshade="" size="5">
+<p></p>
+  <ul>
+  <li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#intro">第一部分 - 介绍 Txt2tags</a>
+    <ul>
+    <li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#what">它是干嘛的？</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#structures">支持的文本格式</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#targets">支持的目标类型</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#interfaces">三种用户界面</a>
+    </li></ul>
+  </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#install">第二部分 - 下载安装</a>
+    <ul>
+    <li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#download-python">安装Python</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#windows-txt2tags">Windows版本</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#editor-syntax">设置文本编辑器中语法高亮</a>
+    </li></ul>
+  </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#your-1st-doc">第三部分 - 撰写首份文档</a>
+  </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#concepts">第四部分 - 掌握Txt2tags建构</a>
+    <ul>
+    <li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#toc12">完整的例子</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#headers-area">头部域</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#config-area">设置域</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#body-area">主体域</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#settings-overview">设置</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#options">命令行选项</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#rc">用户配置文件(RC文件)</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#config-loading">载入设置的顺序及优先级</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#include">%!include命令</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#includeconf">%!includeconf命令</a>
+    </li></ul>
+  </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#marks">第五部分 - 掌握标记</a>
+    <ul>
+    <li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#mark-headers">头部域</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#mark-title">标题，编号式标题</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#mark-paragraph">段落</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#mark-comment">注释</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#mark-beautifiers">粗体、斜体、下划线</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#mark-monospaced">等宽文本</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#mark-verbatim">完全引用行、完全引用域</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#mark-separator">隔离行，粗隔离行</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#mark-link">链接，命名链接</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#mark-quote">引用</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#mark-lists">列表，编号式列表，定义式列表</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#mark-image">图片</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#mark-table">表格</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#mark-raw">纯文本，纯文本行，纯文本域</a>
+    </li></ul>
+  </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#macros">第六部分 - 掌握宏</a>
+    <ul>
+    <li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#macro-date">%%date</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#macro-mtime">%%mtime</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#macro-infile">%%infile</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#macro-outfile">%%outfile</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#macro-toc">%%toc</a>
+    </li></ul>
+  </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#settings">第七部分 - 掌握设置</a>
+    <ul>
+    <li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#setting-target">%!Target</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#setting-options">%!Options</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#setting-encoding">%!Encoding</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#setting-preproc">%!PreProc</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#setting-postproc">%!PostProc</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#setting-style">%!Style</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#setting-specific">对特定的目标类型定义设置</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#filters-details">关于PreProc和PostProc过滤器的几点说明</a>
+    </li></ul>
+  </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#black-magic">第八部分 - 黑匣子</a>
+    <ul>
+    <li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#postproc-multiline">使用%!PostProc插入多行文本 (比如CSS规则)</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#target-specific-contents">使用%!PreProc建立“指定目标类型”的内容</a>
+    </li><li><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#creating-marks">使用%!PreProc转换txt2tags标记</a>
+    </li></ul>
+  </li></ul>
+
+<p></p>
+<hr noshade="" size="5">
+<p></p>
+<a name="intro"></a>
+<h1>第一部分 - 介绍 Txt2tags</h1>
+<p>
+txt2tags的总览，介绍该程序用途及特性。
+</p>
+<a name="what"></a>
+<h2>它是干嘛的？</h2>
+<p>
+Txt2tags是一个文本格式化和转换工具，写文档时可以专注于内容不怎么去折腾格式，跨平台。Txt2tags用很少的标记就能把纯文本文件转换成其支持的各种类型的目标文档。
+</p>
+<hr noshade="" size="1">
+<p></p>
+<a name="structures"></a>
+<h2>支持的文本格式</h2>
+<p>
+下面把txt2tags支持的文本格式全列出来了：
+</p>
+<ul>
+<li>头部 (文档标题，作者名，日期)
+</li><li>章节标题(是/否 编号)
+</li><li>段落
+</li><li>字体美化
+  <ul>
+  <li>粗体
+  </li><li>斜体
+  </li><li>下划线
+  </li></ul>
+</li><li>等宽字体(完全引用)
+  <ul>
+  <li>等宽段落
+  </li><li>等宽文本行
+  </li><li>等宽文本域(多行)
+  </li></ul>
+</li><li>引用域
+</li><li>链接
+  <ul>
+  <li>URL/Internet链接
+  </li><li>e-mail地址链接
+  </li><li>本地链接
+  </li><li>锚点链接
+  </li></ul>
+</li><li>列表
+  <ul>
+  <li>圆点式列表
+  </li><li>编号型列表
+  </li><li>定义式列表
+  </li></ul>
+</li><li>水平分隔线
+</li><li>图象(可以调位置啦)
+</li><li>表格(有没有边框啦，放左边放中间啦，放几列啦)
+<p></p>
+</li><li>有标记支持保留纯文本格式
+</li><li>得到当前时间的宏
+</li><li>注释
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="targets"></a>
+<h2>支持的目标类型</h2>
+<dl>
+<dt><b>HTML</b></dt><dd>
+  没有用到javascript，或框架啥的，不过可以指定CSS样式。
+<p></p>
+</dd><dt><b>XHTML</b></dt><dd>
+  生成的XHTML代码比HTML严格。
+<p></p>
+</dd><dt><b>SGML</b></dt><dd>
+  sgml是一种很悍的格式，[sgmltools
+  <a href="http://www.sgmltools.org/">http://www.sgmltools.org</a>]这里有sgml转换成html, pdf, ps, info, latex, lyx, rtf
+  和xml格式的文档的应用。(如sgml2html).
+<p></p>
+  Txt2tags生成的SGML文件不要求更多其他的配置。
+<p></p>
+</dd><dt><b>LATEX</b></dt><dd>
+  Txt2tags生成可以直接编译的LaTex文档，省的你自己再写一堆标签。
+<p></p>
+</dd><dt><b>LOUT</b></dt><dd>
+  用途跟LaTeX差不多，不过语法比LaTeX简单点。
+  Txt2tags生成可以直接转换为PS或PDF文档的LOUT文件。
+<p></p>
+</dd><dt><b>MAN</b></dt><dd>
+  可以把手册内容做成其他格式的文档保存。
+<p></p>
+</dd><dt><b>MGP</b></dt><dd>
+  <a href="http://www.mew.org/mgp">MagicPoint</a>是用来作演示文稿的。
+<p></p>
+</dd><dt><b>MOIN</b></dt><dd>
+  <a href="http://moin.sourceforge.net/">MoinMoin</a>是一种wiki啦。
+<p></p>
+</dd><dt><b>PM6</b></dt><dd>
+  Adobe PageMaker 6.0的标签格式。
+<p></p>
+</dd><dt><b>TXT</b></dt><dd>
+  格式化过的纯文本。
+</dd></dl>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="interfaces"></a>
+<h2>三种用户界面</h2>
+<p>
+支持三种界面：web页界面，图形界面，命令行界面。
+</p>
+<p>
+前两种是傻瓜式的，命令行例子(假设源文件是<code>file.t2t</code>)：
+</p>
+<table cellpadding="4">
+<tbody><tr>
+<td><b>转成html</b></td>
+<td><code>$ txt2tags -t html file.t2t</code></td>
+</tr>
+<tr>
+<td><b>生成目录</b></td>
+<td><code>$ txt2tags -t html --toc file.t2t</code></td>
+</tr>
+<tr>
+<td><b>标题编号</b></td>
+<td><code>$ txt2tags -t html --toc --enum-title file.t2t</code></td>
+</tr>
+<tr>
+<td><b>从标准输入中读入</b></td>
+<td><code>$ echo -e "\n**bold**" | txt2tags -t html --no-headers -</code></td>
+</tr>
+</tbody></table>
+
+<hr noshade="" size="5">
+<p></p>
+<a name="install"></a>
+<h1>第二部分 - 下载安装</h1>
+<a name="download-python"></a>
+<h2>安装Python</h2>
+<p>
+系统要装有<a href="http://www.python.org/">Python</a>，版本&gt;=1.5。
+</p>
+<hr noshade="" size="1">
+<p></p>
+<a name="windows-txt2tags"></a>
+<h2>Windows版本</h2>
+<p>
+是编译过的，在这里：<a href="http://txt2tags-win.sf.net/">http://txt2tags-win.sf.net</a>
+</p>
+<hr noshade="" size="1">
+<p></p>
+<a name="editor-syntax"></a>
+<h2>设置文本编辑器中语法高亮</h2>
+<p>
+已有语法高亮文件的编辑器：
+</p>
+<ul>
+<li>Vim (<a href="http://www.vim.org/">www.vim.org</a>)
+</li><li>Emacs (<a href="http://www.emacs.org/">www.emacs.org</a>)
+</li><li>Nano (<a href="http://www.nano-editor.org/">www.nano-editor.org</a>)
+</li><li>Kate (<a href="http://kate.kde.org/">http://kate.kde.org</a>)
+</li></ul>
+
+<hr noshade="" size="5">
+<p></p>
+<a name="your-1st-doc"></a>
+<h1>第三部分 - 撰写首份文档</h1>
+<p>
+写个文件test.txt，内容如下：
+</p>
+<pre>  My First Document
+  A txt2tags test
+  Sunday, 2004
+  
+  Well, let's try this txt2tags thing.
+  I don't know what to write.
+  
+  Mmmmmm, I know what I need to do now:
+  - Take a shower
+  - Eat a pizza
+  - Sleep
+</pre>
+<p>
+命令行转换：
+</p>
+<pre>  prompt$ txt2tags --target html test.txt
+  txt2tags wrote test.html
+  prompt$
+</pre>
+<p>
+然后在浏览器打开test.html看结果好了，注意前三行是头部信息。
+</p>
+<hr noshade="" size="5">
+<p></p>
+<a name="concepts"></a>
+<h1>第四部分 - 掌握Txt2tags建构</h1>
+<p>
+源文件按顺序分成三部分：
+</p>
+<table align="center" cellpadding="4">
+<tbody><tr>
+<td align="center"><b>头部域</b></td>
+<td>源文件头三行，或首行置空代表无头部信息。主要是该文件标题、作者、版本、时间等信息。</td>
+</tr>
+<tr>
+<td align="center"><b>设置域</b></td>
+<td>头部域结束，设置域就开始(第四或第二行)，一直到主体域开始的地方才结束。一些转换时的选项设置，比如使用什么css文件之类的。</td>
+</tr>
+<tr>
+<td align="center"><b>主体域</b></td>
+<td>从头部域后首个可用的文本行(不是注释或设置行)开始。放的是该文件的具体内容。</td>
+</tr>
+</tbody></table>
+
+<a name="toc12"></a>
+<h2>完整的例子</h2>
+<pre>  My nice doc Title
+  Mr. John Doe
+  Last Updated: %%mtime(%c)
+  
+  %! Target  : html
+  %! Style   : fancy.css
+  %! Encoding: iso-8859-1
+  %! Options : --toc --enum-title
+  
+  Hi! This is my test document.
+  Its content will end here.
+</pre>
+<p></p>
+<hr noshade="" size="1">
+<p></p>
+<a name="headers-area"></a>
+<h2>头部域</h2>
+<p>
+如果首行为空就是没有头部信息了。不然的话，头三行一般是这么放的啦：
+</p>
+   <ul>
+   <li><i>第一行</i>: 文档标题
+   </li><li><i>第二行</i>: 作者名 和/或 电子邮件
+   </li><li><i>第三行</i>: 文档日期 和/或 版本(经常放<code>%%date</code>)
+   <p></p>
+而且源文件这头三行会转换成目标文档的头三行(一一对应)，而且字体会搞大一点、粗一点让你看。写了头一行以后，后面两行也可以放空不写，头部域在第三行正常结束。
+   </li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="config-area"></a>
+<h2>设置域</h2>
+<p>
+位置：
+</p>
+<ul>
+<li>在头部域之后开始
+  <ul>
+  <li>如果有指定头部信息，就在 <b>第四行</b> 开始
+  </li><li>如果没有指定头部信息，就在 <b>第二行</b> 开始
+  </li></ul>
+</li><li>在主体域开始时结束
+  <ul>
+  <li>出现一个非设置，非空，非注释行就结束
+  <p></p>
+设置域是可选的，在文档中写了设置行后，命令行转换的时候就不用加一堆参数了。
+比如可以设置默认的目标文档类型和编码。
+  <p></p>
+详细信息见：<a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#settings-overview">设置项</a>
+  </li></ul>
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="body-area"></a>
+<h2>主体域</h2>
+<p>
+在首个可用的文本行处开始，直到文件结束。
+使用命令行选项<code>--no-headers</code>可以只转换文档主体，忽略头部信息。此时你可以在别的文件设置头部信息，等主体转换完毕再加进来。
+</p>
+<hr noshade="" size="1">
+<p></p>
+<a name="settings-overview"></a>
+<h2>设置</h2>
+<p>
+设置行放在源文档设置域中，在文档转换时起作用。语法格式如下：
+</p>
+<pre>  %! 关键字 : 取值
+</pre>
+<p></p>
+<p>
+可用关键字列表：
+</p>
+<table align="center" border="1" cellpadding="4">
+<tbody><tr>
+<th>关键字</th>
+<th>描述</th>
+</tr>
+<tr>
+<td align="center">Target</td>
+<td>设置默认目标文档类型。</td>
+</tr>
+<tr>
+<td align="center">Options</td>
+<td>设置转换时的默认选项，格式同命令行选项。</td>
+</tr>
+<tr>
+<td align="center">Style</td>
+<td>指定文档样式。用于为HTML/XHTML指定CSS文件，或在LaTex中载入包。</td>
+</tr>
+<tr>
+<td align="center">Encoding</td>
+<td>设置文档字符集。</td>
+</tr>
+<tr>
+<td align="center">PreProc</td>
+<td>输入过滤器。对源文档进行“查找和替换”。</td>
+</tr>
+<tr>
+<td align="center">PostProc</td>
+<td>输出过滤器。对目标文档进行“查找和替换”。</td>
+</tr>
+</tbody></table>
+
+<p>
+例子：
+</p>
+<pre>  %! Target  : html
+  %! Options : --toc --toc-level 3
+  %! Style   : fancy.css
+  %! Encoding: iso-8859-1
+  %! PreProc : "AMJ"        "Aurelio Marinho Jargas"
+  %! PostProc: '&lt;BODY.*?&gt;'  '&lt;BODY bgcolor="yellow"&gt;'
+</pre>
+<p></p>
+<hr noshade="" size="1">
+<p></p>
+<a name="options"></a>
+<h2>命令行选项</h2>
+<p>
+<code>-t</code>或<code>--target</code>指定目标文档类型，这是转换时唯一必需指定的选项，其他都是可选的。
+</p>
+<p>
+常用的还有：<code>--outfile</code>指定输出文件名，<code>--toc</code>指定自动生成目录，
+<code>--encoding</code>设置文档字符集。
+</p>
+<p>
+如果该选项加上"no-"前缀，则表示关闭，比如：<code>--no-encoding</code> 和 <code>--no-toc</code>。
+</p>
+<p>
+在源文档设置域中使用<code>%!options</code>指定该选项，效果相同。
+例子：<code>%!options: --toc -o mydoc.html</code>。
+</p>
+<p>
+但指定目标文档类型的选项有例外，是这么写的：<code>%!target: html</code>。
+</p>
+<p>
+使用<code>--help</code>选项查看所有txt2tags可用的选项。
+</p>
+<hr noshade="" size="1">
+<p></p>
+<a name="rc"></a>
+<h2>用户配置文件(RC文件)</h2>
+<p>
+用户配置文件(也叫RC文件)里的配置在每次转换的时候均起作用。
+</p>
+<p>
+在各系统中默认存放位置可以通过指定环境变量进行修改。
+</p>
+<table align="center" border="1" cellpadding="4">
+<tbody><tr>
+<th colspan="2">RC文件位置</th>
+</tr>
+<tr>
+<td align="right">Windows</td>
+<td><code>%HOMEPATH%\_t2trc</code></td>
+</tr>
+<tr>
+<td align="right">Linux和其他操作系统</td>
+<td><code>$HOME/.txt2tagsrc</code></td>
+</tr>
+<tr>
+<td align="right">用户指定</td>
+<td><code>T2TCONFIG</code> 环境变量</td>
+</tr>
+</tbody></table>
+
+<p>
+格式与.t2t文件中的设置域相同。
+下面是安装包里面的示例RC文件<code>doc/txt2tagsrc</code>。例子：
+</p>
+<pre>  % my configs
+  
+  %%% Always use CSS-friendly tags in HTML
+  %!options(html): --css-sugar
+  
+  %%% Change the default TOC depth for all targets
+  %!options: --toc-level 4
+  
+  %%% Set the default encoding for all documents
+  %!options: --encoding iso-8859-1
+</pre>
+<p></p>
+<p>
+该文件中任一个非空、非注释、不可用的设置行都会导致txt2tags在运行时出错。
+</p>
+<p>
+Txt2tags运行时将自动读入RC文件中的设置。如果希望当前转换关闭RC文件的选项，则必须使用
+命令行选项<code>--no-rc</code>。
+</p>
+<a name="config-loading"></a>
+<h2>载入设置的顺序及优先级</h2>
+<p>
+共有三种方法可以对txt2tags进行设置，其读入及应用顺序如下：
+</p>
+<ol>
+<li>用户设置(RC)文件
+</li><li>源文档中的设置域中的设置
+</li><li>命令行选项
+</li></ol>
+
+<p>
+越晚读入则优先级越高，即，命令行选项优先级最高。
+后面读入的选项将覆盖前面读入的相同关键字的选项。也就是说，如果在上面三个地方指定了三中不同的文档encoding，最后使用的只会是命令行里指定的那一种encoding。
+</p>
+<hr noshade="" size="1">
+<p></p>
+<a name="include"></a>
+<h2>%!include命令</h2>
+<p>
+<code>include</code>命令可以把外部文件内容加到源文件的主体中。这个不是一个配置项，而是一个命令，在文档主体域内有效。
+</p>
+<p>
+用<code>include</code>命令可以把一个大文件的内容分解成好几个小文件单独存放，例子：
+</p>
+<pre>  My first book
+  Dr. John Doe
+  1st Edition
+  
+  %!include: intro.t2t
+  %!include: chapter1.t2t
+  %!include: chapter2.t2t
+  ...
+  %!include: chapter9.t2t
+  %!include: ending.t2t
+</pre>
+<p></p>
+<p>
+只需在<code>%!include</code>之后指定文件名。
+</p>
+<p>
+也可以顺便指定目标文档类型：
+</p>
+<pre>  %!include(html): file.t2t
+</pre>
+<p></p>
+<p>
+注意只是读入该文档的主体域，而忽略其头部域和设置域。
+</p>
+<p>
+总共有三种不同的方法可以读入文件：
+</p>
+<ul>
+<li>Verbatim include
+</li><li>Raw include
+</li><li>Tagged include
+</li></ul>
+
+<p>
+<b>Verbatim</b>型include保留文本中原始的空格和格式，效果与完全引用域(```)相同，格式如下：
+</p>
+<pre>  %!include: ``/etc/fstab``
+</pre>
+<p></p>
+<p>
+<b>Raw</b>型include不解析文本中的标记，效果与纯文本域(""")相同，格式如下：
+</p>
+<pre>  %!include: ""nice_text.txt""
+</pre>
+<p></p>
+<p>
+<b>Tagged</b>型include把文本内容直接加到转换后的文档中，可以用来添加头部或尾部信息，或txt2tags不能生成的一些标签，格式如下：
+</p>
+<pre>  %!include(html): ''footer.html''
+</pre>
+<p></p>
+<hr noshade="" size="1">
+<p></p>
+<a name="includeconf"></a>
+<h2>%!includeconf命令</h2>
+<p>
+<code>includeconf</code>命令用于从外部文件读入对当前文档的设置，仅在源文档设置域中有效。
+</p>
+<p>
+多个文件使用相同设置时有效，把所有设置写入一个文件中，再使用<code>includeconf</code>调用该设置文件。例子：
+</p>
+<pre>  My First Document
+  John Doe
+  July, 2004
+  
+  %!includeconf: config.t2t
+  
+  Hi, this is my first document.
+</pre>
+<p></p>
+<p>
+语法格式与<a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#rc">RC文件</a>相同。
+</p>
+<hr noshade="" size="5">
+<p></p>
+<a name="marks"></a>
+<h1>第五部分 - 掌握标记</h1>
+<table align="center" border="1" cellpadding="4">
+<tbody><tr>
+<th colspan="2">基础</th>
+<th colspan="2">美化</th>
+</tr>
+<tr>
+<td align="right"><i>头部</i></td>
+<td align="center">头3行</td>
+<td align="right"><i>粗体</i></td>
+<td align="center">**文字**</td>
+</tr>
+<tr>
+<td align="right"><i>标题</i></td>
+<td align="center">= 文字 =</td>
+<td align="right"><i>斜体</i></td>
+<td align="center">//文字//</td>
+</tr>
+<tr>
+<td align="right"><i>编号式标题</i></td>
+<td align="center">+ 文字 +</td>
+<td align="right"><i>下划线</i></td>
+<td align="center">__文字__</td>
+</tr>
+<tr>
+<td align="right"><i>段落</i></td>
+<td align="center">文字</td>
+<td align="right"><i>等宽</i></td>
+<td align="center">``文字``</td>
+</tr>
+<tr>
+<th colspan="2">文本块</th>
+<th colspan="2">其他</th>
+</tr>
+<tr>
+<td align="right"><i>引用</i></td>
+<td align="center">&lt;TAB&gt;文字</td>
+<td align="right"><i>隔离行</i></td>
+<td align="center"><s>--------</s>...</td>
+</tr>
+<tr>
+<td align="right"><i>列表</i></td>
+<td align="center">- 文字</td>
+<td align="right"><i>粗隔离行</i></td>
+<td align="center">============...</td>
+</tr>
+<tr>
+<td align="right"><i>编号式列表</i></td>
+<td align="center">+ 文字</td>
+<td align="right"><i>链接</i></td>
+<td align="center">[标签 url地址]</td>
+</tr>
+<tr>
+<td align="right"><i>定义式列表</i></td>
+<td align="center">: 文字</td>
+<td align="right"><i>图片</i></td>
+<td align="center">[filename.jpg]</td>
+</tr>
+<tr>
+<td align="right"><i>完全引用行</i></td>
+<td align="center">``` 文字</td>
+<td align="right"><i>注释</i></td>
+<td align="center">%  注释</td>
+</tr>
+<tr>
+<td align="right"><i>完全引用域</i></td>
+<td align="center">```\n 文字 \n```</td>
+<td align="right"><i>原文</i></td>
+<td align="center">""文字""</td>
+</tr>
+<tr>
+<td align="right"><i>原文行</i></td>
+<td align="center">""" 文字</td>
+<td align="right"><i>表格</i></td>
+<td align="center">| 单元1 | 单元2 | 单元3...</td>
+</tr>
+<tr>
+<td align="right"><i>原文域</i></td>
+<td align="center">"""\n 文字 \n"""</td>
+<td align="right"><i>锚</i></td>
+<td align="center">= 标题 =[锚标]</td>
+</tr>
+</tbody></table>
+
+<p>
+规则：
+</p>
+<ul>
+<li><b>头部域</b>是头三行，不解释标记
+</li><li><b>标题</b>左右的"="或"+"字符个数必须相等
+</li><li><b>美化</b>标记与内容间不允许有空格
+</li><li><b>注释</b>标记的"%"必须在行首
+</li><li>支持<b>多行</b>的标记只有完全引用域和原文域
+</li><li>完全引用环境或原文环境下均不<b>解释</b>标记
+</li><li><b>隔离行/粗隔离行</b>至少要20个字符
+</li><li>引用及列表支持嵌套缩进，缩进距离决定嵌套深度
+</li><li><b>表格标题</b>行以两个竖线||在行首进行标识
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="mark-headers"></a>
+<h2>头部域</h2>
+<ul>
+<li><b>描述</b> 文档头部信息
+</li><li><b>属性</b> Multiline, FreeSpaces, !Align, !Nesting
+</li><li><b>包含</b> Macros
+</li><li><b>语法</b>
+  <ul>
+  <li>源文件头3行。
+  </li><li>首行置空表示不设定头部信息。
+  </li></ul>
+</li><li><b>细节</b>
+  <ul>
+  <li>不解释标记
+  </li><li>而且源文件这头三行会转换成目标文档的头三行(一一对应)，而且字体会搞大一点、粗一点让你看，或者头部信息单独占一页。
+  </li><li>对具体内容不设限，不过常常这样写：
+    <ul>
+    <li><i>第一行</i>: 文档标题
+    </li><li><i>第二行</i>: 作者名 和/或 电子邮件
+    </li><li><i>第三行</i>: 文档日期 和/或 版本(可以放<code>%%mtime</code>)
+    </li></ul>
+  </li></ul>
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="mark-title"></a>
+<h2>标题，编号式标题</h2>
+<ul>
+<li><b>描述</b> 章节标题
+</li><li><b>属性</b> !Multiline, FreeSpaces, !Align, !Nesting
+</li><li><b>语法</b>
+  <ul>
+  <li>要编号的话，把"="换成"+"
+  </li><li>左右符号数相等：<code>=像这样=</code>
+  </li><li>符号越多，层次越深：<code>=章=</code>, <code>==节==</code>,
+    <code>===小节===</code>, ...
+  </li><li>最深到第5层，<code>=====像这样=====</code>
+  </li><li>标记内部可以有空格：<code>=       like this  =</code>
+  </li><li>可以加锚标：<code>=like this=[anchor]</code>，到该锚标的链接：<code>[本地链接 #anchor]</code>
+  </li><li>锚命名字符集合：A-Za-z0-9_-
+  </li></ul>
+</li><li><b>细节</b>
+  <ul>
+  <li>不解释标记
+  </li><li>不解释宏
+  </li></ul>
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="mark-paragraph"></a>
+<h2>段落</h2>
+<ul>
+<li><b>属性</b> Multiline, FreeSpaces, !Align, !Nesting
+</li><li><b>包含</b> Macros, Beautifiers, Raw, Links, Image, Comment
+</li><li><b>包含</b> Raw
+</li><li><b>语法</b>
+  <ul>
+  <li>以空行结束段落
+  </li><li>其它文本块如列表，引用，表格，完全引用域也可以结束段落
+  </li></ul>
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="mark-comment"></a>
+<h2>注释</h2>
+<ul>
+<li><b>属性</b> !Multiline, !&lt;FreeSpaces, !Align, !Nesting
+</li><li><b>语法</b>
+  <ul>
+  <li>以"%"开头的行：<code>% like this</code>
+  </li><li>前面不能有空格
+  </li></ul>
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="mark-beautifiers"></a>
+<h2>粗体、斜体、下划线</h2>
+<ul>
+<li><b>属性</b> !Multiline, !FreeSpaces, !Align, Nesting
+</li><li><b>包含</b> Macros, Beautifiers, Raw, Links, Image
+</li><li><b>语法</b>
+  <ul>
+  <li>粗体：<code>**like this**</code>
+  </li><li>斜体：<code>//like this//</code>
+  </li><li>下划线：<code>__like this__</code>
+  </li><li>标记与内容之间不能有空格：<code>** this ** is invalid</code>
+  </li></ul>
+</li><li><b>细节</b>
+  <ul>
+  <li>文本中间不能断行
+  </li><li>支持宏：<code>**%%date**</code>
+  </li><li>效果混用：<code>**__like__ //this//**</code>
+  </li></ul>
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="mark-monospaced"></a>
+<h2>等宽文本</h2>
+<ul>
+<li><b>属性</b> !Multiline, !FreeSpaces, !Align, !Nesting
+</li><li><b>语法</b>
+  <ul>
+  <li>等宽：<code>``like this``</code>
+  </li><li>标记与内容之间不能有空格： <code>`` this `` is invalid</code>
+  </li></ul>
+</li><li><b>细节</b>
+  <ul>
+  <li>不解释标记
+  </li><li>不解释宏
+  </li><li>文本中间不能断行
+  </li><li>有的目标文档会把连续的空格当成一个处理
+  </li><li>效果混用：<code>**``monobold``**</code>，<code>//``italic``//</code>，<code>__``underline``__</code>
+  </li></ul>
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="mark-verbatim"></a>
+<h2>完全引用行、完全引用域</h2>
+<ul>
+<li><b>描述</b> 用于插入程序代码或其他预格式化文本，保留空格和断行，使用等宽字体
+</li><li><b>属性</b> Multiline, !FreeSpaces, !Align, !Nesting
+</li><li><b>包含</b> -
+</li><li><b>语法</b> <b>完全引用行</b>
+  <ul>
+  <li>以3个连续的反引号<code>```</code>开头，后面跟一个空格，然后才是文本内容：<code>``` like this</code>
+  </li><li>反引号前面不能有空格
+  </li></ul>
+</li><li><b>语法</b> <b>完全引用域</b>
+  <ul>
+  <li>两个只有三个反引号的行标记域的开始和结束
+  </li><li>标记前后不能有空格
+  </li></ul>
+</li><li><b>细节</b>
+  <ul>
+  <li>不解释标记
+  </li><li>不解释宏
+  </li></ul>
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="mark-separator"></a>
+<h2>隔离行，粗隔离行</h2>
+<ul>
+<li><b>属性</b> !Multiline, FreeSpaces, !Align, !Nesting
+</li><li><b>语法</b>
+  <ul>
+  <li>隔离行标记：破折号"-"或下划线"_"
+  </li><li>粗隔离行标记：等号"="
+  </li><li>至少要20个连续的破折号/下划线/等号的标记。
+  </li><li>行首或行尾可以有空格
+  </li><li>中间不能有其他字符
+  </li></ul>
+</li><li><b>细节</b>
+  <ul>
+  <li>如果目标文档不支持隔离行，则当成注释行
+  </li><li>粗隔离行在一些目标文档中的其他表现：
+    <ul>
+    <li>演示文档中一次暂停，如MagicPoint
+    </li><li>分页符，如LaTeX
+    </li></ul>
+  </li></ul>
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="mark-link"></a>
+<h2>链接，命名链接</h2>
+<ul>
+<li><b>描述</b> 标记远程(Internet)或本地
+</li><li><b>属性</b> !Multiline, !FreeSpaces, !Align, !Nesting
+</li><li><b>包含</b> Macros, Raw, Image
+</li><li><b>语法</b>
+  <ul>
+  <li>自动转换任何可用的URL, ftp, news 或 email地址
+  </li><li>协议(http, https, ftp)可以不写，<code>www.likethis.com</code>
+  </li><li>取名字： <code>[click here www.url.com]</code>
+  </li><li>图像嵌链接：<code>[[image.jpg] www.url.com]</code>
+  </li><li>支持宏调用：<code>[see source %%infile]</code>，<code>[mirror of %%outfile www.url.com]</code>
+  </li><li>文本内部不能断行
+  </li></ul>
+</li><li><b>细节</b>
+  <ul>
+  <li>如果目标文档不支持链接，就用下划线标记之
+  </li></ul>
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="mark-quote"></a>
+<h2>引用</h2>
+<ul>
+<li><b>属性</b> Multiline, !FreeSpaces, !Align, Nesting
+</li><li><b>包含</b> Macros, Beautifiers, Quote, Raw, Bars, Links, Image, Comment
+</li><li><b>语法</b>
+  <ul>
+  <li>以一个制表符(TAB)开头
+  </li><li>开头的TABs越多，层次越深
+  </li><li>引用内部不支持列表及表格
+  </li></ul>
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="mark-lists"></a>
+<h2>列表，编号式列表，定义式列表</h2>
+<ul>
+<li><b>属性</b> Multiline, !FreeSpaces, !Align, Nesting
+</li><li><b>包含</b> Macros, Beautifiers, Lists, Table, Verbatim, Raw, Bars, Links, Image, Comment
+</li><li><b>语法</b>
+  <ul>
+  <li>以破折号/加号/冒号开头，后面跟一个空格的行
+  </li><li>除了定义式列表，首行的列表字符不能为空格
+  </li><li>行首的空格(普通空格，不是TAB)数目代表了列表的层次
+  </li><li>碰到一个外层列表项或空列表项则结束本层的列表
+  </li><li>以两个连续的空行结束所有已打开的列表
+  </li></ul>
+</li><li><b>细节</b>
+  <ul>
+  <li>列表可以混合，比如一个定义式列表里面嵌一个编号式列表
+  </li></ul>
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="mark-image"></a>
+<h2>图片</h2>
+<ul>
+<li><b>属性</b> !Multiline, !FreeSpaces, Align, !Nesting
+</li><li><b>包含</b> Macros
+</li><li><b>语法</b>
+  <ul>
+  <li>用中括号：<code>[likethis.jpg]</code>
+  </li><li>文件扩展名必须为PNG, JPG, GIF等等，不区分大小写
+  </li><li>文件名可以有符号，也支持宏：<code>[likethis!~1.jpg]</code>，<code>[report-%%date(%Y-%m-%d).png]</code>
+  </li><li>文件名不能有空格：<code>[like this.jpg]</code>
+  </li><li>中括号与文件名之间不能有空格：<code>[ likethis.jpg ]</code>
+  </li></ul>
+</li><li><b>细节</b>
+  <ul>
+  <li>图像位置
+    <ul>
+    <li><code>[LEFT.jpg]</code> blablablabla
+    </li><li>blablablabla <code>[CENTER.jpg]</code> blablablabla
+    </li><li>blablablabla <code>[RIGHT.jpg]</code>
+    </li></ul>
+  </li></ul>
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="mark-table"></a>
+<h2>表格</h2>
+<ul>
+<li><b>描述</b> 表格行，列数不限
+</li><li><b>属性</b> Multiline, FreeSpaces, Align, !Nesting
+</li><li><b>包含</b> Macros, Beautifiers, Raw, Links, Image, Comment
+</li><li><b>语法</b>
+  <ul>
+  <li>以一条竖线"|"开头标识表格行
+  </li><li>以两条竖线"||"开头标识表格标题行
+  </li><li>如果首个竖线前面有空格，则表示表格居中
+  </li><li>各个域以" | "(空格+竖线+空格)区分
+  </li><li>首个表格行以"|"结束则表示该表格边框可见
+  </li><li>其他表格行尾部的"|"则被忽略
+  </li><li>连着几个竖线表示跨列： "||"表示两列，"|||"表示三列，等等
+  </li><li>每个单元内部的空格标识其位置
+  </li><li>例子：<code>| table | row | with | five | columns |</code>
+  </li></ul>
+</li><li><b>细节</b>
+  <ul>
+  <li>源文件中每个表格行内部文本不能断行
+  </li><li>除了注释行外，任何一个非表格行都可结束表格
+  </li><li>每行的单元格数目任意
+  </li><li>现在还不能实现跨行
+  </li><li>如果目标文档不支持表格，就当成完全引用域处理
+  </li></ul>
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="mark-raw"></a>
+<h2>纯文本，纯文本行，纯文本域</h2>
+<ul>
+<li><b>描述</b> 防止一些文本被解析，不解释标记及宏
+</li><li><b>属性</b> !Multiline, !FreeSpaces, !Align, !Nesting
+</li><li><b>语法</b> <b>纯文本</b>
+  <ul>
+  <li>两个双引号：<code>""like this""</code>
+  </li><li>标记与文本之间不能有空格
+  </li></ul>
+</li><li><b>语法</b> <b>纯文本行</b>
+  <ul>
+  <li>以3个连续的双引号<code>"``开头，后面跟一个空格，然后才是文本内容：``" like this</code>
+  </li><li>双引号前面不能有空格
+  </li></ul>
+</li><li><b>语法</b> <b>纯文本域</b>
+  <ul>
+  <li>两个只有三个双引号的行标记域的开始和结束
+  </li><li>标记前后不能有空格
+  </li></ul>
+</li><li><b>语法</b> <b>完全引用行</b>
+</li><li><b>细节</b>
+  <ul>
+  <li>不解释标记
+  </li><li>不解释宏
+  </li></ul>
+</li></ul>
+
+<hr noshade="" size="5">
+<p></p>
+<a name="macros"></a>
+<h1>第六部分 - 掌握宏</h1>
+<p>
+宏用于插入当前日期等动态信息，在转换时被展开。
+</p>
+<p>
+一个宏以<code>%%</code>标识，然后是宏名，如<code>%%date</code>。一些宏格式是可定制的，格式串放在宏名之后，以<code>%</code>标识，如<code>%%date(%Y-%m-%d)</code>。未定制时自动采用默认格式。
+</p>
+<table align="center" border="1" cellpadding="4">
+<tbody><tr>
+<th>宏名</th>
+<th>展开为...</th>
+<th>默认格式</th>
+</tr>
+<tr>
+<td>%%date</td>
+<td>当前时间</td>
+<td align="center">%Y%m%d</td>
+</tr>
+<tr>
+<td>%%mtime</td>
+<td>源文件更新时间</td>
+<td align="center">%Y%m%d</td>
+</tr>
+<tr>
+<td>%%infile</td>
+<td>源文件路径</td>
+<td align="center">%f</td>
+</tr>
+<tr>
+<td>%%outfile</td>
+<td>输出文件路径</td>
+<td align="center">%f</td>
+</tr>
+<tr>
+<td>%%toc</td>
+<td>文档目录</td>
+<td align="center">-</td>
+</tr>
+</tbody></table>
+
+<p>
+规则：
+</p>
+<ul>
+<li>宏名不区分大小写：<code>%%date</code>、<code>%%DaTe</code>和<code>%%DATE</code>等价
+</li><li>宏在文档头部域和主体域有效，但%%toc只在主体域有效
+</li><li>宏可以放在行中任一位置，但%%toc只能单放一行
+</li><li>宏(除了%%toc)可以在链接和图片标记中使用
+</li><li>在标题、完全引用、纯文本环境下宏不会被展开
+</li></ul>
+
+<p>
+例子(粗体部分是展开的宏):
+</p>
+<p>
+This is the Txt2tags User Guide, converted to <b>html</b>
+by txt2tags from the <b>t2t-guide-note.t2t</b> source file. The conversion
+was done at <b>2010-09-18 15:33:58</b>, but the last change on the
+source document was made on <b>2008-10-19 23:50:33</b>. Both
+source and converted file reside on the <b>doc</b>
+directory.
+</p>
+<hr noshade="" size="1">
+<p></p>
+<a name="macro-date"></a>
+<h2>%%date</h2>
+<p>
+<code>%%date</code>宏展开当前日期和时间，可用于得到源文档最后更新时间，参见<a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#macro-mtime">%%mtime macro</a>。
+</p>
+<p>
+该宏支持的格式列表可以在<a href="http://www.python.org/doc/current/lib/module-time.html">Python站点</a>找到。
+</p>
+<p>
+下面列一些常用的：
+</p>
+<table align="center" border="1" cellpadding="4">
+<tbody><tr>
+<th>指令</th>
+<th>描述</th>
+</tr>
+<tr>
+<td align="center">%a</td>
+<td>本地简写的星期名</td>
+</tr>
+<tr>
+<td align="center">%A</td>
+<td>本地完整的星期名</td>
+</tr>
+<tr>
+<td align="center">%b</td>
+<td>本地简写的月份名</td>
+</tr>
+<tr>
+<td align="center">%B</td>
+<td>本地完整的月份名</td>
+</tr>
+<tr>
+<td align="center">%c</td>
+<td>本地对应的日期和时间表示</td>
+</tr>
+<tr>
+<td align="center">%d</td>
+<td>一个月中的第几天[01,31]</td>
+</tr>
+<tr>
+<td align="center">%H</td>
+<td>24小时制的小时数[00,23]</td>
+</tr>
+<tr>
+<td align="center">%I</td>
+<td>12小时制的小时数[01,12]</td>
+</tr>
+<tr>
+<td align="center">%m</td>
+<td>一年中的第几个月[01,12]</td>
+</tr>
+<tr>
+<td align="center">%M</td>
+<td>分钟数[00,59]</td>
+</tr>
+<tr>
+<td align="center">%p</td>
+<td>本地的AM或PM时间</td>
+</tr>
+<tr>
+<td align="center">%S</td>
+<td>秒钟数[00,61].  (1)</td>
+</tr>
+<tr>
+<td align="center">%x</td>
+<td>本地日期简写</td>
+</tr>
+<tr>
+<td align="center">%X</td>
+<td>本地时间简写</td>
+</tr>
+<tr>
+<td align="center">%y</td>
+<td>两位数的年份表示[00,99]</td>
+</tr>
+<tr>
+<td align="center">%Y</td>
+<td>四位数的年份表示</td>
+</tr>
+<tr>
+<td align="center">%%</td>
+<td>"%"字符</td>
+</tr>
+</tbody></table>
+
+<p>
+例子:
+</p>
+<table align="center" border="1" cellpadding="4">
+<tbody><tr>
+<th>宏</th>
+<th>--&gt;</th>
+<th>展开效果 2010-09-18 15:33</th>
+</tr>
+<tr>
+<td>%%date(Converted on: %c)</td>
+<td align="center">--&gt;</td>
+<td>Converted on: Sat Sep 18 15:33:58 2010</td>
+</tr>
+<tr>
+<td>%%date(%Y-%m-%d)</td>
+<td align="center">--&gt;</td>
+<td>2010-09-18</td>
+</tr>
+<tr>
+<td>%%date(%I:%M %p)</td>
+<td align="center">--&gt;</td>
+<td>03:33 PM</td>
+</tr>
+<tr>
+<td>%%date(Today is %A, on %B.)</td>
+<td align="center">--&gt;</td>
+<td>Today is Saturday, on September.</td>
+</tr>
+</tbody></table>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="macro-mtime"></a>
+<h2>%%mtime</h2>
+<p>
+<code>%%mtime</code>宏展开为源文档最后更新时间，其格式指令与<a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#macro-date">%%date macro</a>相同。
+</p>
+<p>
+比如，源文档最近的更新是在<b>Sun Oct 19 23:50:33 2008</b>，这个时间是用<code>%%mtime(%c)</code>展开得到的。
+</p>
+<hr noshade="" size="1">
+<p></p>
+<a name="macro-infile"></a>
+<h2>%%infile</h2>
+<p>
+<code>%%infile</code>宏展开为源文档在系统中的路径信息，可用于生成html中"<i>查看本页面源文件</i>"的链接。
+</p>
+<p>
+该宏支持的格式指令如下：
+</p>
+<table align="center" border="1" cellpadding="4">
+<tbody><tr>
+<th>指令</th>
+<th>描述</th>
+<th>宏表示</th>
+</tr>
+<tr>
+<td align="center">%f</td>
+<td>文件名</td>
+<td>t2t-guide-note.t2t</td>
+</tr>
+<tr>
+<td align="center">%F</td>
+<td>文件名(不含扩展名)</td>
+<td>t2t-guide-note</td>
+</tr>
+<tr>
+<td align="center">%e</td>
+<td>文件扩展名</td>
+<td>t2t</td>
+</tr>
+<tr>
+<td align="center">%p</td>
+<td>文件绝对路径</td>
+<td>/mnt/e/project/public_html/doc/t2t-guide-note.t2t</td>
+</tr>
+<tr>
+<td align="center">%d</td>
+<td>文件目录路径</td>
+<td>/mnt/e/project/public_html/doc</td>
+</tr>
+<tr>
+<td align="center">%D</td>
+<td>文件父目录路径</td>
+<td>doc</td>
+</tr>
+<tr>
+<td align="center">%%</td>
+<td>"%"字符</td>
+<td>%</td>
+</tr>
+</tbody></table>
+
+<p>
+例子:
+</p>
+<table align="center" border="1" cellpadding="4">
+<tbody><tr>
+<th>源</th>
+<th>--&gt;</th>
+<th>展开</th>
+</tr>
+<tr>
+<td>This Guide parent dir is %%infile(%D).</td>
+<td align="center">--&gt;</td>
+<td>This Guide parent dir is doc.</td>
+</tr>
+<tr>
+<td>I do use the %%infile(%e) file extension.</td>
+<td align="center">--&gt;</td>
+<td>I do use the t2t file extension.</td>
+</tr>
+<tr>
+<td>[See the source %%infile]</td>
+<td align="center">--&gt;</td>
+<td><a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.t2t">See the source</a></td>
+</tr>
+<tr>
+<td>Converted to XHTML, I'll be %%infile(%F).xhtml</td>
+<td align="center">--&gt;</td>
+<td>Converted to XHTML, I'll be t2t-guide-note.xhtml</td>
+</tr>
+</tbody></table>
+
+	<blockquote>
+	<b>注:</b> 若源为标准输入STDIN，则宏展开为"-"。
+	</blockquote>
+<p></p>
+<hr noshade="" size="1">
+<p></p>
+<a name="macro-outfile"></a>
+<h2>%%outfile</h2>
+<p>
+<code>%%outfile</code>宏展开为转换后的文件在系统中的路径信息，其格式指令与<a href="http://if.ustc.edu.cn/~panll/doc/t2t-guide-note.html#macro-infile">%%infile macro</a>相同。
+</p>
+<p>
+例子:
+</p>
+<table align="center" border="1" cellpadding="4">
+<tbody><tr>
+<th>源</th>
+<th>--&gt;</th>
+<th>展开</th>
+</tr>
+<tr>
+<td>You are reading the %%outfile file.</td>
+<td align="center">--&gt;</td>
+<td>You are reading the t2t-guide-note.html file.</td>
+</tr>
+<tr>
+<td>txt2tags -t %%outfile(%e) -i %%infile -o %%outfile</td>
+<td align="center">--&gt;</td>
+<td>txt2tags -t html -i t2t-guide-note.t2t -o t2t-guide-note.html</td>
+</tr>
+</tbody></table>
+
+	<blockquote>
+	<b>注:</b> 若输出到为标准输出STDOUT，则宏展开为"-"。
+	</blockquote>
+<p></p>
+<hr noshade="" size="1">
+<p></p>
+<a name="macro-toc"></a>
+<h2>%%toc</h2>
+<p>
+<code>%%toc</code>宏展开为文档的目录，想放哪就放哪。
+</p>
+<p>
+该宏没有格式字串，使用规则如下：
+</p>
+<ul>
+<li>只在文档主体域中可用
+</li><li>必须单写一行(前后可以有空格)
+</li><li>必须与命令行选项--toc配合使用，不然它会被忽略
+</li><li>如果找到%%toc就不使用预设的TOC位置/格式
+</li></ul>
+
+<hr noshade="" size="5">
+<p></p>
+<a name="settings"></a>
+<h1>第七部分 - 掌握设置</h1>
+<p>
+设置项置于源文档设置域中，在文档转换的时候生效。
+所有的设置均是可选的。
+</p>
+<p>
+设置项格式如下：
+</p>
+<table align="center" border="1" cellpadding="4">
+<tbody><tr>
+<th>%! key : value</th>
+</tr>
+</tbody></table>
+
+<p>
+语法细节：
+</p>
+<ul>
+<li>"%!"要写在一起，中间不能有空格，置于行首
+<p></p>
+</li><li>关键字和分隔符之间可以有空格
+<p></p>
+</li><li>keyword和value均不区分大小写
+</li></ul>
+
+<p>
+规则:
+</p>
+<ul>
+<li>设置项仅在设置域内有效，放在其他地方就当作普通的注释。
+<p></p>
+</li><li>如果出现关键字相同的设置项，则最后一个生效。例外：options, preproc和
+postproc，这三个设置是累积的。
+<p></p>
+</li><li>关键字写错就当普通注释行。
+<p></p>
+</li><li>源文档中设置优先级高于RC文件，但低于命令行选项。
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="setting-target"></a>
+<h2>%!Target</h2>
+<p>
+使用target设置默认目标文档格式：
+</p>
+<pre>  %!target: html
+</pre>
+<p></p>
+<p>
+此时用户只需调用命令
+</p>
+<pre>  $ txt2tags file.t2t
+</pre>
+<p></p>
+<p>
+源文档将自动转换为预设的文件格式。
+</p>
+<p>
+注意：<code>%!target(tex): html</code>无效。
+</p>
+<hr noshade="" size="1">
+<p></p>
+<a name="setting-options"></a>
+<h2>%!Options</h2>
+<p>
+例如，用户在命令行这样进行转换：
+</p>
+<pre>  $ txt2tags -t html --toc --toc-level 2 --enum-title file.t2t
+</pre>
+<p></p>
+<p>
+如果把这些选项写入源文档：
+</p>
+<pre>  %!target: html
+  %!options(html): --toc --toc-level 2 --enum-title
+</pre>
+<p></p>
+<p>
+现在命令行只要用"<code>txt2tags file.t2t</code>"就可以有同样的效果。
+在Vi里边可以这样调命令：
+</p>
+<pre>  :!txt2tags %
+</pre>
+<p></p>
+<hr noshade="" size="1">
+<p></p>
+<a name="setting-encoding"></a>
+<h2>%!Encoding</h2>
+<p>
+设置目标文档<i>字符集</i>，参见<a href="http://www.iana.org/assignments/character-sets">所有的字符集列表</a>。
+</p>
+<p>
+LateX使用encoding别名，对此txt2tags内部会自动进行转换，所以还是可以用。
+例子：
+</p>
+<table align="center" border="1" cellpadding="4">
+<tbody><tr>
+<th>txt2tags/HTML</th>
+<th>&gt;</th>
+<th>LaTeX</th>
+</tr>
+<tr>
+<td>windows-1250</td>
+<td>&gt;&gt;&gt;</td>
+<td>cp1250</td>
+</tr>
+<tr>
+<td>windows-1252</td>
+<td>&gt;&gt;&gt;</td>
+<td>cp1252</td>
+</tr>
+<tr>
+<td>ibm850</td>
+<td>&gt;&gt;&gt;</td>
+<td>cp850</td>
+</tr>
+<tr>
+<td>ibm852</td>
+<td>&gt;&gt;&gt;</td>
+<td>cp852</td>
+</tr>
+<tr>
+<td>iso-8859-1</td>
+<td>&gt;&gt;&gt;</td>
+<td>latin1</td>
+</tr>
+<tr>
+<td>iso-8859-2</td>
+<td>&gt;&gt;&gt;</td>
+<td>latin2</td>
+</tr>
+<tr>
+<td>koi8-r</td>
+<td>&gt;&gt;&gt;</td>
+<td>koi8-r</td>
+</tr>
+</tbody></table>
+
+<p>
+就算txt2tags无法识别，也可以通过，反正用户可以自己订encoding。
+</p>
+<hr noshade="" size="1">
+<p></p>
+<a name="setting-preproc"></a>
+<h2>%!PreProc</h2>
+<p>
+PreProc在源文档被解析之前，对其按行进行“查找和替换”。
+</p>
+<p>
+可以用来定义一些常用词的缩写，比如：
+</p>
+<pre>  %!preproc JJS          "John J. Smith"
+  %!preproc RELEASE_DATE "2003-05-01"
+  %!preproc BULLET       "[images/tiny/bullet_blue.png]"
+</pre>
+<p></p>
+<p>
+源文档中的一行：
+</p>
+<pre>  Hi, I'm JJS. Today is RELEASE_DATE.
+</pre>
+<p></p>
+<p>
+txt2tags转换时，将此行视为：
+</p>
+<pre>  Hi, I'm John J. Smith. Today is 2003-05-01.
+</pre>
+<p></p>
+<p>
+相当于对源文档调用外部Sed/Perl进行过滤，然后传给txt2tags：
+</p>
+<pre>  $ cat file.t2t | preproc-script.sh | txt2tags -
+</pre>
+<p></p>
+<p>
+txt2tags在PreProc替换结束后开始解析。
+</p>
+<hr noshade="" size="1">
+<p></p>
+<a name="setting-postproc"></a>
+<h2>%!PostProc</h2>
+<p>
+PostProc对转换后生成的文档按行进行“查找和替换”。
+</p>
+<p>
+可以用于对转换生成文档做进一步加工。
+例子：
+</p>
+<pre>  %!postproc(html): '&lt;BODY.*?&gt;' '&lt;BODY BGCOLOR="green"&gt;'
+  %!postproc(tex) : "\\newpage" ""
+</pre>
+<p></p>
+<p>
+相当于对转换后的内容调用外部Sed/Perl进行过滤，再生成目标文档：
+</p>
+<pre>  $ txt2tags -t html -o- file.t2t | postproc-script.sh &gt; file.html
+</pre>
+<p></p>
+<hr noshade="" size="1">
+<p></p>
+<a name="setting-style"></a>
+<h2>%!Style</h2>
+<ul>
+<li>HTML/XHTML：定义CSS文件。
+<p></p>
+</li><li>LaTeX：载入<code>\usepackage</code>模块。
+<p></p>
+</li><li>也可以用命令行选项 <code>--style</code>指定。
+</li></ul>
+
+<hr noshade="" size="1">
+<p></p>
+<a name="setting-specific"></a>
+<h2>对特定的目标类型定义设置</h2>
+<p>
+比如定义样式：
+</p>
+<pre>  %!style(html): fancy.css
+  %!style(tex) : amssymb
+</pre>
+<p></p>
+<p>
+有针对性的进行微调：
+</p>
+<pre>  %!target: sgml
+  %!options(sgml): --toc
+  %!options(html): --style foo.css
+  %!options(txt ): --toc-only --toc-level 2
+</pre>
+<p></p>
+<hr noshade="" size="1">
+<p></p>
+<a name="filters-details"></a>
+<h2>关于PreProc和PostProc过滤器的几点说明</h2>
+<ul>
+<li>按行进行“查找和替换”，类似SED。
+<p></p>
+</li><li>可以针对不同目标类型做过滤，比如：
+<p></p>
+<pre>  %!postproc      :   this   that
+  %!postproc(html):   that   other
+</pre>
+<p></p>
+</li><li>解释换行符 <code>\n</code> 和制表符 <code>\t</code>。
+<p></p>
+</li><li>删一些字串： 
+<pre>  %!postproc: "undesired string" ""
+</pre>
+<p></p>
+</li><li>用PostProc换标签的时候，最好总是指明对应的目标文档类型：
+ <code>%!PostProc(target): &lt;this&gt; &lt;that&gt;</code>
+<p></p>
+</li><li>PreProc和PostProc起作用的位置：
+<pre>  $ cat file.t2t | preproc.sh | txt2tags | postproc.sh
+</pre>
+<p></p>
+</li><li>反向转义字符：
+<pre>  \*  \+  \.  \^  \$  \?  \(  \)  \{  \[  \|  \\
+</pre>
+<p></p>
+</li><li>支持Python的正则表达式，例子：把标签"B"都换成标签"STRONG"：
+<pre>  %!postproc(html):   '(&lt;/?)B&gt;'   '\1STRONG&gt;'
+</pre>
+<p></p>
+</li><li>参数固定为2个，有空格时可以加单引号或双引号。 
+</li></ul>
+
+<hr noshade="" size="5">
+<p></p>
+<a name="black-magic"></a>
+<h1>第八部分 - 黑匣子</h1>
+<p>
+本章介绍一些进阶应用，要小心使用，不然很容易出错。
+</p>
+<hr noshade="" size="1">
+<p></p>
+<a name="postproc-multiline"></a>
+<h2>使用%!PostProc插入多行文本 (比如CSS规则)</h2>
+<p>
+使用换行符<code>\n</code>可以指定匹配时跨行。
+</p>
+<p>
+在目标HTML中直接插入几行CSS规则：
+</p>
+<pre>  %!postproc: &lt;HEAD&gt;      '&lt;HEAD&gt;\n&lt;STYLE TYPE="text/css"&gt;\n&lt;/STYLE&gt;'
+  %!postproc: (&lt;/STYLE&gt;)  'body     { margin:3em               ;} \n\1'
+  %!postproc: (&lt;/STYLE&gt;)  'a        { text-decoration:none     ;} \n\1'
+  %!postproc: (&lt;/STYLE&gt;)  'pre,code { background-color:#ffffcc ;} \n\1'
+  %!postproc: (&lt;/STYLE&gt;)  'th       { background-color:yellow  ;} \n\1'
+</pre>
+<p></p>
+<p>
+现在"&lt;HEAD&gt;"变成这样：
+</p>
+<pre>  &lt;HEAD&gt;
+  &lt;STYLE TYPE="text/css"&gt;
+  body     { margin:3em               ;}
+  a        { text-decoration:none     ;}
+  pre,code { background-color:#ffffcc ;}
+  th       { background-color:yellow  ;}
+  &lt;/STYLE&gt;
+</pre>
+<p></p>
+<hr noshade="" size="1">
+<p></p>
+<a name="target-specific-contents"></a>
+<h2>使用%!PreProc建立“指定目标类型”的内容</h2>
+<p>
+在这种情况下使用：你想在某种类型的目标文档中插入一些内容，而其他类型的目标文档不动。
+</p>
+<p>
+例子：
+</p>
+<pre>  %html% This HTML page is Powered by [txt2tags http://txt2tags.sf.net].
+  %html% See the source TXT file [here source.t2t].
+</pre>
+<p></p>
+<p>
+然后只有在指定目标类型为HTML时，这两行前面的注释符才会被PreProc提前去掉：
+</p>
+<pre>  %preproc(html): '^%html% ' ''
+</pre>
+<p></p>
+<hr noshade="" size="1">
+<p></p>
+<a name="creating-marks"></a>
+<h2>使用%!PreProc转换txt2tags标记</h2>
+<p>
+可以利用正则表达式把txt2tags默认的标记换成自己比较顺手的符号，不过这个用起来也比较危险。
+</p>
+<p>
+比如，设定&gt;&gt;&gt;为制表符\t的标记：
+</p>
+<pre>  %!PreProc: '&gt;&gt;&gt; ' '\t'
+</pre>
+<p></p>
+<p>
+此时，源文档中引用型文本可以写成：
+</p>
+<pre>  &gt;&gt;&gt; This is a quoted text.
+  &gt;&gt;&gt; The user defined this strange mark.
+  &gt;&gt;&gt; But they will be converted to TABs by PreProc.
+</pre>
+<p></p>
+<p>
+在解析源文件之前，&gt;&gt;&gt;就会被自动换成制表符，然后txt2tags就知道这个是引用型文本的标记。
+</p>
+<hr noshade="" size="5">
+<p>
+最后更新时间：2008-10-19 23:50
+</p>
+
+<!-- html code generated by txt2tags 2.5 (http://txt2tags.sf.net) -->
+<!-- cmdline: txt2tags -t html ./doc/t2t-guide-note.t2t -->
+
+</body></html>

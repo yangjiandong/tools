@@ -19,6 +19,25 @@
 
 3. vcn 版本控制
 
+4. 文档生成工具
+
+   a. docbook
+
+   java,ptyhon == 都支持,可参考 http://www.woodpecker.org.cn:9081/doc/XML/docbook_step_1.6.6/src/html/ 
+
+   b. maruku 
+
+   暂时用 ruby 版本支持,可参考 https://github.com/sinatra/sinatra-book 
+
+   d. AsciiDOc
+   
+   http://www.methods.co.nz/asciidoc/ 
+
+   e. txt2tags
+
+   save\Txt2tags.man.htm
+
+
    --END
 
 
