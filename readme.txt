@@ -37,6 +37,10 @@
 
    save\Txt2tags.man.htm
 
+   use:
+   >python d:\gVimPortable\txt2tags.py --target html cygwin.txt
+   or 
+   use windows ext 
 
    --END
 
