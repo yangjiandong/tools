@@ -1,0 +1,292 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head><title>MyCSSMenu Template</title><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<meta name="keywords" content="css horizontal menu, css menu, vertical menu, horizontal website menu" />
+
+<!-- *** MyCSSMenu copyright (c) 2007, MyCSSMenu. All Rights Reserved.
+
+	-MyCSSMenu may be manually customized by editing this document, or open this web page using
+	 IE or Firefox to access the visual interface.
+
+-->
+
+
+<!--%%%%%%%%%%%% MyCSSMenu Styles [Keep in head for full validation!] %%%%%%%%%%%-->
+<style type="text/css">
+
+
+/*!!!!!!!!!!! MyCSSMenu Core CSS [Do Not Modify!] !!!!!!!!!!!!!*/
+.qmmc .qmdivider{display:block;font-size:1px;border-width:0px;border-style:solid;position:relative;}.qmmc .qmdividery{float:left;width:0px;}.qmmc .qmtitle{display:block;cursor:default;white-space:nowrap;position:relative;}.qmclear {font-size:1px;height:0px;width:0px;clear:left;line-height:0px;display:block;float:none !important;}.qmmc {position:relative;zoom:1;}.qmmc a, .qmmc li {float:left;display:block;white-space:nowrap;position:relative;}.qmmc div a, .qmmc ul a, .qmmc ul li {float:none;}.qmsh div a {float:left;}.qmmc div{visibility:hidden;position:absolute;}.qmmc ul {left:-10000px;position:absolute;}.qmmc, .qmmc ul {list-style:none;padding:0px;margin:0px;}.qmmc li a {float:none}.qmmc li{position:relative;}.qmmc ul {z-index:10;}.qmmc ul ul {z-index:20;}.qmmc ul ul ul {z-index:30;}.qmmc ul ul ul ul {z-index:40;}.qmmc ul ul ul ul ul {z-index:50;}li:hover>ul{left:auto;}#qm0 ul {top:100%;}#qm0 ul li:hover>ul{top:0px;left:100%;}
+
+
+
+/*!!!!!!!!!!! MyCSSMenu Styles [Please Modify!] !!!!!!!!!!!*/
+
+
+
+	/* MyCSSMenu 0 */
+
+	/*"""""""" (MAIN) Items""""""""*/	
+	#qm0 a	
+	{	
+		padding:5px 4px 5px 5px;
+		color:#555555;
+		font-family:Arial;
+		font-size:10px;
+		text-decoration:none;
+	}
+
+
+	/*"""""""" (SUB) Container""""""""*/	
+	#qm0 div, #qm0 ul	
+	{	
+		padding:10px;
+		margin:-2px 0px 0px;
+		background-color:transparent;
+		border-style:none;
+	}
+
+
+	/*"""""""" (SUB) Items""""""""*/	
+	#qm0 div a, #qm0 ul a	
+	{	
+		padding:3px 10px 3px 5px;
+		background-color:transparent;
+		font-size:11px;
+		border-width:0px;
+		border-style:none;
+	}
+
+
+	/*"""""""" (SUB) Hover State""""""""*/	
+	#qm0 div a:hover, #qm0 ul a:hover	
+	{	
+		background-color:#dadada;
+		color:#cc0000;
+	}
+
+
+	/*"""""""" Individual Titles""""""""*/	
+	#qm0 .qmtitle	
+	{	
+		cursor:default;
+		padding:3px 0px 3px 4px;
+		color:#444444;
+		font-family:arial;
+		font-size:11px;
+		font-weight:bold;
+	}
+
+
+	/*"""""""" Individual Horizontal Dividers""""""""*/	
+	#qm0 .qmdividerx	
+	{	
+		border-top-width:1px;
+		margin:4px 0px;
+		border-color:#bfbfbf;
+	}
+
+
+	/*"""""""" Individual Vertical Dividers""""""""*/	
+	#qm0 .qmdividery	
+	{	
+		border-left-width:1px;
+		height:15px;
+		margin:4px 2px 0px;
+		border-color:#aaaaaa;
+	}
+
+
+	/*"""""""" (main) Rounded Items""""""""*/	
+	#qm0 .qmritem span	
+	{	
+		border-color:#dadada;
+		background-color:#f7f7f7;
+	}
+
+
+	/*"""""""" (main) Rounded Items Content""""""""*/	
+	#qm0 .qmritemcontent	
+	{	
+		padding:0px 0px 0px 4px;
+	}
+
+	
+	/*"""""""" Custom Rule """"""""*/	
+	ul#qm0 ul
+	{
+		border-color:#dadada;
+		border-style:solid;
+		border-width:1px;	
+		background-color:#f7f7f7;
+	}
+	
+
+
+</style><!-- Core MyCSSMenu Code -->
+<script type="text/javascript" src="qm.js"></script>
+<script type="text/javascript" src="qm_pure_css.js"></script>
+
+<!-- Add-On Core Code (Remove when not using any add-on's) -->
+<style type="text/css">.qmfv{visibility:visible !important;}.qmfh{visibility:hidden !important;}</style><script type="text/JavaScript">var qmad = new Object();qmad.bvis="";qmad.bhide="";qmad.bhover="";</script>
+
+
+	<!-- Add-On Settings -->
+	<script type="text/JavaScript">
+
+		/*******  Menu 0 Add-On Settings *******/
+		var a = qmad.qm0 = new Object();
+
+		// Rounded Corners Add On
+		a.rcorner_size = 6;
+		a.rcorner_container_padding = 0;
+		a.rcorner_border_color = "#dadada";
+		a.rcorner_bg_color = "#F7F7F7";
+		a.rcorner_apply_corners = new Array(false,true,true,true);
+		a.rcorner_top_line_auto_inset = true;
+
+		// Rounded Items Add On
+		a.ritem_size = 4;
+		a.ritem_apply = "main";
+		a.ritem_main_apply_corners = new Array(true,true,false,false);
+		a.ritem_show_on_actives = true;
+
+	</script>
+
+<!-- Add-On Code: Rounded Corners -->
+<script type="text/javascript" src="qm_round_corners.js"></script>
+
+<!-- Add-On Code: Rounded Items -->
+<script type="text/javascript" src="qm_round_items.js"></script>
+
+</head>
+
+<body style="margin:40px">
+
+
+<!--Page Content, bar behind menu and search box-->
+<div style="background-image:url(images/center_tile.gif)">
+<table cellpadding=0 cellspacing=0 style="width:100%;"><tr>
+<td><div style="font-size:1px;width:6px;height:34px;background-image:url(images/left_cap.gif);"></div></td>
+<td style="width:100%;">
+
+
+
+<!-- MyCSSMenu Structure [Menu 0] -->
+
+<ul id="qm0" class="qmmc">
+
+	<li><a href="javascript:void(0)">SOLUTIONS</a>
+
+		<ul>
+		<li><span class="qmtitle">Industrues</span></li>
+		<li><a href="javascript:void(0)">Education</a></li>
+		<li><a href="javascript:void(0)">Financial Services</a></li>
+		<li><a href="javascript:void(0)">Government</a></li>
+		<li><a href="javascript:void(0)">Manufacturing</a></li>
+		<li><a href="javascript:void(0)">Telecommunications</a></li>
+		<li><span class="qmdivider qmdividerx" ></span></li>
+		<li><span class="qmtitle" >Solutions</span></li>
+		<li><a href="javascript:void(0)">Digital Imaging</a></li>
+		<li><a href="javascript:void(0);">Mobil</a></li>
+		<li><a href="javascript:void(0);">Print Publishing</a></li>
+		<li><a href="javascript:void(0);">Rich Internet Applications</a></li>
+		<li><a href="javascript:void(0);">Training and eLearning</a></li>
+		<li><a href="javascript:void(0);">Video and Audio</a></li>
+		<li><a href="javascript:void(0);">Web Conferencing</a></li>
+		<li><a href="javascript:void(0);">Web Publishing</a></li>
+		<li><span class="qmdivider qmdividerx" ></span></li>
+		<li><a href="javascript:void(0);">All Industries and Solutions</a></li>
+		</ul></li>
+
+	<li><span class="qmdivider qmdividery" ></span></li>
+	<li><a href="javascript:void(0)">PRODUCTS</a>
+
+		<ul>
+		<li><a href="javascript:void(0)">Acrobat Connect</a></li>
+		<li><a href="javascript:void(0)">Acrobat Family</a></li>
+		<li><a href="javascript:void(0)">After Effects</a></li>
+		<li><a href="javascript:void(0)">Cold Fusion</a></li>
+		<li><a href="javascript:void(0)">Creative Suite Family</a></li>
+		<li><a href="javascript:void(0)">Dreamweaver</a></li>
+		<li><a href="javascript:void(0);">Flash</a></li>
+		<li><a href="javascript:void(0);">Flex</a></li>
+		<li><a href="javascript:void(0);">Illustrator</a></li>
+		<li><a href="javascript:void(0);">LiveCycle Enterprise Suite</a></li>
+		<li><a href="javascript:void(0);">Mobile Products</a></li>
+		<li><a href="javascript:void(0);">Photoshop Family</a></li>
+		<li><a href="javascript:void(0);">Premiere</a></li>
+		<li><span class="qmdivider qmdividerx" ></span></li>
+		<li><a href="javascript:void(0);">All Products</a></li>
+		</ul></li>
+
+	<li><span class="qmdivider qmdividery" ></span></li>
+	<li><a href="javascript:void(0)">SUPPORT</a>
+
+		<ul>
+		<li><a href="javascript:void(0)">Support Home</a></li>
+		<li><a href="javascript:void(0)">Customer Service</a></li>
+		<li><a href="javascript:void(0)">Knowledge Base</a></li>
+		<li><a href="javascript:void(0)">Books</a></li>
+		<li><a href="javascript:void(0)">Training and Certification</a></li>
+		<li><a href="javascript:void(0)">Support Programs</a></li>
+		<li><a href="javascript:void(0);">Forums</a></li>
+		<li><a href="javascript:void(0);">Documentation</a></li>
+		<li><a href="javascript:void(0);">Updates</a></li>
+		<li><span class="qmdivider qmdividerx" ></span></li>
+		<li><a href="javascript:void(0);">More</a></li>
+		</ul></li>
+
+	<li><span class="qmdivider qmdividery" ></span></li>
+	<li><a href="javascript:void(0)">COMMUNITIES</a>
+
+		<ul style="width:150px;">
+		<li><span class="qmtitle" >Buy User</span></li>
+		<li><a href="javascript:void(0)">Designers</a></li>
+		<li><a href="javascript:void(0)">Developers</a></li>
+		<li><a href="javascript:void(0)">Educators</a></li>
+		<li><a href="javascript:void(0)">Partners</a></li>
+		<li><span class="qmdivider qmdividerx" ></span></li>
+		<li><span class="qmtitle" >By Resource</span></li>
+		<li><a href="javascript:void(0)">Adobe Labs</a></li>
+		<li><a href="javascript:void(0)">Forums</a></li>
+		<li><a href="javascript:void(0);">Exchange</a></li>
+		<li><a href="javascript:void(0);">Blogs</a></li>
+		</ul></li>
+
+	<li><span class="qmdivider qmdividery" ></span></li>
+	<li><a href="javascript:void(0);">COMPANY</a>
+
+		<ul style="width:150px;">
+		<li><a href="javascript:void(0);">About Adobe</a></li>
+		<li><a href="javascript:void(0);">Press</a></li>
+		<li><a href="javascript:void(0);">Investor Relations</a></li>
+		<li><a href="javascript:void(0);">Corporate Affairs</a></li>
+		<li><a href="javascript:void(0);">Jobs</a></li>
+		<li><a href="javascript:void(0);">Showcase</a></li>
+		<li><a href="javascript:void(0);">Events</a></li>
+		<li><a href="javascript:void(0);">Contact Adobe</a></li>
+		<li><a href="javascript:void(0);">Become an Affiliate</a></li>
+		<li><span class="qmdivider qmdividerx" ></span></li>
+		<li><a href="javascript:void(0);">More</a></li>
+		</ul></li>
+
+<li class="qmclear">&nbsp;</li></ul>
+
+<!--Page Content, bar behind menu and search box-->
+</td>
+<td><div style="border-width:0px 0px 0px 1px;border-color:#aaaaaa;border-style:solid;font-size:1px;width:8px;height:31px;"></div>
+<td style="padding:0px 5px 0px 0px;"><input type="text" style="font-family:arial;font-size:12px;width:100px;border-style:solid;border-width:1px;border-color:#ffffff;border-top-color:#aca899;border-left-color:#aca899;" value=""></td>
+<td style="padding:0px 5px 0px 0px;font-family:arial;font-size:10px;color:#444444">SEARCH</td>
+<td><div style="font-size:1px;width:6px;height:34px;background-image:url(images/right_cap.gif);"></div></td>
+</tr></table>
+</div>
+
+
+
+<script type="text/javascript">qm_create(0,false,0,250,false,false,false,false);</script>
+
+
+</body>
+</html>

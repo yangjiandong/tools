@@ -1,0 +1,318 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head><title>MyCSSMenu Template</title><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<meta name="keywords" content="css horizontal menu, css menu, vertical menu, horizontal website menu" />
+
+
+
+<!-- *** MyCSSMenu copyright (c) 2007, MyCSSMenu. All Rights Reserved.
+
+          -This document, the JavaScript source code, and core CSS may not be modified,
+           re-distributed, or displayed for public consumption.
+
+          -This product must be purchased before its official inclusion in any public or
+           private web site or application.
+
+          -This product may not be used in, or redistributed as part of an application whose
+           purpose is to enhance or create menu systems.
+-->
+
+
+
+<!--%%%%%%%%%%%% MyCSSMenu Script %%%%%%%%%%%*-->
+
+	<!-- Core Menu Code -->
+	<script type="text/JavaScript" src="qm.js"></script>
+
+	<!-- Add-On Core Code (Remove when not using any add-on's) -->
+	<style type="text/css">.qmfv{visibility:visible !important;}.qmfh{visibility:hidden !important;}</style><script type="text/JavaScript">var qmad = new Object();qmad.bvis="";qmad.bhide="";qmad.bhover="";</script>
+
+		<!-- Add-On Settings -->
+		<script type="text/JavaScript">
+
+			/*Menu 0 Settings*/
+			var a = qmad.qm0 = new Object();
+
+			// Tabs (CSS Based) Add On
+			a.tabscss_type = "angled";
+			a.tabscss_size = 5;
+			a.tabscss_left_offset = 0;
+			a.tabscss_top_offset = 0;
+			a.tabscss_apply_far_left = true;
+			a.tabscss_apply_far_right = true;
+			a.tabscss_apply_middles = true;
+			a.tabscss_bg_color = "#ffffff";
+			a.tabscss_border_color = "#687a54";
+
+
+			// Item Bullets Add On
+			a.ibullets_apply_to = "parent";
+			a.ibullets_main_image = "images/arrow_down.gif";
+			a.ibullets_main_image_width = 8;
+			a.ibullets_main_image_height = 6;
+			a.ibullets_main_position_x = -21;
+			a.ibullets_main_position_y = -5;
+			a.ibullets_main_align_x = "right";
+			a.ibullets_main_align_y = "middle";
+
+			a.ibullets_sub_image = "images/arrow_right.gif";
+			a.ibullets_sub_image_width = 6;
+			a.ibullets_sub_image_height = 8;
+			a.ibullets_sub_position_x = -14;
+			a.ibullets_sub_position_y = -4;
+			a.ibullets_sub_align_x = "right";
+			a.ibullets_sub_align_y = "middle";
+
+
+		</script>
+
+
+	<!-- Optional Add-On's (Must appear after core menu code) -->
+	<script type="text/JavaScript" src="qm_tabs_css.js"></script>
+	<script type="text/javascript" src="qm_item_bullets.js"></script>
+
+
+<!--%%%%%%%%%%%% MyCSSMenu Styles [Keep in head for full validation!] %%%%%%%%%%%-->
+<style type="text/css">
+
+/*!!!!!!!!!!! MyCSSMenu Core CSS [Do Not Modify!] !!!!!!!!!!!!!*/
+.qmmc .qmdivider{display:block;font-size:1px;border-width:0px;border-style:solid;} .qmmc .qmdividery{float:left;width:0px;} .qmmc .qmtitle{display:block;cursor:default;white-space:nowrap;} .qmclear {font-size:1px;height:0px;width:0px;clear:left;line-height:0px;display:block;}.qmmc {position:relative;}.qmmc a {float:left;display:block;white-space:nowrap;}.qmmc div a {float:none;}.qmsh div a{float:left;}.qmmc div {visibility:hidden;position:absolute;}
+
+
+/*!!!!!!!!!!! MyCSSMenu Styles [Please Modify!] !!!!!!!!!!!*/
+
+
+	/* Remove the comments bleow for vertical mains and change the false value to
+           true in the qm_create function after the menus structure. */
+	/*.qmmc a {float:none}*/
+
+
+
+	/*"""""""" (MAIN) Container """"""""*/
+	#qm0
+	{
+		background-color:#ffffff;
+		padding-left:10px;
+
+
+		margin:0px 0px 0px 0px;
+		z-index:10 !important;
+
+	}
+
+
+	 /*"""""""" (MAIN) Items """"""""*/
+	#qm0 a
+	{
+		color:#222222;
+		background-color:#dcedcd;
+		font-family:Arial;
+		font-size:12px;
+		text-decoration:none;
+		padding:4px 40px 4px 10px;
+		border-style:solid;
+
+
+		border-width:1px 0px 1px 1px;
+		border-color:#687a54;
+		text-align:left;
+
+
+	}
+
+
+	/*"""""""" (MAIN) Hover State """"""""*/
+	#qm0 a:hover
+	{
+		/*border-color:#333333;*/
+
+		color:#222222;
+		/*text-decoration:underline;*/
+
+	}
+
+
+	/*"""""""" (MAIN) Active State """"""""*/
+	body #qm0 .qmactive, body #qm0 .qmactive:hover
+	{
+
+
+		background-color:#c2e0a9;
+
+	}
+
+
+	/*"""""""" (MAIN) Parent Items """"""""*/
+	#qm0 .qmparent
+	{
+
+	}
+
+
+
+
+	/*"""""""" [SUB] Containers """"""""*/
+	#qm0 div
+	{
+
+		background-color:#dcedcd;
+		padding:5px 5px 5px 5px;
+		border-style:solid;
+		border-width:1px 1px 1px 1px;
+		border-color:#687a54;
+		margin-top:-1px;
+
+	}
+
+	/*"""""""" [SUB] [SUB] Containers """"""""*/
+	#qm0 div div
+	{
+
+
+		margin-top:0px;
+
+	}
+
+	/*"""""""" [SUB] Items """"""""*/
+	#qm0 div a
+	{
+		font-size:12px;
+		color:#222222;
+		border-width:1px 0px 1px 0px;
+		border-color:#dcedcd;
+		padding:3px 20px 3px 5px;
+		text-align:left;
+
+
+	}
+
+	/*"""""""" [SUB] Hover State """"""""*/
+	#qm0 div a:hover
+	{
+		color:#222222;
+		background-color:#c2e0a9;
+		border-color:#687a54;
+
+	}
+
+
+
+	/*""""""""[SUB] Active State """"""""*/
+	body #qm0 div .qmactive, body #qm0 div .qmactive:hover
+	{
+		/* Note: Add '!important' after each style */
+
+		border-color:#687a54 !important;
+
+	}
+
+
+	/*"""""""" [SUB] Parent Items """"""""*/
+	#qm0 div .qmparent
+	{
+
+
+
+	}
+
+
+
+</style>
+</head>
+
+
+
+<body style="margin:40px">
+
+
+
+<!--%%%%%%%%%%%% MyCSSMenu Stucture %%%%%%%%%%%*-->
+
+
+<div id="qm0" class="qmmc">
+
+	<a href="javascript:void(0)">Menu Overview</a>
+
+		<div>
+		<a href="javascript:void(0)">CSS Based</a>
+		<a href="javascript:void(0)">Simple Menu Structure</a>
+		<a href="javascript:void(0)">Fast Running</a>
+		<a href="javascript:void(0)">Light Wegith</a>
+		<a href="javascript:void(0)">Cusomization</a>
+
+			<div style="width:10em;">
+			<a href="javascript:void(0)">Database Population</a>
+			<a href="javascript:void(0)">Custom Events</a>
+			<a href="javascript:void(0)">Custom Classes</a>
+			<a href="javascript:void(0)">Multiple Menus</a>
+			<a href="javascript:void(0)">Vertical / Horizontal</a>
+			<a href="javascript:void(0)">Unlimited Subs</a>
+			<a href="javascript:void(0)">Large Structures</a>
+			<a href="javascript:void(0)">Ulimited Design Options</a>
+			</div>
+
+		<a href="javascript:void(0)">Specifications</a>
+
+			<div style="width:10em;">
+			<a href="javascript:void(0)">Database Population</a>
+			<a href="javascript:void(0)">Custom Events</a>
+			<a href="javascript:void(0)">Custom Classes</a>
+			<a href="javascript:void(0)">Multiple Menus</a>
+			<a href="javascript:void(0)">Vertical / Horizontal</a>
+			<a href="javascript:void(0)">Unlimited Subs</a>
+			<a href="javascript:void(0)">Large Structures</a>
+			<a href="javascript:void(0)">Ulimited Design Options</a>
+			</div>
+
+		<a href="javascript:void(0)">Simple Integration</a>
+		<a href="javascript:void(0)">Strict Validation</a>
+		</div>
+
+
+	<a href="javascript:void(0)">Possibilities</a>
+
+		<div>
+		<a href="javascript:void(0)">Database Population</a>
+		<a href="javascript:void(0)">Custom Events</a>
+		<a href="javascript:void(0)">Custom Classes</a>
+		<a href="javascript:void(0)">Multiple Menus</a>
+		<a href="javascript:void(0)">Vertical / Horizontal</a>
+		<a href="javascript:void(0)">Unlimited Subs</a>
+		<a href="javascript:void(0)">Large Structures</a>
+		<a href="javascript:void(0)">Ulimited Design Options</a>
+		</div>
+
+
+	<a href="javascript:void(0)">Developers</a>
+
+		<div>
+		<a href="javascript:void(0)">HTML Structure</a>
+		<a href="javascript:void(0)">Inline Loading</a>
+		<a href="javascript:void(0)">Pure CSS Mains</a>
+		<a href="javascript:void(0)">Scalability</a>
+		<a href="javascript:void(0)">Strict Validation</a>
+		</div>
+
+
+
+	<a href="javascript:void(0)" style="border-width:1px 1px 1px 1px;">Integration</a>
+
+		<div>
+		<a href="javascript:void(0)">HTML Structure</a>
+		<a href="javascript:void(0)">Inline Loading</a>
+		<a href="javascript:void(0)">Pure CSS Mains</a>
+		<a href="javascript:void(0)">Scalability</a>
+		<a href="javascript:void(0)">Strict Validation</a>
+		</div>
+
+<span class="qmclear">&nbsp;</span></div>
+
+
+<!--%%%%%%%%%%%% MyCSSMenu Create Menu (menu id, is vertical, show timer (ms), hide timer (ms), on click) %%%%%%%%%%%*-->
+<script type="text/JavaScript">qm_create(0,false,0,500,false)</script>
+
+
+
+</body>
+</html>

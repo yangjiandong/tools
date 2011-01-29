@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head><title>MyCSSMenu Template</title><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<meta name="keywords" content="css horizontal menu, css menu, vertical menu, horizontal website menu" /> 
+
+<!-- *** MyCSSMenu copyright (c) 2007, MyCSSMenu. All Rights Reserved.
+
+	-MyCSSMenu may be manually customized by editing this document, or open this web page using
+	 IE or Firefox to access the visual interface.
+
+-->
+
+
+<!-- MyCSSMenu Noscript Support [Keep in head for full validation!] -->
+<noscript><style type="text/css">.qmmc {width:200px !important;height:200px !important;overflow:scroll;}.qmmc div {position:relative !important;visibility:visible !important;}.qmmc a {float:none !important;white-space:normal !important;}</style></noscript>
+
+
+<!--%%%%%%%%%%%% MyCSSMenu Styles [Keep in head for full validation!] %%%%%%%%%%%-->
+<style type="text/css">
+
+
+/*!!!!!!!!!!! MyCSSMenu Core CSS [Do Not Modify!] !!!!!!!!!!!!!*/
+.qmmc .qmdivider{display:block;font-size:1px;border-width:0px;border-style:solid;position:relative;}.qmmc .qmdividery{float:left;width:0px;}.qmmc .qmtitle{display:block;cursor:default;white-space:nowrap;position:relative;}.qmclear {font-size:1px;height:0px;width:0px;clear:left;line-height:0px;display:block;float:none !important;}.qmmc {position:relative;zoom:1;}.qmmc a, .qmmc li {float:left;display:block;white-space:nowrap;position:relative;}.qmmc div a, .qmmc ul a, .qmmc ul li {float:none;}.qmsh div a {float:left;}.qmmc div{visibility:hidden;position:absolute;}.qmmc ul {left:-10000px;position:absolute;}.qmmc, .qmmc ul {list-style:none;padding:0px;margin:0px;}.qmmc li a {float:none}.qmmc li{position:relative;}.qmmc ul {z-index:10;}.qmmc ul ul {z-index:20;}.qmmc ul ul ul {z-index:30;}.qmmc ul ul ul ul {z-index:40;}.qmmc ul ul ul ul ul {z-index:50;}li:hover>ul{left:auto;}#qm0 ul {top:100%;}#qm0 ul li:hover>ul{top:0px;left:100%;}
+
+
+/*!!!!!!!!!!! MyCSSMenu Styles [Please Modify!] !!!!!!!!!!!*/
+
+
+
+	/* MyCSSMenu 0 */
+
+	/*"""""""" (MAIN) Container""""""""*/	
+	#qm0	
+	{	
+		background-color:transparent;
+	}
+
+
+	/*"""""""" (MAIN) Items""""""""*/	
+	#qm0 a	
+	{	
+		padding:8px 20px 5px;
+		background-color:#d5d9e5;
+		color:#000000;
+		font-family:Arial;
+		font-size:12px;
+		text-decoration:none;
+		border-width:4px 0px;
+		border-style:solid;
+		border-color:#5a5372;
+	}
+
+
+	/*"""""""" (MAIN) Hover State""""""""*/	
+	#qm0 a:hover	
+	{	
+		text-decoration:underline;
+	}
+
+
+	/*"""""""" (MAIN) Parent items""""""""*/	
+	#qm0 .qmparent	
+	{	
+	}
+
+
+	/*"""""""" (MAIN) Active State""""""""*/	
+	body #qm0 .qmactive, body #qm0 .qmactive:hover	
+	{	
+		text-decoration:underline;
+	}
+
+
+	/*"""""""" (SUB) Container""""""""*/	
+	#qm0 div	
+	{	
+		padding:8px;
+		margin:0px;
+		background-color:transparent;
+		border-style:none;
+	}
+
+
+	/*"""""""" (SUB) Items""""""""*/	
+	#qm0 div a	
+	{	
+		padding:2px 40px 2px 5px;
+		background-color:transparent;
+		color:#d5d9e5;
+		border-width:0px;
+		border-style:none;
+	}
+
+
+	/*"""""""" (SUB) Hover State""""""""*/	
+	#qm0 div a:hover	
+	{	
+		text-decoration:underline;
+	}
+
+
+	/*"""""""" (SUB) Parent items""""""""*/	
+	#qm0 div .qmparent	
+	{	
+	}
+
+
+	/*"""""""" (SUB) Active State""""""""*/	
+	body #qm0 div .qmactive, body #qm0 div .qmactive:hover	
+	{	
+		background-color:#d5d9e5;
+		color:#333333;
+		text-decoration:none;
+	}
+
+
+</style><!-- Core MyCSSMenu Code -->
+<script type="text/javascript" src="qm.js"></script>
+
+<!-- Add-On Core Code (Remove when not using any add-on's) -->
+<style type="text/css">.qmfv{visibility:visible !important;}.qmfh{visibility:hidden !important;}</style><script type="text/JavaScript">var qmad = new Object();qmad.bvis="";qmad.bhide="";qmad.bhover="";</script>
+
+
+	<!-- Add-On Settings -->
+	<script type="text/JavaScript">
+
+		/*******  Menu 0 Add-On Settings *******/
+		var a = qmad.qm0 = new Object();
+
+		// Item Bullets (CSS - Imageless) Add On
+		a.ibcss_apply_to = "parent";
+		a.ibcss_main_type = "arrow";
+		a.ibcss_main_direction = "down";
+		a.ibcss_main_size = 6;
+		a.ibcss_main_bg_color = "#D5D9E5";
+		a.ibcss_main_bg_color_hover = "#5A5372";
+		a.ibcss_main_border_color = "#D5D9E5";
+		a.ibcss_main_border_color_hover = "#5A5372";
+		a.ibcss_main_position_x = -14;
+		a.ibcss_main_position_y = -8;
+		a.ibcss_main_align_x = "center";
+		a.ibcss_main_align_y = "top";
+		a.ibcss_sub_type = "arrow-head";
+		a.ibcss_sub_direction = "right";
+		a.ibcss_sub_size = 6;
+		a.ibcss_sub_bg_color = "#d5d9e5";
+		a.ibcss_sub_bg_color_hover = "";
+		a.ibcss_sub_bg_color_active = "#5a5372";
+		a.ibcss_sub_border_color = "#5a5372";
+		a.ibcss_sub_border_color_hover = "";
+		a.ibcss_sub_border_color_active = "#d5d9e5";
+		a.ibcss_sub_position_x = -16;
+		a.ibcss_sub_position_y = 0;
+		a.ibcss_sub_align_x = "right";
+		a.ibcss_sub_align_y = "middle";
+
+		// Rounded Corners Add On
+		a.rcorner_size = 6;
+		a.rcorner_border_color = "#5A5372";
+		a.rcorner_bg_color = "#5A5372";
+		a.rcorner_apply_corners = new Array(false,false,true,true);
+
+	</script>
+
+<script type="text/javascript" src="qm_round_corners.js"></script>
+<script type="text/javascript" src="qm_item_bullets_css.js"></script>
+
+</head>
+
+<body style="margin:40px">
+
+
+
+<!-- MyCSSMenu Structure [Menu 0] -->
+
+<div id="qm0" class="qmmc">
+
+	<a href="javascript:void(0)">Who We Are</a>
+
+		<div>
+		<a href="http://www.mycssmenu.com">Management</a>
+		<a href="javascript:void(0)">Global Sites</a>
+
+			<div>
+			<a href="javascript:void(0)">Asia</a>
+			<a href="javascript:void(0)">South America</a>
+			<a href="javascript:void(0)">Australia</a>
+			<a href="javascript:void(0)">North America</a>
+			<a href="javascript:void(0)">Europe</a>
+			<a href="javascript:void(0)">Africa</a>
+			</div>
+
+		<a href="javascript:void(0)">Investors</a>
+
+			<div>
+			<a href="javascript:void(0)">Satisfaction</a>
+			<a href="javascript:void(0)">Our Goals</a>
+			<a href="javascript:void(0)">Product Warranty</a>
+			<a href="javascript:void(0)">Future Outlook</a>
+			<a href="javascript:void(0)">Product Quality</a>
+			<a href="javascript:void(0)">Continued Support</a>
+			</div>
+
+		<a href="javascript:void(0)">Worldwide</a>
+		<a href="javascript:void(0)">Product Overview</a>
+		<a href="javascript:void(0)">Publicity</a>
+		</div>
+
+	<a href="javascript:void(0)">Our Commitment</a>
+
+		<div>
+		<a href="javascript:void(0)">Satisfaction</a>
+		<a href="javascript:void(0)">Our Goals</a>
+		<a href="javascript:void(0)">Product Warranty</a>
+		<a href="javascript:void(0)">Future Outlook</a>
+		<a href="javascript:void(0)">Product Quality</a>
+		<a href="javascript:void(0)">Continued Support</a>
+		</div>
+
+	<a href="javascript:void(0)">Our Investors</a>
+
+		<div>
+		<a href="javascript:void(0)">Annual Meetings</a>
+		<a href="javascript:void(0)">Financial Reports</a>
+		<a href="javascript:void(0)">Nasdaq Quoting</a>
+		<a href="javascript:void(0)">Dividend Information</a>
+		<a href="javascript:void(0)">Future Outlook</a>
+		<a href="javascript:void(0)">CEO Announcements</a>
+		</div>
+
+	<a href="javascript:void(0)">Technology</a>
+<span class="qmclear">&nbsp;</span></div>
+
+<!-- Create Menu Settings: (Menu ID, Is Vertical, Show Timer, Hide Timer, On Click, Right to Left, Horizontal Subs, Flush Left) -->
+<script type="text/javascript">qm_create(0,false,0,500,false,false,false,false);</script>
+
+
+</body>
+</html>
