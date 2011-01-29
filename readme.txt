@@ -42,6 +42,13 @@
    or 
    use windows ext 
 
+   -- convert to pdf
+   $ txt2tags -t tex filename.t2t
+   $ pdflatex filename.tex
+
+   -- install pdflatex
+   http://www.oschina.net/code/explore/chromium.r67069/third_party/scons/scons-local/SCons/Tool/pdftex.py
+
    --END
 
 

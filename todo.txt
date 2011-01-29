@@ -7,6 +7,10 @@ TODO
 
 3. ror 对oracle 西文字符集的支持
 
+   rails oracle 字符集问题
+   http://www.javaeye.com/topic/120164
+   保证客户端字符集改成和输入(rails程序)字符集一致的字符集,不要管oracle服务端的字符集
+   http://www.itpub.net/838447,1.html save/ora_character.txt
 
    --END
 
