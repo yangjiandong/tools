@@ -53,6 +53,13 @@
 
    cssmenu/
 
+      visual css quickmenu unlock
+         chrome\content\qm_visual.js(11377,95)
+         chrome\content\qm_visual.js(13250,123)
+
+      nodefire_api
+
+
    --END
 
 

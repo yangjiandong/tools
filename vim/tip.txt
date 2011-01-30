@@ -2,12 +2,17 @@ vim tip
 ==========
 
 1. vim 下排版
-   gg=G or =}
+gg=G or =}
 
-   javascript extjs 排版效果还不是很好,用jsbeautify,<F5>
+javascript extjs 排版效果还不是很好,用jsbeautify,<F5>
 
+2. 规整格式
+V 进入虚拟模式
+这时按上下选中需要规整的项目
+接着按=
+完成规整
 
-   --END
+--END
 
 
 
