@@ -1,10 +1,22 @@
 git
 ====
 
+2011.02.09
+----------
+
+1. .gitignore empty directory
+add the following lines to the root .gitignore: (lines beginning with ‘!’ are exceptions)
+'
+log/*
+!.gitignore
+'
+Then add an empty .gitignore in the empty directory
+
 2011.01.30
 ----------
 
 1. git pulls:Manage GitHub pull requests from the command line
+--解决github fork上的 pull requests
 http://thechangelog.com/post/2878756980/git-pulls-command-line-tool-for-github-pull-requests
 https://github.com/schacon/git-pulls
 gem install git-pulls
