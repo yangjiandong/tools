@@ -250,6 +250,7 @@ cd
 mkdir .ssh
 
 save/git.server.txt
+save/ssh.7z(已产生的key)
 
 --注意采用了cygwin,产生的文件在D:\cygwin\home\yang\.ssh
 XP/2003用户c:\Documents and Settings\登陆名\.ssh
