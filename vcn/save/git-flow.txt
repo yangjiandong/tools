@@ -1,0 +1,105 @@
+git flow
+-----------
+
+-- 可最小粒度的管理你的代码
+
+1. git flow
+
+https://github.com/nvie/gitflow 
+
+Manual installation(cygwin)
+
+If you prefer a manual installation, please use the following instructions. 
+After downloading the sources from Github, also fetch the submodules:
+
+$ git submodule init
+$ git submodule update
+Then, you can install git-flow, using:
+
+$ sudo make install
+
+install -m 0644 git-flow-init git-flow-feature git-flow-hotfix git-flow-release git-flow-support git-flow-version gitflo
+w-common gitflow-shFlags /usr/local/bin
+
+  注意,最后需将usr/local/bin 下生成的文件考到cygwin/binary
+
+2. use git flow
+
+安装完git-flow后，你可以在当前目录下创建一个全新的仓库或把一个现有的仓库转换成新的分支结构：
+
+$ git flow init
+它会问你一系列的问题，蛋定！尽量使用它的默认值就好了：
+
+No branches exist yet. Base branches must be created now.
+Branch name for production releases: [master]
+Branch name for "next release" development: [develop]
+How to name your supporting branch prefixes?
+Feature branches? [feature/]
+Release branches? [release/]
+Hotfix branches? [hotfix/]
+Support branches? [support/]
+Version tag prefix? []
+回答完问题后，git flow会自动地把develop(或随便你重命名它为神马)分支设置为默认分支，此后，你大部份时间都会一直在这个分支上面码代码了。
+
+现在，像往常那样使用Git吧，但只限于develop分支上面的一些小的功能哦。
+如果你要开始开发一个稍大的功能点，就基于develop创建一个功能分支吧，假设你要增加一个登录(login)页面：
+
+$ git flow feature start login
+该命令会基于我们的develop分支创建一个feature/login分支，并切换到该分支上。你在该分支上开发并提交代码，当你完成登录页面的开发后，这样来结束它：
+
+$ git flow feature finish login
+该命令将会把feature/login合并到develope分支，然后删除功能(feature)分支。
+
+当你的功能点都完成时（需要发布新版本了），就基于develop创建一个发布(release)分支，然后升级版本号并在最后发布日期前把Bug Fix掉吧：
+
+$ git flow release start v0.1.0
+当你在完成（finish)一个发布分支时，它会把你所作的修改合并到master分支，同时合并回develop分支，所以，你不需要担心你的master分支比develop分支更加超前。
+
+最后一件让git-flow显得威武的事情是它处理热修复（即时的BugFix）的能力，
+你可以像其他分支一样地创建和完成一个热修复分支，区别是它基于master分支，因此你可以在产品出现问题时快速修复，
+然后通过”finish”命令把修改合并回master和develop分支。
+
+-- 补充
+http://saberma.me/git/2010/10/25/git-flow.html
+
+使用方法
+#初始化(提问时回车就好)
+git flow init
+开发新特征
+
+git flow feature start <name> [<base>]
+git flow feature finish <name>
+#列出新特征分支
+git flow feature
+准备发布版本
+
+git flow release start <name> [<base>]
+git flow release finish <name>
+#列出发布分支
+git flow release
+< base >是位于develop分支的commit
+
+修正紧急Bug
+
+git flow hotfix start <name> [<base>]
+git flow hotfix finish <name>
+#列出修正分支
+git flow hotfix
+支援其他成员工作
+
+git flow support start <name> <base>
+#没有finish?(待实践)
+#列出支援分支
+git flow support
+< base >是位于master分支的commit
+
+结合github
+上传未完成的feature分支
+
+#git push REMOTENAME BRANCHNAME
+#一般情况下REMOTENAME即为origin, BRANCHNAME为以feature/为前缀的分支名称
+git push origin feature/orders
+注意:对于develop分支，由于所有成员的本地库中都有，所以不能上传
+
+
+   --END
