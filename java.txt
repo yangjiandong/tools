@@ -1,6 +1,12 @@
 java 
 ======
 
+2011.03.07
+-----------
+
+1. QRCODE - zxing
+java/ZxingQREncodDemo.java
+
 2011.03.06
 -----------
 
