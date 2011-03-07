@@ -1,6 +1,14 @@
 git
 ====
 
+2011.02.21
+----------
+
+1. error: Permission defined (publickey)
+--search ssh key file
+ssh -v git@github.com
+--show d/HOME/.ssh,有可能各计算机情况不同
+
 2011.02.09
 ----------
 
