@@ -1,6 +1,16 @@
 java 
 ======
 
+2011.03.06
+-----------
+
+1. application integration
+Apache Camel:http://camel.apache.org/ 
+eHealth:http://repo.openehealth.org/confluence/display/ovw/Home 
+
+old
+----
+
 1. tomcat 报 Error listenerStart的严重错误 
 
 web.xml add 

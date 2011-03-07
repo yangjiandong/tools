@@ -1,6 +1,36 @@
 git
 ====
 
+2011.03.03
+----------
+
+1. home/.gitconfig
+
+[user]
+	name=young.jiandong
+	email=young.jiandong@gmail.com
+[color]
+	diff = auto
+	status=auto
+	branch=auto
+	interactive = auto
+  log = auto
+[color "status"]
+added = yellow
+changed = green
+untracked = cyan
+[core]
+	quotepath = false
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+	last = log -1 HEAD
+  psh = push origin master
+  pu = pull origin master
+ 
+
 2011.02.21
 ----------
 
