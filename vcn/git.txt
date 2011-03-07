@@ -1,6 +1,13 @@
 git
 ====
 
+2011.03.07
+----------
+
+1. git 打包
+git archive -v --format=tar HEAD |gzip > e:\hcost.tar.gz
+tar -xvf hcost.tar.gz
+
 2011.03.03
 ----------
 
