@@ -16,5 +16,20 @@
 
    netsh int ip set address name="本地连接" source=static addr=128.0.0.92 mask=255.255.255.0 gateway=128.0.0.1 gwmetric=1 
 
+
+在 Windows、Linux 操作系统，分别利用BAT批处理文件和Shell脚本，生成类似“20110228_082905.txt”以“年月日_时分秒”命名的文件。
+---------------------------------------------------------------------------------------------------------------------------
+
+　　Windows BAT批处理文件：
+@echo off
+set time_hh=%time:~0,2%
+if /i %time_hh% LSS 10 (set time_hh=0%time:~1,1%)
+set filename=%date:~,4%%date:~5,2%%date:~8,2%_%time_hh%%time:~3,2%%time:~6,2%
+echo test >> %filename%.txt
+
+　　Linux Shell 脚本：
+#!/bin/sh
+echo test >> $(date -d "today" +"%Y%m%d_%H%M%S").txt
+
    --END
 

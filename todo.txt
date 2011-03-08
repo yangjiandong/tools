@@ -12,5 +12,7 @@ TODO
    保证客户端字符集改成和输入(rails程序)字符集一致的字符集,不要管oracle服务端的字符集
    http://www.itpub.net/838447,1.html save/ora_character.txt
 
+4. DSL
+
    --END
 
