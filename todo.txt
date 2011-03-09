@@ -14,5 +14,8 @@ TODO
 
 4. DSL
 
+5. Hibernate Metamodel Generator 
+   static metamodel
+
    --END
 
