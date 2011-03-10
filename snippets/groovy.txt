@@ -1,0 +1,34 @@
+//groovy sql
+2011.03.10
+===========
+
+http://www.thecoderscorner.com/tcc/a/groovy-and-grails/groovy-introduction/introduction-to-gsql-executing-statements-and-que/page1
+
+def sql = Sql.newInstance("jdbc:hsqldb:mem:testdb", "sa", "", "org.hsqldb.jdbcDriver")
+sql.execute("""
+    create table atable ( 
+        name varchar(50),
+        address varchar(100)
+    )""")
+sql.execute("insert into atable(name, address) values(’dave’, ’some address’)")
+sql.execute("insert into atable(name, address) values(’joe’, ’another address’)")
+sql.execute("insert into atable(name, address) values(’fred’, ’yet another address’)")
+
+--
+import groovy.sql.Sql;
+       
+def his = Sql.newInstance(
+            "jdbc:jtds:sqlserver://192.168.1.148:1433/hcostdata-sl",
+            "sa",
+            "123",
+            "net.sourceforge.jtds.jdbc.Driver"            );
+def writer = new StringWriter(5000); 
+def xml = new groovy.xml.MarkupBuilder(writer);
+
+xml.atableRecords{            
+  his.rows("select orgName,orgCode from t_org").each { row ->
+    atable('name':row.orgName, 'code': row.orgCode)
+  }            
+}
+println writer;
+
