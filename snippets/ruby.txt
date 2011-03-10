@@ -1,0 +1,18 @@
+2011.03.09
+----------
+
+1. rails应用与多数据库的连接
+http://www.javaeye.com/topic/910021
+
+编写一个外部库的基础模型类
+创建external_data.rb这个模型类
+class ExternalData < ActiveRecord::Base
+  self.abstract_class = true
+  establish_connection :typo
+end 
+
+class Page<ExternalData
+end 
+
+
+   --END
