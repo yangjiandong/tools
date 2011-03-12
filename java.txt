@@ -1,6 +1,13 @@
 java 
 ======
 
+2011.03.12
+-----------
+
+1. Access restriction: ... not accessible due to restriction on required library ..\jre\lib\rt.jar
+
+Windows -> Preferences -> Java -> Compiler -> Errors/Warnings -> Deprecated and trstricted API -> Forbidden reference (access rules): -> change to warning
+
 2011.03.07
 -----------
 
