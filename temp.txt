@@ -1,3 +1,17 @@
+
+folder failed to be renamed or moved on SDK install
+----------------------------------------------------
+http://code.google.com/p/android/issues/detail?id=4410
+
+INSTRUCTIONS:
+=============
+ 1. make a copy of the tools directory and call this new directory tools2.
+ 2. DO NOT USE 'SDK Setup.exe'.  
+ 3. Instead open up a cmd.exe window and run the following from this new tools2 directory (obviously the full path on your local machine will be different):
+    J:\android-sdk-windows>tools2\android.bat update sdk
+
+Basically, as noted before in this thread, 'SDK Setup.exe' invokes tools\android.bat, which makes it impossible for it to rename the tools directory thereafter.  It's a bit goofy and should never have passed QA validation..
+
 网关被其他机器冲掉
 -------------------
 

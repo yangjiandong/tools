@@ -1,5 +1,30 @@
 //groovy sql
 
+2011.03.14
+----------
+
+1. dataSet each error:
+import groovy.sql.Sql;
+
+def his = Sql.newInstance(
+            "jdbc:jtds:sqlserver://192.168.1.148:1433/hcostdata-sl",
+            "sa",
+            "123",
+            "net.sourceforge.jtds.jdbc.Driver"            );
+            
+def org = his.dataSet('t_org');
+//org.each{println it}            
+org.findAll {it.orgid >1  }.each{println it}
+
+error:
+groovy.lang.GroovyRuntimeException: Could not find the ClassNode for MetaClass: org.codehaus.groovy.runtime.metaclass.ClosureMetaClass@12c9015[class ConsoleScript3$_run_closure1]
+	at groovy.sql.DataSet.visit(DataSet.java:278)
+	at groovy.sql.DataSet.getSqlWhereVisitor(DataSet.java:261)
+	at groovy.sql.DataSet.getSqlWhere(DataSet.java:208)
+	at groovy.sql.DataSet.getSql(DataSet.java:235)
+	at groovy.sql.DataSet.each(DataSet.java:198)
+  ...
+
 2011.03.13
 ===========
 
