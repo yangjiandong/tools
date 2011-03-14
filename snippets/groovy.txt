@@ -1,4 +1,5 @@
 //groovy sql
+
 2011.03.10
 ===========
 
@@ -32,3 +33,62 @@ xml.atableRecords{
 }
 println writer;
 
+Groovy - Plain Text Word Wrap method
+http://snippets.dzone.com/posts/show/4839
+// Quick and Dirty method for plain text word-wrap to a specified width
+static class TextUtils {
+	
+	static String[] wrapntab(input, linewidth = 70, indent = 0) throws IllegalArgumentException {
+		if(input == null)
+			throw new IllegalArgumentException("Input String must be non-null")
+		if(linewidth <= 1)
+			throw new IllegalArgumentException("Line Width must be greater than 1")
+		if(indent <= 0)
+			throw new IllegalArgumentException("Indent must be greater than 0")
+		
+		def olines = []
+		def oline = " " * indent
+		
+		input.split(" ").each() { wrd ->
+			if( (oline.size() + wrd.size()) <= linewidth ) {
+				oline <<= wrd <<= " "
+			}else{
+				olines += oline
+				oline = " " * indent
+			}
+		}
+		olines += oline
+		return olines
+	}
+}
+
+// TEST
+// the input String
+input = "Note From SUPPLIER: Booking confirmed by fax.  4 standard rooms - 3 twin shared, 1 single room, please advise if guests require meals.. "
+
+// call static wrapntab method to break the input string into 70 char wide lines with a 4 char initial indent
+olines = TextUtils.wrapntab(input,70,4)
+
+// print the output
+olines.each() {
+	println it
+}
+
+http://snippets.dzone.com/tag/groovy
+
+Format code with line numbers in Markdown notation
+Format.groovy:
+def counter = 1
+
+System.in.eachLine {
+	line ->
+	
+	def result = "    "
+	(2 - ("" + counter).length()).times { result += " " }
+	result += "${counter}: ${line}"
+	println result
+	counter++
+}
+
+test:
+type Format.groovy | groovy Format
