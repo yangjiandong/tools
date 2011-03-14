@@ -17,5 +17,11 @@ TODO
 5. Hibernate Metamodel Generator 
    static metamodel
 
+6. 数据挖掘平台,技术
+
+7. 无线移动
+
+8. android 开发 -- 是否要去买了android手机?
+
    --END
 

@@ -1,5 +1,121 @@
 //groovy sql
 
+2011.03.13
+===========
+
+1. invoke PL/SQL stored procedure with Sql.call
+http://www.dzone.com/links/r/better_jdbc_with_groovy_sql.html
+
+def storedProcCall =
+   """{? = call dbms_utility.get_time()}"""
+sql.call(storedProcCall, [Sql.INTEGER])
+{
+   println "DBMS_UTILITY.GET_TIME(): ${it}"
+}
+ 
+2011.03.12
+===========
+
+1. Groovy风格的JDBC编程
+http://www.groovyq.net/node/157
+由 huwh 于 二, 04/13/2010 - 16:48 发表
+
+    * Groovy
+    * 原创
+
+你还记得普通的 Java JDBC 编程么？如果查询表中的内容，至少需要30行代码。如果使用Groovy，代码不超过10行。
+连接数据库
+
+Groovy对Java JDBC API进行了封装，提供了一个Facade--Sql，从而隐藏了获取数据库连接、关闭资源等细节。用法如下：
+view source
+print?
+import groovy.sql.Sql
+db= Sql.newInstance(
+    "jdbc:mysql://localhost/iblog",
+    "username",
+    "password",
+    "com.mysql.jdbc.Driver")
+查询
+
+Sql对象中有很多查询方法，常用方式如下所示，
+
+    * query(GString,Closure)，对返回的ResultSet执行Closure，示例用法如下：
+      view source
+      print?
+      db.query("select content from blog", {
+          while (it.next()){     
+             println it.getString("content")
+          }}
+      )
+    * rows(GString)，返回List。示例用法如下：
+      view source
+      print?
+      db.rows("select * from blog").each{row-> println row.content }
+    * eachRow(GString,Closure)，对结果集的每行执行Closure。示例用法如下：
+      view source
+      print?
+      db.eachRow ("select * from blog",{println it.comment_num})
+    * firstRow(GString)，返回结果集的第一条记录，示例用法如下：
+      view source
+      print?
+      db.firstRow ("select * from blog")
+
+CUD
+
+Sql提供的CUD方法也很多，常见的有：
+
+    * execute(GString)，execute(String)或者execute(string,paramsList)，可用于增加、更新、删除记录；
+    * executeInsert(GString)，executeInsert(String)或者executeInsert(string,paramsList)，用于增加记录；
+    * executeUpdate(GString)，executeUpdate(String)或者executeUpdate(string,paramsList)，用于更新记录。
+
+上述方法用法跟原始的Java代码用法类似，这里要重点介绍的是另外一种快捷增加记录的方法--DataSet。DataSet将SQL语句隐藏，将数据集放入到一个Map中。可以对这个Map中内容进行查询、增加。请看如下代码：
+view source
+print?
+1	def blogs=db.dataSet('blog') /*new DataSet(db, 'blog')或者db.dataSet(Blog)*/
+2	blogs.each{ println it }
+3	blogs.add(      
+4	    content:'dateset using',
+5	    author_id:3,
+6	    date_created:new Date())
+7	blogs.findAll {it.id>1 }.sort{it.version desc}.each { println it }
+
+从上述代码中可以看到，创建DateSet实例后，就能够获得一个Map，可以对这个Map执行findAll(whereClosure)以及sort(sortClosure)。而这里增加数据使用的是add(Map)方法。
+
+在对数据库进行增加、更新或者删除时，需要考虑事务性，以保证数据的完整性。对于此，Groovy同样提供了一个非常方便的用法。对于需要在同一个事务中完成的代码，可以使用Sql或者DataSet的withTransaction(Closure)方法实现，参见如下代码：
+view source
+print?
+1	db.withTransaction{
+2	    for (int i=0;i<5;i++){
+3	        blogs.add(
+4	        content:"dateset using"+i,
+5	        author_id:3,
+6	        date_created:new Date())
+7	    }
+8	    db.execute ("delete from iblog where i>20")
+9	}
+
+上述代码中，由于在第8行代码会出错，所以整段代码不会在blog表中插入新的纪录的。读者可以将withTransaction方法去掉，再看看程序运行的结果。
+
+DataSet是不是简化了代码？但是DataSet不能取代SQL，DataSet只适用于单一的表，对于更复杂一些的结构比如JOIN返回的结果，就要使用SQL了。比如使用SQL将复杂的结果生成一个视图，之后用DataSet来访问这个视图。
+
+上述这些就是Groovy提供的方法，它们使得跟数据库的交互变得轻松了许多！
+
+本文使用Groovy 1.7.1。关于groovy.sql的中各个对象以及方法的详细参数请参见Groovy API。关于本文中用到的表结构请参见附件。
+
+对于SQL脚本，同样可以使用groovy.sql.Sql，如下是示例代码：
+
+view source
+print?
+1	import groovy.sql.Sql
+2	String sqlFilePath = 'path/to/your/script.sql'
+3	String sqlString = new File(sqlFilePath).text
+4	def sql= Sql.newInstance(
+5	    "jdbc:mysql://localhost/iblog",
+6	    "username",
+7	    "password",
+8	    "com.mysql.jdbc.Driver")
+9	sql.execute(sqlString)
+
 2011.03.10
 ===========
 
