@@ -70,5 +70,9 @@
 
       nodefire_api
 
+   ext
+
+   jquery
+
 
    --END
