@@ -1,5 +1,33 @@
 //groovy sql
 
+2011.03.15
+----------
+
+1. params
+
+ import groovy.sql.*;
+ 
+ def db = Sql.newInstance(
+ "jdbc:h2:tcp://localhost/~/sshappdatas", 'sa', '', 'org.h2.Driver')
+
+ def sql = '''
+ select * from t_book
+ where title like ? and published = ?
+ '''
+ def params = ["%goto%", 'AM']
+ //def sortedPeopleOfInterest = 
+ db.rows(sql, params).each{it->
+ println it
+ }
+ 
+//or
+// 以下问题还没解决
+def books = new DataSet( db, "t_book");
+//def alls = 
+books.findAll{it.published == 'AM'}.each{
+  println it
+}
+
 2011.03.14
 ----------
 
