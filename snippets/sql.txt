@@ -1,0 +1,46 @@
+
+2011.03.15
+-----------
+
+1. page
+
+我们在编写MIS系统和Web应用程序等系统时，都涉及到与数据库的交互，如果数据库中数据量很大的话，
+一次检索所有的记录，会占用系统很大的资源，因此我们常常采用，需要多少数据就只从数据库中取多少条记录，
+即采用分页语句。
+根据自己使用过的内容，把常见数据库Sql Server,Oracle和MySQL的分页语句，从数据库表中的第M条数据开始取N条记录的语句总结如下：
+
+　　SQL Server
+　　从数据库表中的第M条记录开始取N条记录，利用Top关键字：注意如果Select语句中既有top，又有order by，则是从排序好的结果集中选择：
+　　SELECT *
+　　FROM ( SELECT Top N *
+　　FROM (SELECT Top (M + N - 1) * FROM 表名称 Order by 主键 desc) t1 ) t2
+　　Order by 主键 asc
+
+    实例：
+    select * from ( select TOP pagesize * FROM ( SELECT TOP pagesize*cureentpage * from user_table ORDER BY id ASC ) as aSysTable ORDER BY id DESC ) as bSysTable ORDER BY id ASC
+　　例如从表Sys_option(主键为sys_id)中从10条记录还是检索20条记录，语句如下：
+　　SELECT *
+　　FROM ( SELECT TOP 20 *
+　　FROM (SELECT TOP 29 * FROM Sys_option order by sys_id desc) t1) t2
+　　Order by sys_id asc
+
+　　Oralce数据库
+　　从数据库表中第M条记录开始检索N条记录
+　　SELECT *
+　　FROM (SELECT ROWNUM r,t1.* From 表名称 t1 where rownum < M + N) t2
+　　where t2.r >= M
+　　例如从表Sys_option(主键为sys_id)中从10条记录还是检索20条记录，语句如下：
+　　SELECT *
+　　FROM (SELECT ROWNUM R,t1.* From Sys_option where rownum < 30 ) t2
+　　Where t2.R >= 10
+
+　　MySQL数据库
+　　My sql数据库最简单，是利用mysql的LIMIT函数,LIMIT [offset,] rows从数据库表中M条记录开始检索N条记录的语句为：
+　　SELECT * FROM 表名称 LIMIT M,N
+　　例如从表Sys_option(主键为sys_id)中从10条记录还是检索20条记录，语句如下：
+　　select * from sys_option limit 10,20 
+
+    h2 类似 sql server
+
+
+    --END
