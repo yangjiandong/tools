@@ -1,5 +1,18 @@
 //groovy sql
 
+2011.03.16
+-----------
+
+1. jackson
+
+import org.codehaus.jackson.map.ObjectMapper
+
+def json = new ObjectMapper().readValue('{"type":"beer","quantity":"2","properties":[{"name":"IBU","value":"99"}]}', Map.class)
+
+assert json.type == 'beer'
+assert !json.properties.isEmpty()
+assert json.properties[0].name == 'IBU'
+
 2011.03.15
 ----------
 
