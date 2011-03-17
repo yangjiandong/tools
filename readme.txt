@@ -74,5 +74,12 @@
 
    jquery
 
+      cool jquery grid
+      http://www.trirand.com/blog/jqgrid/jqgrid.html
+      https://github.com/tonytomov/jqGrid
+
+      easyui
+      http://jquery-easyui.wikidot.com/
+
 
    --END
