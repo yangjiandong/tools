@@ -1,0 +1,320 @@
+2010.08.23
+----------
+
+1、在Tomcat中添加JNDI数据源
+
+建议用Tomcat的Adiminstration添加。在默认情况下，Tomcat没有安装administration组件，详细安装步骤请参考《Install the component Admin for tomcat》。
+登陆http://localhost:8080/admin, 进入Resources -> Data Sources -> Create New Data Source
+设置JNDI参数：（这里以MySql为例）
+JNDI Name:jdbc/mysql(JNDI 名随便起)
+Data Source URL:jdbc:mysql://localhost:3306/test（这里test是数据库名，当然后面还可以带其他参数，如：jdbc: mysql://localhost:3306/test?user=root&password=&useUnicode=true& characterEncoding=gbk&autoReconnect=true&failOverReadOnly=false）
+JDBC Driver Class:com.mysql.jdbc.Driver （要把相应的驱动jar包放到$TOMCAT_HOME$/common/lib）
+User Name:root    （用户名）
+Password:*****    （密码）
+Max. Active Connections:4   
+Max. Idle Connections:2
+Max. Wait for Connection:5000
+
+2.在Web项目中配置resouce-ref
+在项目的web.xml的根节点下添加以下内容：
+
+    <resource-ref>
+        <res-ref-name>jdbc/mysql</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
+    </resource-ref>
+
+注意：这里res-ref-name必须与在tomcat中设置的JNDI Name:jdbc/mysql(JNDI 名随便起)一致。
+
+3.设置$TOMCAT_HOME$/conf/server.xml
+
+        <Context
+            docBase="/test"
+            path="/test"
+            reloadable="true"
+            debug="5"
+            crossContext="true">
+          <Resource
+                  name="jdbc/mysql"
+                  type="javax.sql.DataSource"
+                  password="123456"
+                  driverClassName="com.mysql.jdbc.Driver"
+                  maxIdle="2"
+                  maxWait="5000"
+                  username="root"
+                  url="jdbc:mysql://localhost:3306/test"
+                  maxActive="4"/>
+        </Context>
+
+	private Connection conn = null;
+	Context context = null;
+	DataSource dataSource = null;
+
+	public Connection getConnection() throws NamingException, SQLException {
+		context = new InitialContext();
+		dataSource = (DataSource) context.lookup("java:/comp/env/jdbc/ora");
+		if (dataSource != null) {
+			conn = dataSource.getConnection();
+		}
+		return conn;
+	}
+
+
+               try {
+			Connection conn = db.getConnection();
+			st = conn.createStatement();
+			rs = st.executeQuery("select * from sys_hzk");
+			while (rs.next()) {
+				System.out.println(rs.getString("hz"));
+			}
+		} catch (NamingException e) {
+
+2010.03.25
+----------
+
+1、完整apache+tomcat 下载及文档
+   save/apache+tomcat负载均衡.rar
+
+2009.12.17
+----------
+
+1、apache2 + tomcat6
+   save/apache2_tomcat6.txt
+
+2009.12.13
+----------
+
+1、xampp + tomcat
+  http://www.apachefriends.org/en/xampp-windows.html
+
+简单说明：
+以俺在winxp安装为例:
+1.在http://www.apachefriends.org/en/xampp-windows.html下载XAMPP,推荐下载EXE (7-zip) 打包的xampp,这个个头比较小,部署的时候也比较灵活.
+2.在同一页面下载tomcat插件,同样选择7-zip包
+3.解压xampp的压缩包到你指定的目录,例如d:xampp
+4.运行setup_xampp.bat,至此,xampp安装完成
+5.解压tomcat插件到xampp目录,运行setup_java.bat即可将tomcat插件安装完毕
+
+现在一个php+jsp的快速开发环境已经搭建好了.
+
+附上tomcat的配置(详细信息见Readme):
+Tomcat Server Home = .xampptomcat
+Tomcat URL = http://localhost:8080
+Tomcat Doc Root = .xampptomcatwebapps
+
+JSP example Root = .xampptomcatwebappsjsp-examples
+JSP example URL = http://localhost/jsp-examples/
+
+Servlets example Root = .xampptomcatwebappsservlets-examples
+Servlets example URL = http://localhost/servlets-examples/
+
+Mod_jk java Root = .xampptomcatweppappsjava
+Mod_jk java URL = http://localhost/java/
+
+倘若你想建立更多的映射,那么就需要自行修改.xamppapacheconfworkers2.properties文件
+
+2009.11.05
+----------
+
+1、SNA -- Shared Nothing Architecture
+
+集群概念：（无分享架构）是一个分布式的架构，每个节点都是独立的。
+典型的SNA系统会集中存储状态的信息，如：数据库中，内存cache中；不在节点上保存状态的信息
+
+http://blog.tech4k.com/?tag=tomcat
+tomcat集群的本质就是基于多播的多台服务器之间的session拷贝.
+按照官网介绍,这样的解决方案只能适用于比较小的cluster,
+而对于比较大的cluster,session同步以及session sticky failure带来的问题可能造成集群很大的问题,所以不建议使用.
+
+
+2009.10.31
+----------
+
+1、save/jconsole+tomcat.htm
+
+2、网上采用nio的配置
+
+<Connector port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol"
+  maxThreads="150"
+  connectionTimeout="20000"
+  acceptorThreadCount="2" redirectPort="8443"
+  socket.directBuffer="false"/>
+
+3、需解决tomcat性能问题，如高并发(concurrency)
+
+4、ngnix + tomcat 做负载均衡
+  -一个例子
+  save/nginx+tomcat.txt
+  -一个简单配置
+  save/nginx.tomcat.conf
+  --注意需将项目中静态文件拷贝到ngnix/html，如springsideApp项目，将webapp目录(除了classes,lib)拷贝到
+  -ngnix/html目录下，并将webapp目录名改为该项目在tomcat下的配置项目名,
+  -或在ngnix/html下作连接sudo ln -s  /home/ekman/dd/nginx/EkingApp/WebContent/EkingApp/ EkingApp
+
+nginx 对session,cook处理:http://code.google.com/p/nginx-upstream-jvm-route/
+Nginx's configure
+upstream backend {
+    server 192.168.0.100 srun_id=a;
+    server 192.168.0.101 srun_id=b;
+
+    jvm_route $cookie_JSESSIONID reverse;
+}
+
+Tomcat's configure
+Tomcat a:
+<Engine name="Catalina" defaultHost="localhost" jvmRoute="a">
+Tomcat b:
+<Engine name="Catalina" defaultHost="localhost" jvmRoute="b">
+
+特殊处理
+# 对dwr通过代理
+   location ~/dwr/* {
+    proxy_pass              http://tomcats;
+    include proxy.conf;
+   }
+
+   location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
+   {
+     expires      30d;
+   }
+
+   location ~ .*\.(js|css)?$
+   {
+     expires      1h;
+   }
+
+具体参考linux/nginx部分
+
+2009.10.29
+----------
+
+1、tomcat 5.5x,tomcat 6.x 高并发量，支持NIO
+
+  <Connector port="8080" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" />
+    改为
+    <Connector port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol"
+               connectionTimeout="20000"
+               redirectPort="8443" />
+
+--模拟900个用户并发2000次
+测试比较 ab -k -c 900 -n 2000 http://tomcat1/test.jsp
+
+2009.09.06
+----------
+
+1、tomcat + eclipse 远程调试
+1). 修改%CATALINE_HOME%/bin下的文件catalina.bat
+ 找到 这段代码
+
+if not ""%1"" == ""jpda"" goto noJpda
+set JPDA=jpda
+if not "%JPDA_TRANSPORT%" == "" goto gotJpdaTransport
+set JPDA_TRANSPORT=dt_shmem
+:gotJpdaTransport
+if not "%JPDA_ADDRESS%" == "" goto gotJpdaAddress
+set JPDA_ADDRESS=jdbconn
+:gotJpdaAddress
+if not "%JPDA_SUSPEND%" == "" goto gotJpdaSuspend
+set JPDA_SUSPEND=n
+:gotJpdaSuspend
+if not "%JPDA_OPTS%" == "" goto gotJpdaOpts
+set JPDA_OPTS=-Xdebug -Xrunjdwp:transport=%JPDA_TRANSPORT%,address=%JPDA_ADDRESS%,server=y,suspend=%JPDA_SUSPEND%
+:gotJpdaOpts
+shift
+:noJpda
+
+修改红色部分，
+set JPDA_TRANSPORT=dt_socket
+set JPDA_ADDRESS=8787
+说明：dt_shmem表示本机；dt_socket表示远程调试
+
+2). 修改%CATALINE_HOME%/bin下的文件startup.bat
+找到 这段代码
+call "%EXECUTABLE%" start %CMD_LINE_ARGS%
+修改为
+call "%EXECUTABLE%" jpda start %CMD_LINE_ARGS%
+
+修改server.xml
+<Context path="/EkingApp" reloadable="true" docBase="D:\workspace\ext\EkingApp\WebContent" workDir="D:\workspace\ext\EkingApp\work" >
+<WatchedResource>
+D:\workspace\ext\EkingApp\WebContent\WEB-INF\classes
+</WatchedResource>
+</Context>
+
+3).
+# Open Eclipse, Run -> debug..., Romote Java Application, New 一个Romote Application.
+# 运行Tomcat(运行$CATALINE_HOME/bin/startup.bat), OK
+# 设置代码断点，当运行到此时，Eclipse会提醒是否换到Debug Prespective, 慢慢调吧。
+
+2009.08.28
+----------
+
+1、将压缩包安装的tomcat做成服务
+其实将Tomcat实例转成Windows服务也是很简单的事情，只需要运行下面脚本
+set JAVA_HOME=D:\jdk1.6
+set CATALINA_BASE=D:\Tomcat8080
+set CATALINA_HOME=D:\Tomcat8080
+%CATALINA_HOME%\bin\service.bat install "Tomcat8080"
+
+将上述存成.bat文件执行,就会在windows服务控制台出现了Apache Tomcat "Tomcat8080"的服务选项,接下就是服务设定了,不再此罗嗦了^_^
+
+要出现Apache Tomcat "Tomcat8080"这个服务选项,就再改改上面的脚本了吧!
+
+超值附送^_^:windows下删除服务:
+办法一： 用sc.exe这个Windows命令
+        开始——运行——cmd.exe，然后输入sc就可以看到了。使用办法很简单：
+        sc delete "服务名" (如果服务名中间有空格，就需要前后加引号）
+        如针对上面的： sc delete KSD2Service
+
+方法二：直接进行注册表编辑（不推荐）
+      打开注册表编辑器，找到下面的键值：
+      HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services 一般服务会以相同的名字在这里显示一个主健，直接删除相关的键值便可。
+
+2009.04.24
+----------
+
+1、tomcat内存溢出
+具体的做法是:
+
+引用
+Windows环境下修改“%TOMCAT_HOME%\bin\catalina.bat”文件，在文件开头增加如下设置：set JAVA_OPTS=-Xms256m -Xmx512m
+
+Linux环境下修改“%TOMCAT_HOME%\bin\catalina.sh”文件，在文件开头增加如下设置：JAVA_OPTS=’-Xms256m -Xmx512m’
+
+其中，-Xms设置初始化内存大小，-Xmx设置可以使用的最大内存
+
+
+2009.03.21
+-----------
+
+1、tomcat 支持高并发
+
+   tomcat server.xml配置
+
+    <Connector port="80" address="${0.0.0}"
+         maxThreads="2000" maxHttpHeaderSize="81920"
+         emptySessionPath="true" protocol="HTTP/1.1"
+         enableLookups="false" redirectPort="8443" acceptCount="100"
+         connectionTimeout="20000" disableUploadTimeout="true" />
+
+2009.01.14
+-----------
+
+1、jdk6下的jconsole
+
+  启动tomcat，通过tasklist查看java进程号，如3828
+  bin/jconsole 3828
+  即可
+
+  注：采用javaw的进程没有成功。
+
+1、eclipse + tomcat 开发时，可将context中reload设为false或不设，开发环境会自动更新修改程序。
+
+   tomcat压力测试
+   在这里我们用它来访问一个URL，模拟127个并发用户重复执行1000次。
+   Root$ ab -k -n 1000 -c 127 -k http://localhost:9080/servlets-examples/servlet/HelloWorldExample
+
+   --END
