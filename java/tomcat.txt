@@ -1,3 +1,52 @@
+2011.03.18
+----------
+
+apache-tomcat5 + jdk1.5
+========================
+
+   1. setclasspath.bat
+
+rem set java_home , jre_home
+set CURRENT_DIR=%cd%
+cd ..
+cd ..
+set JAVA_HOME=%cd%\jdk1.5.0_11
+set JRE_HOME=%cd%\jdk1.5.0_11\jre
+cd %CURRENT_DIR%
+
+   2. 环境测试
+
+   注册表: 
+   ren h_l_m --> software --> javasoft --> java runtime environment to xx.old
+
+   ren d:\java\jdk1.6 to xx.old
+
+   保证在 cmd 下,java 不能运行.
+
+   3. 注册服务
+
+   service.bat
+   增加:
+rem set java_home , jre_home
+set CURRENT_DIR=%cd%
+cd ..
+cd ..
+set JAVA_HOME=%cd%\jdk1.5.0_11
+set JRE_HOME=%cd%\jdk1.5.0_11\jre
+cd %CURRENT_DIR%
+
+   修改:
+rem Set default Service name
+set SERVICE_NAME=EkingTomcat5
+set PR_DISPLAYNAME=Apache Tomcat for Eking
+..
+set PR_DESCRIPTION=Apache Tomcat Server for EkingSoft
+
+   run:
+   service install
+   service uninstall
+
+
 2010.08.23
 ----------
 
