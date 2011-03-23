@@ -1,0 +1,25 @@
+2011.03.23
+------------
+
+insert select key
+把insert后的id返回回来，具体方法是在定义insert 语句的时候在原有的语句后面加上selectKey标签，例如
+
+Xml代码
+
+1.      <insert id="user.insert" parameterClass="user">  
+2.              insert into    
+3.                  user   
+4.              set   
+5.                  COL1=#col1:VARCHAR#,   
+6.                  COL2=#col2:VARCHAR#   
+7.          <selectKey resultClass="int" keyProperty="id" >  
+8.                SELECT @@IDENTITY AS id   
+9.          </selectKey>    
+10.  </insert>  
+ 在java程序中只需要使用
+ 
+Java代码
+
+return Integer.parseInt(this.getSqlMapClientTemplate().insert("user.insert",user).toString());  
+即可将插入对象的id返回。 
+
