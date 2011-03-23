@@ -59,6 +59,8 @@
 
    convert tool: http://johnmacfarlane.net/pandoc/try 
 
+   g. textile wiki
+
 
 5. web
 
