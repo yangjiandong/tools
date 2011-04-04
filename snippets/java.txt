@@ -1,6 +1,139 @@
+2011.04.04
+----------
+
+//人民币金额转大写程序 PHP版
+//CopyRight Bardo QI
+
+function numToCny($num){
+	$capUnit=array('万','亿','万','圆','');
+	$capDigit=array(2=>array('角','分',''), 4=>array('仟','佰','拾',''));
+	$capNum=array('零','壹','贰','叁','肆','伍','陆','柒','捌','玖');
+    if ((strpos(strval($num),'.')>16)||(!is_numeric($num)))
+        return '';
+    $num = sprintf("%019.2f",$num);
+    for ($i=0,$ret='';$i<5;$i++,$j=$i*4+floor($i/4)){
+    	$nodeNum=substr($num,$j,4);
+    	for($k=0,$subret='',$len=strlen($nodeNum);(($k<$len)&&(intval(substr($nodeNum,$k))!=0));$k++){
+            $CurChr[$k%2] = $capNum[$nodeNum{$k}].(($nodeNum{$k}==0)?'':$capDigit[$len][$k]);
+            if (!(($CurChr[0]==$CurChr[1]) && ($CurChr[$k%2]==$capNum[0])))
+        		if(!(($CurChr[$k%2] == $capNum[0]) && ($subret=='') && ($ret=='')))
+        			$subret .= $CurChr[$k%2];
+        }
+        $subChr = $subret.(($subret=='')?'':$capUnit[$i]);
+    	if(!(($subChr == $capNum[0]) && ($ret=='')))
+        	$ret .= $subChr;
+    }
+    $ret=($ret=="")?$capNum[0].$capUnit[3]:$ret;    
+    return $ret;
+}
+//人民币金额转大写程序 JavaScript版
+//CopyRight Bardo QI
+
+function numToCny(num){
+	var capUnit = ['万','亿','万','圆',''];
+	var capDigit = { 2:['角','分',''], 4:['仟','佰','拾','']};
+	var capNum=['零','壹','贰','叁','肆','伍','陆','柒','捌','玖'];
+    if (((num.toString()).indexOf('.') > 16)||(isNaN(num))) 
+        return '';
+    num = (Math.round(num*100)/100).toString();
+    num =((Math.pow(10,19-num.length)).toString()).substring(1)+num;
+    var i,ret,j,nodeNum,k,subret,len,subChr,CurChr=[];
+    for (i=0,ret='';i<5;i++,j=i*4+Math.floor(i/4)){
+    	nodeNum=num.substring(j,j+4);
+    	for(k=0,subret='',len=nodeNum.length;((k<len) && (parseInt(nodeNum.substring(k))!=0));k++){
+            CurChr[k%2] = capNum[nodeNum.charAt(k)]+((nodeNum.charAt(k)==0)?'':capDigit[len][k]);
+            if (!((CurChr[0]==CurChr[1]) && (CurChr[0]==capNum[0])))
+            	if(!((CurChr[k%2] == capNum[0]) && (subret=='') && (ret=='')))
+            		subret += CurChr[k%2];
+        }
+        subChr = subret + ((subret=='')?'':capUnit[i]);
+    	if(!((subChr == capNum[0]) && (ret=='')))
+        	ret += subChr;
+    }
+    ret=(ret=='')? capNum[0]+capUnit[3]: ret;  
+    return ret;
+}
+
+'人民币金额转大写程序 Asp、 Vb6版
+'CopyRight Bardo QI
+
+Function numToCny(num)
+    capUnit = Array("万", "亿", "万", "圆", "")
+    capDigit = Array(Array(), Array(), Array("角", "分", ""), Array(), Array("仟", "佰", "拾", ""))
+    capNum = Array("零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖")
+    If (((InStr(1, num, ".") > 16) Or (Not IsNumeric(num)))) Then
+        numToCny = ""
+        Exit Function
+    End If
+    num = FormatNumber(num, 2, , , 0)
+    num = Mid(CStr(10 ^ (19 - Len(num))), 2) + num
+    CurChr = Array("", "")
+    ret = ""
+    For i = 0 To 4
+        j = i * 4 + Int(i / 4) + 1
+        nodeNum = Mid(num, j, 4)
+        slen = Len(nodeNum)
+        subret = ""
+        For k = 1 To slen
+            If Int(Mid(nodeNum, k)) = 0 Then
+                Exit For
+            End If
+            CurChr(k Mod 2) = capNum(Int(Mid(nodeNum, k, 1))) + IIf(Int(Mid(nodeNum, k, 1)) = 0, "", capDigit(slen)(k - 1))
+            If (Not ((CurChr(0) = CurChr(1)) And (CurChr(0) = capNum(0)))) Then
+                If (Not ((CurChr(k Mod 2) = capNum(0)) And (subret = "") And (ret = ""))) Then
+                    subret = subret + CurChr(k Mod 2)
+                End If
+            End If
+        Next
+        subChr = subret + IIf((subret = ""), "", capUnit(i))
+        If (Not ((subChr = capNum(0)) And (ret = ""))) Then
+            ret = ret + subChr
+        End If
+    Next
+    ret=Iif((ret=""), capNum(0)+capUnit(3), ret) 
+    numToCny = ret
+End Function
+//人民币金额转大写程序 jsp, Java版
+//CopyRight Bardo QI
+//警告，因为未装JAVA编译器，所以，这一代码未经测试！
+
+import java.util.ArrayList;
+import java.util.Math.*;
+import java.lang.*;
+String function numToCny(double num){
+	String capUnit[] = {'万','亿','万','圆',''};
+	String capDigit[][] = { {''},{''},{'角','分',''},{''} {'仟','佰','拾',''}};
+	String capNum[]={'零','壹','贰','叁','肆','伍','陆','柒','捌','玖'};
+    if (((num.toString()).indexOf('.') > 16)||(isNaN(num))) 
+        return '';
+    double dnum = Math.round(num*100)/100;
+    String snum = dnum.toString();
+    double pnum = Math.pow(10,19-snum.length());
+    String psnum = pnum.toString();
+    snum = psnum.substring(1)+snum;
+    String ret,nodeNum,subret,subChr;
+    ArrayList CurChr = new ArrayList(2);
+    int i,j,k,len;
+    for (i=0,ret='';i<5;i++,j=i*4+Math.floor(i/4)){
+    	nodeNum=snum.substring(j,j+4);
+    	for(k=0,subret='',len=nodeNum.length();((k<len) && (Integer.parseInt(nodeNum.substring(k))!=0));k++){
+            CurChr.set(k%2,capNum[nodeNum.charAt(k)]+((nodeNum.charAt(k)=='0')?'':capDigit[len][k]));
+            if (!((CurChr.get(0)==CurChr.get(1)) && (CurChr.get(0)==capNum[0])))
+            	if(!((CurChr.get(k%2) == capNum[0]) && (subret=='')  && (ret=='')))
+            		subret += CurChr.get(k%2);
+        }
+        subChr = subret + ((subret=='')?'':capUnit[i]);
+    	if(!((subChr == capNum[0]) && (ret=='')))
+        	ret += subChr;
+    }
+    ret=(ret=='')? capNum[0]+capUnit[3]: ret;  
+    return ret;
+}
+
 2011.03.23
 ------------
 
+--ibatis
 insert select key
 把insert后的id返回回来，具体方法是在定义insert 语句的时候在原有的语句后面加上selectKey标签，例如
 
