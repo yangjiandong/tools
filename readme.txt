@@ -21,6 +21,10 @@
    --irb and vi
    http://vimcasts.org/episodes/running-vim-within-irb/
 
+   --python
+
+   https://github.com/sophacles/vim-bundle-python
+
 3. vcn 版本控制
 
 4. 文档生成工具

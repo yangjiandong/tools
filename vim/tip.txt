@@ -20,6 +20,10 @@ map fb <esc>:FufBookmarkFile<cr>
 map fu <esc>:FufBuffer<cr>
 map fl <esc>:FufLine<cr>
 
+4. python
+
+https://github.com/sophacles/vim-bundle-python
+
 --END
 
 
