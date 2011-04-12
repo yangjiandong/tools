@@ -8,6 +8,9 @@ git
 git archive -v --format=tar HEAD |gzip > e:\hcost.tar.gz
 tar -xvf hcost.tar.gz
 
+or
+git archive --format=tar --remote=[hostname]:[path to repo] [tag name] > tagged_version.tar
+
 2011.03.03
 ----------
 

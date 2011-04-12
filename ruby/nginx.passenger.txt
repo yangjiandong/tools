@@ -1,0 +1,53 @@
+在Rails开发过程中，如果同时开发多个项目，需要经常切换，使用 script/server 去启动应用会比较麻烦，而采用nginx(或apache) + passenger可以节约时间，提高效率。
+
+１、安装passenger
+下载Passenger，目前最新的版本为2.2.2，并解压到passenger的安装目录：
+
+tar xzvf passenger-2.2.2.tar.gz /usr/local/passenger
+./passenger-2.2.2/bin/passenger-install-nginx-module
+按提示操作安装nginx与passenger。
+
+也可以通过gem方式来安装：
+
+gem install passenger
+passenger-install-nginx-module
+
+２、配置nginx
+/usr/local/nginx/conf/nginx.conf，在http段加上：
+
+http{
+	...
+	passenger_root /usr/local/passenger;
+	passenger_ruby /usr/local/bin/ruby;
+ 
+	server {
+		listen 80;
+		server_name app1;
+		root /Users/jack/app1/public;
+		passenger_enabled on;
+		rails_env development;
+   	}
+ 
+	server {
+		listen 80;
+		server_name app2;
+		root /Users/jack/app2/public;
+		passenger_enabled on;
+		rails_env development;
+   	}
+	...
+}
+3、启动与停止nginx的命令
+
+假设nginx安装在/usr/local/nginx目录里。将如下命令加到~/.bashrc(linux)、 ~/.bash_profile(Mac)
+
+alias sn='sudo /usr/local/nginx/sbin/nginx' 
+alias kn='sudo kill `cat /usr/local/nginx/logs/nginx.pid `' 
+alias rn='kn; sn'
+
+４、增加应用的host到/etc/hosts，如：
+
+127.0.0.1 app1
+127.0.0.1 app2
+这样，在开发时，可以在浏览器中，直接用app1, app2去访问各个应用，再也不用去script/server之类的了。
+
