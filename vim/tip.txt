@@ -23,6 +23,7 @@ map fl <esc>:FufLine<cr>
 4. python
 
 https://github.com/sophacles/vim-bundle-python
+zo,zc 可以折叠,打开代码
 
 --END
 
