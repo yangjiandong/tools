@@ -1,3 +1,30 @@
+shell 下替换文件
+----------------
+# rename *.txt to *.html
+#!/bin/bash
+for f in *.txt; do
+echo "Processing $f file…"
+mv $f "${f/txt/html}"
+done
+
+ipv6
+------
+
+windows xp安装IPv6方法
+在命令行下运行ipv6 install即可（cmd→ipv6 install）
+
+Windows 2003安装IPv6方法 
+在网络连接中添加IPv6协议即可。具体步骤：
+右键"网上邻居"，选择"属性"打开网络连接窗口；
+右键"本地连接"，选择"属性"；
+点击"安装"按钮，然后选择"协议"网络组件；
+点击"添加"按钮，从网络协议列表中选择"Microsoft TCP/IP 版本 6"，点击确定。
+
+windows 7?不用任何操作，它是支持ipv6的。
+
+IPv6网络测试方法
+测试本机IPv6协议安装是否正确：
+ping -6 ::1
 
 folder failed to be renamed or moved on SDK install
 ----------------------------------------------------
