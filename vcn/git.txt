@@ -1,6 +1,30 @@
 git
 ====
 
+2011.07.09
+----------
+
+1. gotgit
+
+http://www.ossxp.com/doc/gotgit
+
+diff-path
+diff -u hello.txt world.txt >diff.txt
+cp hello.txt world.txt
+patch world.txt<diff.txt
+
+git-reset
+--show log
+git log --graph --oneline
+--hard reset to HEAD
+git reset --hard HEAD
+--hard reset to HEAD's last one 强制回到上级HEAD
+git reset --hard HEAD^
+
+back2future
+git tag F HEAD
+git tag E HEAD^
+
 2011.03.07
 ----------
 
