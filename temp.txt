@@ -52,6 +52,15 @@ Basically, as noted before in this thread, 'SDK Setup.exe' invokes tools\android
    绑定154
    arp -s 192.168.1.254  00-0f-e2-8e-00-a5
 
+   win7 下：
+   1、先运行：netsh i i show in 找到正在使用的网卡idx号
+   2、然后运行：netsh -c i i add neighbors 11 192.168.1.1 00-21-27-bc-89-48 就可以进行绑定了，这里11是idx号。
+   在Win7和Vista上用ARP -D并不能完全的删除绑定
+   必须使用
+   netsh -c i i delete neighbors IDX (IDX改为相应的数字)
+   才可删除MAC地址绑定
+
+
 不用再右键点开本地连接,更改IP,在批处理文件中实现IP地址变更 
 ----------------------------------------------------------
 

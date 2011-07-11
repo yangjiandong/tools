@@ -35,6 +35,10 @@
 
    https://github.com/remko/docbook-kit
 
+   参考 netty 项目,采用 mvn 插件 -- 中文处理有问题
+
+   另一个工具: svn checkout http://hantsy-labs.googlecode.com/svn/trunk/dbktools dbktools 
+
    b. maruku 
 
    暂时用 ruby 版本支持,可参考 https://github.com/sinatra/sinatra-book 
