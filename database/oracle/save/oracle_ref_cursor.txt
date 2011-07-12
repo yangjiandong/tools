@@ -1,0 +1,274 @@
+oracle ref cursor的介绍
+
+上一篇 / 下一篇  2008-07-03 20:13:51 / 个人分类：日常管理
+查看( 831 ) / 评论( 4 ) / 评分( 5 / 0 )
+利用REF CURSOR，可以在程序间传递结果集（一个程序里打开游标变量，在另外的程序里处理数据）。
+也可以利用REF CURSOR实现BULK SQL，提高SQL性能。
+
+
+REF CURSOR分两种，Strong REF CURSOR 和 Weak REF CURSOR。
+
+
+Strong REF CURSOR:指定retrun type，CURSOR变量的类型必须和return type一致。
+DECLARE
+TYPE strongcurtyp IS REF CURSOR RETURN emp%ROWTYPE;
+emp_cv strongcurtyp;
+
+
+Weak REF CURSOR:不指定return type，能和任何类型的CURSOR变量匹配。
+DECLARE
+TYPE weakcurtyp IS REF CURSOR;
+weak_cv weakcurtyp;
+any_cv SYS_REFCURSOR; --使用SYS_REFCURSOR可以使变量any_cv跟任何weak REF CURSOR类型匹配。
+
+
+使用Strong REF CURSOR例子
+CREATE OR REPLACE PACKAGE emp_data AS
+TYPE empcurtyp IS REF CURSOR RETURN emp%rowtype; --定义TYPE as Strong REF CURSOR
+PROCEDURE open_emp_cv(emp_cv IN OUT empcurtyp, choice INT); --根据不同的choice选择不同的CURSOR
+PROCEDURE retrieve_data(choice INT); --通过调用procedure open_emp_cv，返回指定的结果集。
+END emp_data;
+
+
+=============================================
+
+
+
+
+CREATE OR REPLACE PACKAGE BODY emp_data AS
+
+--procedure open_emp_cv-----------------------------
+
+PROCEDURE open_emp_cv(emp_cv IN OUT empcurtyp, choice INT) IS --emp_cv作为传入/传出的CURSOR PARAMETER
+BEGIN
+IF choice = 1 THEN
+OPEN emp_cv FOR
+SELECT * FROM emp WHERE empno < 7800;
+ELSIF choice = 2 THEN
+OPEN emp_cv FOR
+SELECT * FROM emp WHERE SAL < 1000;
+ELSIF choice = 3 THEN
+OPEN emp_cv FOR
+SELECT * FROM emp WHERE ename like 'J%';
+END IF;
+END;
+
+
+--procedure retrieve_data----------------------------------
+
+PROCEDURE retrieve_data(choice INT) IS
+return_cv empcurtyp; --定义传入open_emp_cv的CURSOR变量
+return_row emp%ROWTYPE;
+invalid_choice EXCEPTION;
+BEGIN
+open_emp_cv(return_cv, choice); --调用 procedure OPEN_EMP_CV
+
+IF choice = 1 THEN
+DBMS_OUTPUT.PUT_LINE('EMPLOYEES with empno less than 7800');
+ELSIF choice = 2 THEN
+DBMS_OUTPUT.PUT_LINE('EMPLOYEES with salary less than 1000');
+ELSIF choice = 3 THEN
+DBMS_OUTPUT.PUT_LINE('EMPLOYEES with name starts with ''J''');
+ELSE
+RAISE invalid_choice;
+END IF;
+
+LOOP
+FETCH return_cv
+INTO return_row;
+EXIT WHEN return_cv%NOTFOUND;
+
+DBMS_OUTPUT.PUT_LINE(return_row.empno || '--' || return_row.ename || '--' ||
+return_row.sal);
+END LOOP;
+
+EXCEPTION
+WHEN invalid_choice THEN
+DBMS_OUTPUT.PUT_LINE('The CHOICE should be in one of (1,2,3)!');
+WHEN OTHERS THEN
+DBMS_OUTPUT.PUT_LINE('Errors in procedure RETRIEVE_DATA!');
+END;
+
+END emp_data;
+
+
+================================
+
+
+
+
+执行：
+SQL> EXEC emp_data.retrieve_data(1);
+EMPLOYEES with empno less than 7800
+7369--SMITH--800
+7499--ALLEN--1600
+7521--WARD--1250
+7566--JONES--2975
+7654--MARTIN--1250
+7698--BLAKE--2850
+7782--CLARK--2450
+7788--SCOTT--3000
+PL/SQL procedure successfully completed
+
+SQL> EXEC emp_data.retrieve_data(2);
+EMPLOYEES with salary less than 1000
+7369--SMITH--800
+7900--JAMES--950
+PL/SQL procedure successfully completed
+
+SQL> EXEC emp_data.retrieve_data(3);
+EMPLOYEES with name starts with 'J'
+7566--JONES--2975
+7900--JAMES--950
+PL/SQL procedure successfully completed
+
+SQL> EXEC emp_data.retrieve_data(34);
+The CHOICE should be in one of (1,2,3)!
+PL/SQL procedure successfully completed
+
+
+
+使用Weak REF CURSOR例子
+--procedure open_cv---------------------------------------
+
+create or replace procedure open_cv(choice IN INT,
+return_cv OUT SYS_REFCURSOR) is
+-- 参数return_cv为weak REF CURSOR,利用SYS_CURSOR来定义
+begin
+if choice = 1 then
+open return_cv for 'select * from emp';
+elsif choice = 2 then
+open return_cv for 'select * from dept';
+end if;
+end open_cv;
+
+
+--procedure retrieve_data------------------------------------
+
+create or replace procedure retrieve_data(choice IN INT) is
+emp_rec emp%rowtype;
+dept_rec dept%rowtype;
+return_cv SYS_REFCURSOR;
+invalid_choice exception;
+begin
+if choice=1 then
+dbms_output.put_line('employee information');
+open_cv(1,return_cv); --调用procedure open_cv;
+loop
+fetch return_cv into emp_rec;
+exit when return_cv%notfound;
+dbms_output.put_line(emp_rec.empno||'-'||emp_rec.ename||'-'||emp_rec.sal);
+end loop;
+elsif choice=2 then
+dbms_output.put_line('department information');
+open_cv(2,return_cv);
+loop
+fetch return_cv into dept_rec;
+exit when return_cv%notfound;
+dbms_output.put_line(dept_rec.deptno||'-'||dept_rec.dname||'-'||dept_rec.loc);
+end loop;
+else
+raise invalid_choice;
+end if;
+
+exception
+when invalid_choice then
+dbms_output.put_line('The CHOICE should be one of 1 and 2!');
+when others then
+dbms_output.put_line('Errors in procedure retrieve_data');
+end retrieve_data;
+
+-----------------------------------------------------------------
+
+执行：
+SQL> exec retrieve_data(1);
+employee information
+7369-SMITH-800
+7499-ALLEN-1600
+7521-WARD-1250
+7566-JONES-2975
+7654-MARTIN-1250
+7698-BLAKE-2850
+......
+PL/SQL procedure successfully completed
+
+SQL> exec retrieve_data(2);
+department information
+10-ACCOUNTING-NEW YORK
+20-RESEARCH-DALLAS
+30-SALES-CHICAGO
+40-OPERATIONS-BOSTON
+PL/SQL procedure successfully completed
+
+
+
+用REF CURSOR实现BULK功能
+1. To speed up INSERT, UPDATE, and DELETE statements, enclose the SQL statement within a PL/SQL FORALL statement instead of a loop construct.
+2. To speed up SELECT statements, include the BULK COLLECT INTO clause in the SELECT statement instead of using INTO.
+
+
+
+SQL> create table tab2 as select empno ID, ename NAME, sal SALARY from emp where 1=2;
+Table created
+
+
+-------------------------------------------------------
+
+create or replace procedure REF_BULK is
+type empcurtyp is ref cursor;
+type idlist is table of emp.empno%type;
+type namelist is table of emp.ename%type;
+type sallist is table of emp.sal%type;
+
+emp_cv empcurtyp;
+ids idlist;
+names namelist;
+sals sallist;
+
+row_cnt number;
+begin
+open emp_cv for
+select empno, ename, sal from emp;
+fetch emp_cv BULK COLLECT
+INTO ids, names, sals; --BULK COLLECT INTO instead of INTO
+close emp_cv;
+
+for i in ids.first .. ids.last loop
+dbms_output.put_line('id=' || ids(i) || ' name=' || names(i) ||
+' salary=' || sals(i));
+end loop;
+
+forall i in ids.first .. ids.last --FORALL instead of FOR ...LOOP
+insert into tab2 values (ids(i), names(i), sals(i));
+commit;
+
+select count(*) into row_cnt from tab2;
+dbms_output.put_line('-----------------------------------');
+dbms_output.put_line('The row number of tab2 is ' || row_cnt);
+end REF_BULK;
+
+
+------------------------------------------------------------
+
+执行：
+
+SQL> exec ref_bulk;
+
+id=7369 name=SMITH salary=800
+id=7499 name=ALLEN salary=1600
+id=7521 name=WARD salary=1250
+id=7566 name=JONES salary=2975
+id=7654 name=MARTIN salary=1250
+id=7698 name=BLAKE salary=2850
+id=7782 name=CLARK salary=2450
+id=7788 name=SCOTT salary=3000
+id=7839 name=KING salary=5000
+id=7844 name=TURNER salary=1500
+id=7876 name=ADAMS salary=1100
+id=7900 name=JAMES salary=950
+id=7902 name=FORD salary=3000
+id=7934 name=MILLER salary=1300
+-----------------------------------
+The row number of tab2 is 14
+
+PL/SQL procedure successfully completed

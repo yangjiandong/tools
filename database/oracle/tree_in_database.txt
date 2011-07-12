@@ -1,0 +1,180 @@
+tree in database
+================
+
+http://www.slideshare.net/quipo/trees-in-the-database-advanced-data-structures?type=presentation
+
+
+create table emp_orgchart(
+emp varchar(10) not null primary key,
+boss varchar(10),
+salary decimal(6,2) not null
+);
+
+insert into emp_orgchart values('A', NULL, 1000);
+insert into emp_orgchart values('B', 'A', 900);
+insert into emp_orgchart values('C', 'A', 900);
+insert into emp_orgchart values('D', 'C', 800);
+insert into emp_orgchart values('E', 'C', 900);
+
+-- FIND BOSS
+select * from emp_orgchart 
+where boss is null;
+
+-- FIND LEAF 
+-- 条件是没做过boss
+select e1.*
+from emp_orgchart  e1
+left join emp_orgchart  e2 on e1.emp = e2.boss
+where e2.emp is null;
+
+-- update anomalies
+-- start transaction;
+update emp_orgchart
+set emp = 'C1'
+where emp = 'C';
+
+update emp_orgchart
+set boss = 'C1'
+where boss = 'C';
+
+commit;
+
+or
+
+update emp_orgchart
+  set emp = case emp
+      when 'C' then 'C1'
+      else emp end,
+      boss = case boss
+      when 'C' then 'C1'
+      else boss end
+where 'C' in (emp, boss);
+
+insert into emp_orgchart values('G', 'H', 345);
+
+
+--fixing the adjacency list mode
+create table emp(
+id integer default 0 primary key,
+name varchar(10) not null,
+salary decimal (6,2) default 0);
+
+create table orgchart(
+emp_id integer not null ,
+boss_id integer
+);
+
+--列出所有附属关系，只做到3层
+select o1.emp as e1,
+       o2.emp as e2,
+       o3.emp as a3
+  from emp_orgchart o1
+  left outer join
+       emp_orgchart o2
+      on o1.emp = o2.boss
+  left outer join
+       emp_orgchart o3
+      on o2.emp = o3.boss
+where o1.emp ='A'
+
+--path enumeration mode
+create table emp_orgchart2(
+emp_id char(1) not null primary key,
+emp_name varchar(10) not null,
+path_string varchar(512) not null
+);
+insert into emp_orgchart2 values('A','Anthony','A');
+insert into emp_orgchart2 values('B','Beryl','AB');
+insert into emp_orgchart2 values('C','Charles','AC');
+insert into emp_orgchart2 values('D','Denise','ACD');
+insert into emp_orgchart2 values('E','Ellen','ACE');
+insert into emp_orgchart2 values('F','Frank','ACF');
+
+commit;
+
+-- check nodes appearing twice:'ABCA'
+CHECK (NOT EXISTS(
+SELECT *
+  FROM emp_orgchart2 D1,
+       emp_orgchart2 P1
+  WHERE length(replace(p1.path_string, d1.emp_id,'')) < 
+        length(p1.path_string - length(d1.emp_id))
+))
+
+-- no path can be longer than the number of nodes
+-- 没成功！！
+CHECK(
+(SELECT MAX(LENGTH(path_string))
+    FROM emp_orgchart2 e1) <=
+    (SELECT COUNT(emp_id) * LENGTH(emp_id)
+    FROM EMP_ORGCHART e2)
+)
+
+--depath of the node
+LENGTH(path_string) / LENGTH(emp_id)
+
+LENGTH(path_string) - LENGTH(REPLACE(path_string, '/','')) + 1
+
+--searching for superiors
+--没成功
+SELECT SUBSTRING(P1.path_string
+    FROM seq * LENGTH(P1.emp_id)
+    FROM LENGTH(P1.emp_id)) emp_id
+  FROM emp_orgchart2 P1,
+       sequence S1
+  WHERE P1.emp_id = :search_emp_id
+     AND S1.seq <= LENGTH(path_strng)/
+                   LENGTH(emp_id);
+
+-- deleting substree
+DELETE FROM emp_orgchart2
+WHERE path_string like (
+    SELECT path_string
+        FROM emp_orgchart2
+      WHERE emp_id = :delete_node) || '%';
+
+-- Deleting a single node:
+DELETE FROM emp_orgchart2
+WHERE emp_id = :delete_node;
+
+UPDATE emp_orgchart2 SET path_string =
+    REPLACE(path_string, :delete_node, '');
+
+--Insertion of a new node
+INSERT INTO emp_orgchart2 VALUES(
+    'M',
+    'Maggie',
+    (SELECT path_string
+        FROM emp_orgchart2
+      WHERE emp_id = 'D') -- :boss_of_new_emp
+      || 'M'
+);
+
+--Splitting the path string into nodes
+--显示各级次，
+--如Anthony , 1.
+--  Beryl   , 1.1.
+--没成功
+SELECT CASE
+    WHEN SUBSTRING('/' || P1.path_string || '/'
+        FROM S1.seq FOR 1) ='/'
+    THEN  SUBSTRING('/' || P1.path_string || '/'
+        FROM (S1.seq + 1)
+        FOR CharIndex('/',
+            '/' || P1.path_string || '/',
+            S1.seq + 1) - S1.seq -1
+    ELSE NULL END AS emp_id
+  FROM sequence S1,
+       emp_orgchart2 P1
+  WHERE S1.seq BETWEEN 1
+           AND LENGTH(P1.path_string) + 1
+       AND SUBSTRING('/' || P1.path_string || '/'
+           FROM S1.seq FOR 1) ='/'
+;
+
+
+
+  
+      
+
+   --END

@@ -1,0 +1,936 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>
+	Jonathan Holland - Trees in relational databases
+</title><link href="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/newstyle.css" rel="stylesheet" type="text/css"><link rel="icon" type="image/vnd.microsoft.icon" href="http://gfilter.net/favicon.ico"><link rel="alternate" type="application/rss+xml" title="RSS" href="http://gfilter.net/feed/"><link rel="openid.server" href="http://draft.blogger.com/openid-server.g"><link rel="openid.delegate" href="http://codeeleven.blogspot.com/"></head><body>
+    <form name="aspnetForm" method="post" action="default.aspx?Post=Trees-in-relational-databases" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUJNjQ2MzU2NDE3ZGRafLeNoQ2PtvmYi618SFrEuvSP8Q==" type="hidden">
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/WebResource.js" type="text/javascript"></script>
+
+
+<script src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/pewpewpew.js" type="text/javascript"></script>
+<script src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/WebResource_002.js" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+//]]>
+</script>
+
+    <div id="header">
+        <div id="inner-header">
+            <div id="head-text">
+                <h1>
+                    <a href="http://gfilter.net/">Jonathan Holland</a>
+                </h1>
+                <span>Thoughts about programming and life in general.</span>
+            </div>
+            <div id="menu">
+                <ul>
+                    <li id="ctl00_homeTab" class="active"><a href="http://gfilter.net/">Home</a></li>
+                    <li id="ctl00_codeTab"><a href="http://gfilter.net/code/">Code / Projects</a></li>
+                    <li id="ctl00_aboutTab"><a href="http://gfilter.net/about/">About Me</a></li>
+                    <li id="ctl00_contactTab"><a href="http://gfilter.net/contact/">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="page">
+        <div id="content">
+            
+    
+<div class="post">
+    <br>
+    <div style="float: left;">
+        <a id="ctl00_cplMainContent_ctl00_hplBack" href="http://gfilter.net/?Post=Code-Snippet-of-the-Day:-Recursive-File-Finder">« Code Snippet of the Day: Recursive File Finder</a>
+    </div>
+    <div style="float: right;">
+        
+    </div>
+    <br>
+    <br>
+    <h2>
+        <a id="ctl00_cplMainContent_ctl00_hplSubject" href="http://gfilter.net/?Post=Trees-in-relational-databases">Trees in relational databases</a>
+    </h2>
+    <div>
+        <p>I recently posted an <a href="http://www.reddit.com/r/programming/comments/8q2pz/ask_reddit_how_do_you_store_a_tree_in_a/c0a2ncu">explanation</a> on how to use a CTE to traverse a tree in a relational database on Reddit.</p>
+
+<p>This started a lot of conversation, and people were wondering on the performance aspect of using recursive queries.</p>
+
+<p>Well, I decided to take an extreme look. I'll pretend that Reddit
+had a very popular thread that had 5,000 comments on it. And, to really
+tax this query, I'll make it so that it is an extremely unbalanced tree
+1000 comments deep.</p>
+
+<p>For those following along, I'm going to use T-SQL, and everything in
+this post can be dropped directly into SQLServer 2005+ and ran.</p>
+
+<p>I'm going to build a tree that looks like this:</p>
+
+<pre><code>  Root
+      \
+      Comment 1
+      Comment 2
+      Comment 3
+      Comment 4
+      Comment 5
+               \
+               Comment 6
+               Comment 7
+               Comment 8
+               Comment 9
+               Comment 10
+                         \
+                         Comment 11
+                         Comment 12
+                         Comment 13
+                         Comment 14
+                         Comment 15 (This repeats to depth of 1,000)
+</code></pre>
+
+<p>This is the absolute worst case scenario, because I have a horrible
+unbalanced tree, and will have to recursively walk the entire thing.</p>
+
+<p>So, to create the schema:</p>
+
+<pre><code>  USE [Tree]
+  CREATE TABLE [dbo].[Tree]
+  (
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+        [ParentID] [int] NULL,
+        CONSTRAINT [PK_Tree] PRIMARY KEY CLUSTERED 
+        (
+           [Id] ASC
+        )WITH (PAD_INDEX  = OFF, IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+  ) ON [PRIMARY]
+
+  GO
+  ALTER TABLE [dbo].[Tree]  WITH CHECK ADD  CONSTRAINT [FK_Tree_Tree] FOREIGN KEY([ParentID])
+         REFERENCES [dbo].[Tree] ([Id])
+  GO
+  ALTER TABLE [dbo].[Tree] CHECK CONSTRAINT [FK_Tree_Tree]
+</code></pre>
+
+<p>This is a simple table with the following attributes:</p>
+
+<ul>
+<li>Two Columns (Id, ParentId)</li>
+<li>Id is an identity column and the primary key</li>
+<li>ParentId is Nullable, and is a Foreign Key back to Id</li>
+</ul>
+
+<p>Now, I'm going to insert my comment thread of doom into this table, I'm using some pretty tacky T-SQL to do this, but I'm lazy:</p>
+
+<pre><code>USE Tree;
+
+DECLARE @depthCounter int;
+DECLARE @lastNode int;
+DECLARE @i int;
+
+SET @DepthCounter = 0;
+
+INSERT INTO Tree (ParentID)
+	VALUES
+	(
+		NULL
+	);
+
+SET @LastNode = SCOPE_IDENTITY();
+
+WHILE @DepthCounter &lt; 1000
+BEGIN	
+	SET @i = 0;
+	WHILE @i &lt; 5
+		BEGIN
+			INSERT INTO Tree (ParentID)
+				VALUES
+				(
+					@LastNode
+				);	
+			SET @i = @i + 1;
+		END
+	SET @LastNode = SCOPE_IDENTITY();	
+	SET @DepthCounter = @DepthCounter + 1;
+END
+</code></pre>
+
+<p>With my tree of doom inserted, I'll run the query starting from the root:</p>
+
+<pre><code>Use Tree;
+
+WITH CommentTree (ParentID, ID, Level)
+ AS
+ (
+	SELECT ParentID, ID, 0 as [Level]
+		FROM Tree
+		WHERE ParentID IS NULL
+	UNION ALL
+		SELECT c.ParentID, c.ID, ct.Level + 1
+			FROM Tree c
+			JOIN CommentTree ct ON ct.ID = c.ParentID
+  )
+
+  SELECT ParentID, ID, Level FROM CommentTree 
+	 ORDER BY ParentID, Level, ID OPTION (MAXRECURSION 5000)
+</code></pre>
+
+<p>On my home laptop (A modest 2ghz) running Microsoft SQLServer 2005 EXPRESS I get the following result to generate <a href="http://pastebin.com/m2ff73c83">this dataset</a>:</p>
+
+<pre><code>  SQL Server Execution Times:
+  CPU time = 10998 ms,  elapsed time = 11209 ms.
+</code></pre>
+
+<p>11 Seconds is an eternity, but this is a the worlds worst case. Now
+to try the same test data, but instead walking only 100 levels deep
+(500 comments):</p>
+
+<pre><code>Use Tree;
+
+WITH CommentTree (ParentID, ID, Level)
+ AS
+ (
+	SELECT ParentID, ID, 0 as [Level]
+		FROM Tree
+		WHERE ParentID = 44339
+	UNION ALL
+		SELECT c.ParentID, c.ID, ct.Level + 1
+			FROM Tree c
+			JOIN CommentTree ct ON ct.ID = c.ParentID
+  )
+
+  SELECT ParentID, ID, Level FROM CommentTree 
+	 ORDER BY ParentID, Level, ID OPTION (MAXRECURSION 5000)
+</code></pre>
+
+<p>This returned 500 rows and the following speed stats:</p>
+
+<pre><code>  SQL Server Execution Times:
+    CPU time = 1217 ms,  elapsed time = 1223 ms.
+</code></pre>
+
+<p>This is still a unusual dataset, because it is still a very off balance tree.</p>
+
+<p>So, my final benchmark will be an approximation of a regular reddit
+thread. 300 comments total, 100 root comments, with 2 replies each.</p>
+
+<p>The setup script:</p>
+
+<pre><code>USE Tree;
+
+DECLARE @depthCounter int;
+DECLARE @lastNode int;
+DECLARE @firstNode int;
+
+SET @DepthCounter = 0;
+
+INSERT INTO Tree (ParentID)
+	VALUES
+	(
+		NULL
+	);
+
+SET @FirstNode = SCOPE_IDENTITY();
+
+WHILE @DepthCounter &lt; 100
+BEGIN	
+	INSERT INTO Tree (ParentID)
+		VALUES
+		(
+			@FirstNode
+		);
+	SET @LastNode = SCOPE_IDENTITY();
+
+	INSERT INTO Tree (ParentID)
+		VALUES
+		(
+			@LastNode
+		);
+	INSERT INTO Tree (ParentID)
+		VALUES
+		(
+			@LastNode
+		);
+	SET @DepthCounter = @DepthCounter + 1;
+END
+</code></pre>
+
+<p>Now, when ran:</p>
+
+<pre><code>(301 row(s) affected)
+SQL Server Execution Times:
+    CPU time = 47 ms,  elapsed time = 51 ms.
+</code></pre>
+
+<p>That's right, in the real world, this query took 51ms.</p>
+
+<p>I think this shows that CTE (even running on commodity hardware) are perfectly adequate to handle nested trees on social forums.</p>
+
+    </div>
+    
+    <p>
+        Posted by Jonathan Holland on
+        6/6/2009.
+        
+    </p>
+    <p>
+        Tags:
+            
+                    <a id="ctl00_cplMainContent_ctl00_rptrTags_ctl00_hplTag" href="http://gfilter.net/?Tag=SQLServer">SQLServer</a>
+                
+                    &nbsp;
+                    <a id="ctl00_cplMainContent_ctl00_rptrTags_ctl02_hplTag" href="http://gfilter.net/?Tag=Trees">Trees</a>
+                
+                    &nbsp;
+                    <a id="ctl00_cplMainContent_ctl00_rptrTags_ctl04_hplTag" href="http://gfilter.net/?Tag=Common-Table-Expressions">Common-Table-Expressions</a>
+                
+                    &nbsp;
+                    <a id="ctl00_cplMainContent_ctl00_rptrTags_ctl06_hplTag" href="http://gfilter.net/?Tag=Recursion">Recursion</a>
+                
+    </p>
+</div>
+<h2 style="border-bottom: 1px dotted rgb(209, 209, 209); margin-bottom: 10px;">
+    Comments:</h2>
+
+        <div class="comment">
+            <p>51 ms might not sound like much, but it's a throttle neck
+that limits to 20 requests/sec</p>
+
+<p>plus how much time to keep the tree balanced?</p>
+
+<p>plus how does multiple threaded requests impact performance?</p>
+
+<p>nicely done and documented tho</p>
+
+            <p class="author">
+                <img id="ctl00_cplMainContent_ctl00_rptrComments_ctl00_imgGravatar" alt="Gravatar" title="Gravatar" src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/avatar_004.jpeg" style="border-width: 0px;">
+                <span style="margin-bottom: 20px;">
+                    Posted by <strong>
+                        OldAndGrey</strong> on
+                    6/6/2009.
+                    
+                    
+                </span>                
+            </p>
+        </div>
+    
+        <div class="comment">
+            <p>&gt; plus how much time to keep the tree balanced?</p>
+
+<p>This article discusses the use of this method with respect to
+threaded conversations; the trees aren't balanced, they're whatever
+shape they naturally acquire. </p>
+
+            <p class="author">
+                <img id="ctl00_cplMainContent_ctl00_rptrComments_ctl01_imgGravatar" alt="Gravatar" title="Gravatar" src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/avatar.png" style="border-width: 0px;">
+                <span style="margin-bottom: 20px;">
+                    Posted by <strong>
+                        JB</strong> on
+                    6/6/2009.
+                    
+                    
+                </span>                
+            </p>
+        </div>
+    
+        <div class="comment">
+            <p>There are better ways to store trees. <a href="http://django-treebeard.googlecode.com/svn/docs/index.html#module-tbbench">Here</a> are a few of those ways in action.</p>
+
+            <p class="author">
+                <img id="ctl00_cplMainContent_ctl00_rptrComments_ctl02_imgGravatar" alt="Gravatar" title="Gravatar" src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/avatar_005.jpeg" style="border-width: 0px;">
+                <span style="margin-bottom: 20px;">
+                    Posted by <strong>
+                        Jason C</strong> on
+                    6/6/2009.
+                    
+                    
+                </span>                
+            </p>
+        </div>
+    
+        <div class="comment">
+            <p>&gt;There are better ways to store trees. Here are a few of those ways in action.</p>
+
+<p>Jason, that is simply Joe Celko's nested sets methods, and the insert/update cost of nested sets is huge.</p>
+
+            <p class="author">
+                <img id="ctl00_cplMainContent_ctl00_rptrComments_ctl03_imgGravatar" alt="Gravatar" title="Gravatar" src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/avatar_006.jpeg" style="border-width: 0px;">
+                <span style="margin-bottom: 20px;">
+                    Posted by <strong>
+                        Jonathan Holland</strong> on
+                    6/6/2009.
+                    
+                    
+                </span>                
+            </p>
+        </div>
+    
+        <div class="comment">
+            <p>Yes the insert cost is huge, but far more people will read a thread without contributing than those who contribute.</p>
+
+<p>Also some of the methods in the link I posted are a bit friendly insert-wise than Joe's MPTT. </p>
+
+            <p class="author">
+                <img id="ctl00_cplMainContent_ctl00_rptrComments_ctl04_imgGravatar" alt="Gravatar" title="Gravatar" src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/avatar_005.jpeg" style="border-width: 0px;">
+                <span style="margin-bottom: 20px;">
+                    Posted by <strong>
+                        Jason C</strong> on
+                    6/6/2009.
+                    
+                    
+                </span>                
+            </p>
+        </div>
+    
+        <div class="comment">
+            <p>Jonathan,
+the benchmarks in django-treebeard include the 3 tree data models that
+it supports: nested sets, materialized paths and adjacency lists. I
+wrote some support for Tropashko's fraction encoding approach (my
+personal favorite), but still needs some cleanup.</p>
+
+<p><span>You can read about Tropashko's encoding in <a href="http://arxiv.org/pdf/cs/0402051">http://arxiv.org/pdf/cs/0402051</a></span></p>
+
+            <p class="author">
+                <img id="ctl00_cplMainContent_ctl00_rptrComments_ctl05_imgGravatar" alt="Gravatar" title="Gravatar" src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/avatar.jpeg" style="border-width: 0px;">
+                <span style="margin-bottom: 20px;">
+                    Posted by <strong>
+                        tabo</strong> on
+                    6/6/2009.
+                    
+                    
+                </span>                
+            </p>
+        </div>
+    
+        <div class="comment">
+            <p>@Tabo and @Jason:</p>
+
+<p>I scrolled up and read a bit about treebeard and now better see what it offers.</p>
+
+<p>What I find interesting is that we know that the method I explain
+here is by far the fastest when it comes to inserts / deletes and
+reorganization, so the only place it can lose is in descendant
+retrieval.</p>
+
+<p>However, looking at the treebeard stats, retrieval appears to be around 5000ms on average for their 1,000 node tree.</p>
+
+<p>Considering my benchmark was 5,000 nodes in essentially a linked
+list (Worse case scenario), and it took 11000ms, I expected CTE's to do
+better than treebird, so I thought I'd try it.</p>
+
+<p>I went ahead and built a new tree of 1,000 nodes that vary and have a max depth of up to 4, this was inserted in under 25ms.</p>
+
+<p>To actually fetch the descendants returned this:</p>
+
+<pre><code>   SQL Server Execution Times:
+      CPU time = 530 ms,  elapsed time = 538 ms.
+</code></pre>
+
+<p>This is compared to treebeards best time of  5197ms. </p>
+
+<p>I don't see how you can say that MPTT and AL methods are better with these results.</p>
+
+            <p class="author">
+                <img id="ctl00_cplMainContent_ctl00_rptrComments_ctl06_imgGravatar" alt="Gravatar" title="Gravatar" src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/avatar_006.jpeg" style="border-width: 0px;">
+                <span style="margin-bottom: 20px;">
+                    Posted by <strong>
+                        Jonathan Holland</strong> on
+                    6/6/2009.
+                    
+                    
+                </span>                
+            </p>
+        </div>
+    
+        <div class="comment">
+            <p>Oh, and just to point out, this was ran on a laptop far inferior to the Lenovo T61 the Treebeard benchmarks used. </p>
+
+<p>I only have 2gb of ram here, and a slower processor.</p>
+
+            <p class="author">
+                <img id="ctl00_cplMainContent_ctl00_rptrComments_ctl07_imgGravatar" alt="Gravatar" title="Gravatar" src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/avatar_006.jpeg" style="border-width: 0px;">
+                <span style="margin-bottom: 20px;">
+                    Posted by <strong>
+                        Jonathan Holland</strong> on
+                    6/6/2009.
+                    
+                    
+                </span>                
+            </p>
+        </div>
+    
+        <div class="comment">
+            <p>Jonathan:</p>
+
+<p>All your testing is being done in SQL. Treebeard benchmarks have
+tcp+django(orm)+python overhead, that's very taxing with lots of small
+queries.</p>
+
+            <p class="author">
+                <img id="ctl00_cplMainContent_ctl00_rptrComments_ctl08_imgGravatar" alt="Gravatar" title="Gravatar" src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/avatar.jpeg" style="border-width: 0px;">
+                <span style="margin-bottom: 20px;">
+                    Posted by <strong>
+                        tabo</strong> on
+                    6/6/2009.
+                    
+                    
+                </span>                
+            </p>
+        </div>
+    
+        <div class="comment">
+            <p>@Tabo:</p>
+
+<p>Since I was curious, I created a C# app that creates 50 threads,
+with each thread opening 5 DB connections and running the Tree query
+each time.</p>
+
+<p>The response is this then loaded into a .NET datatable, which is pretty similar to what TreeBeard is doing.</p>
+
+<p>This is a pretty good stress test. </p>
+
+<p>My average after running it was 1679.1ms. So about 3 times as slow, but still significantly faster than TreeBeard's fastest.</p>
+
+<p>Of course, there is the advantage of being C# vrs Python, but at least this isn't a pure SQL enviroment anymore.</p>
+
+<p>The C# stress code is here:</p>
+
+<p><span>(<a href="http://pastebin.com/m2ccc96c3">http://pastebin.com/m2ccc96c3</a> )</span></p>
+
+            <p class="author">
+                <img id="ctl00_cplMainContent_ctl00_rptrComments_ctl09_imgGravatar" alt="Gravatar" title="Gravatar" src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/avatar_006.jpeg" style="border-width: 0px;">
+                <span style="margin-bottom: 20px;">
+                    Posted by <strong>
+                        Jonathan Holland</strong> on
+                    6/6/2009.
+                    
+                    
+                </span>                
+            </p>
+        </div>
+    
+        <div class="comment">
+            <p>Jonathan,
+that's very interesting! But note that even those results are really
+not comparable to the treebeard benchmark (if what you want to measure
+is the tree algorithm) because:</p>
+
+<ol>
+<li>You're using a faster language (C# vs Python)</li>
+<li>You're just discarding the data retrieved from the DB. Each treebeard query in the benchmark:
+a. parses the db output in a db library (written in python)
+b. goes to django's db handler
+c. is turned into an object by the Django ORM (possible the most expensive operation here)
+d. goes to treebeard</li>
+<li>You're using a pool of 50 threads. The treebeard benchmark runs on a single thread.</li>
+</ol>
+
+<p>( I apologize if this list isn't correctly formatted, but I suck with Markdown)</p>
+
+<p>So as you can see there is really no point in comparing the results
+:) My intention with publishing those benchmark results was to have
+numbers that made sense to the intended audience of the library: Django
+programmers. That's why those benchmarks don't even bypass the
+(expensive but convenient) Django ORM.</p>
+
+<p>If what you want to measure is the raw performance of the tree
+implementation in SQL, the best way to do that is with your original
+approach: pure SQL and stored procedures.</p>
+
+<p>Now about the different tree approaches used, your tests are using
+the "Adjacency List" approach (also implemented in treebeard). The
+difference is that the recursion in your approach is done by SQL
+Server. In treebeard it's done on the app layer (since the point of
+treebeard is to be a db-neutral library).</p>
+
+<p>Also note that, as always, there is no silver bullet here. Every
+tree implementation has strengths and weaknesses. And things are VERY
+different when things grow, i.e. millions of nodes in very deep trees
+instead of 1000 nodes in very shallow (&lt; 10 depth) trees. So, as
+usual, we must measure and compare depending on our needs :)</p>
+
+            <p class="author">
+                <img id="ctl00_cplMainContent_ctl00_rptrComments_ctl10_imgGravatar" alt="Gravatar" title="Gravatar" src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/avatar.jpeg" style="border-width: 0px;">
+                <span style="margin-bottom: 20px;">
+                    Posted by <strong>
+                        tabo</strong> on
+                    6/6/2009.
+                    
+                    
+                </span>                
+            </p>
+        </div>
+    
+        <div class="comment">
+            <p>@Tabo:</p>
+
+<p>I didn't realize you were the author of TreeBeard. I want you to
+know that I didn't intend to start comparing my stuff here to you until
+Jason brought it up as superior :)</p>
+
+<p>Regarding your list,</p>
+
+<ol>
+<li>I do admit that.</li>
+<li>I'm actually not discarding the data, it is being used to populate
+a .NET datatable object. While this is not has heavy as a full fledged
+ORM object, it is still a heavy object that offers lots of
+introspection on the data and as such is expensive to fill.</li>
+<li>The point of the threadpool was to simulate real world use of the
+CTE in a multi user environment. It would actually be far far faster
+without the thread pool, in fact taking it out leads to an average time
+of 560ms (just 20ms slower than directly hitting the DB).</li>
+</ol>
+
+<p>In all honesty, you can't really call your benchmarks accurate until
+you test them in a situation where the DB engine has to handle
+concurrency.</p>
+
+<p>Kudos for a cool library and page.</p>
+
+            <p class="author">
+                <img id="ctl00_cplMainContent_ctl00_rptrComments_ctl11_imgGravatar" alt="Gravatar" title="Gravatar" src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/avatar_006.jpeg" style="border-width: 0px;">
+                <span style="margin-bottom: 20px;">
+                    Posted by <strong>
+                        Jonathan Holland</strong> on
+                    6/6/2009.
+                    
+                    
+                </span>                
+            </p>
+        </div>
+    
+        <div class="comment">
+            <p>I've not followed all the db technicalities here but have plenty of programming experience.</p>
+
+<p>A tree with 5000 nodes, and a depth of 1000 is a zero challenge to
+the average desktop pc? why use a db if it can't handle something so
+simple?</p>
+
+            <p class="author">
+                <img id="ctl00_cplMainContent_ctl00_rptrComments_ctl12_imgGravatar" alt="Gravatar" title="Gravatar" src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/avatar_003.jpeg" style="border-width: 0px;">
+                <span style="margin-bottom: 20px;">
+                    Posted by <strong>
+                        Andrew</strong> on
+                    6/7/2009.
+                    
+                    
+                </span>                
+            </p>
+        </div>
+    
+        <div class="comment">
+            <p>Maybe
+you should add some payload to your data. The performance will of
+course be much better if the database can just jump around on one or
+two pages. I'd try myself, but I'm not really a friend of Microsoft
+products, so I neither have a current windows version nor SQL server
+(express) around.</p>
+
+            <p class="author">
+                <img id="ctl00_cplMainContent_ctl00_rptrComments_ctl13_imgGravatar" alt="Gravatar" title="Gravatar" src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/avatar_002.jpeg" style="border-width: 0px;">
+                <span style="margin-bottom: 20px;">
+                    Posted by <strong>
+                        fforw</strong> on
+                    6/7/2009.
+                    
+                    
+                </span>                
+            </p>
+        </div>
+    
+        <div class="comment">
+            <p>Hi again :)</p>
+
+<p>I was curious again this morning about this, so I came back and read your post again. Then I noticed something interesting:</p>
+
+<p>In your first test, the 11s one, you're retrieving the tree once. I
+couldn't believe it myself so I installed SQL Server Express 2008 in
+the same thinkpad I used for the treebeard benchmarks (running Vista
+Enterprise), and I got 8 seconds. This is with a 100% SQL approach.</p>
+
+<p>I reproduced your exact same test procedure as a treebeard test
+program on a macbook pro with 4gb of ram running postgresql 8.3, and
+even with all the overhead I mentioned (tcp, sql generation, the heavy
+django orm, treebeard itself, and the fact that to retrieve the same
+data I'm sending A THOUSAND QUERIES through all that overhead instead
+of one, it completed in 3.7 seconds.</p>
+
+<p>3.7 seconds. Instead of 8 or 11, even with all that overhead.</p>
+
+<p>So there must be something REALLY wrong with CTE, or with that example.</p>
+
+<p>Now this is with the adjacency list tree model. How much time did it
+took for the Materialized Path model? 0.18s. And for the Nested Sets
+model? 0.22s. Again, these are not raw SQL numbers. We must consider
+all that ORM+python overhead.</p>
+
+<p>Now, moving on to your 2nd example, 100 comments and 2 replies to
+each comment, retrieving that with treebeard using the Adjacency List
+model takes 0.22s, with the Nested Sets model it takes 0.0066s, and
+with the Materialized Path model it takes 0.0067s. In SQL Server, using
+pure SQL with NO overhead at all, it took 0.08s.</p>
+
+<p>Also, I didn't read your comment regarding your C# example
+correctly! Having 0.5s (raw sql) or 1.5s (with VERY light app overhead)
+to retrieve 1000 nodes that have a max depth of 4 is SLOW. You were
+comparing those results to the time it took treebeard to make <em>5270</em>
+tree and subtree requests. So basically you were comparing the time it
+took SQL Server to retrieve a full tree of 1000 nodes ONCE vs the time
+it took treebeard to retrieve trees and subtrees 5270 times ;) (the
+treebeard benchmarks are very complex, predictable and undocumented).</p>
+
+<p><span>I put the benchmarks source and the full results in a pastie: <a href="http://www.pastie.org/503879">http://www.pastie.org/503879</a></span></p>
+
+<p>(and note how awfully expensive write operations are with nested sets!)</p>
+
+            <p class="author">
+                <img id="ctl00_cplMainContent_ctl00_rptrComments_ctl14_imgGravatar" alt="Gravatar" title="Gravatar" src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/avatar.jpeg" style="border-width: 0px;">
+                <span style="margin-bottom: 20px;">
+                    Posted by <strong>
+                        tabo</strong> on
+                    6/7/2009.
+                    
+                    
+                </span>                
+            </p>
+        </div>
+    
+
+
+
+    <div>
+        <div style="padding-left: 20px;">
+            <p>
+                <label for="ctl00_cplMainContent_ctl00_txtName" id="ctl00_cplMainContent_ctl00_Label1">Name:</label><span id="ctl00_cplMainContent_ctl00_RequiredFieldValidator1" style="color: Red; display: none;">Name is Required.</span>
+                <br>
+                <input name="ctl00$cplMainContent$ctl00$txtName" id="ctl00_cplMainContent_ctl00_txtName" tabindex="1" type="text">
+                <br>
+                <label for="ctl00_cplMainContent_ctl00_txtEmail" id="ctl00_cplMainContent_ctl00_Label2">Email (Never Displayed):</label><span id="ctl00_cplMainContent_ctl00_RequiredFieldValidator2" style="color: Red; display: none;">Email is Required.</span><span id="ctl00_cplMainContent_ctl00_RegularExpressionValidator1" style="color: Red; display: none;">Email is invalid.</span>
+                <br>
+                <input name="ctl00$cplMainContent$ctl00$txtEmail" id="ctl00_cplMainContent_ctl00_txtEmail" tabindex="2" type="text">
+                <br>
+                <label for="ctl00_cplMainContent_ctl00_txtWebsite" id="ctl00_cplMainContent_ctl00_Label3">Website (Optional):</label>
+                <br>
+                <input name="ctl00$cplMainContent$ctl00$txtWebsite" id="ctl00_cplMainContent_ctl00_txtWebsite" tabindex="3" type="text">
+                <span class="FuckYouBot">If you are a human, don't put anything here.
+                    <input name="ctl00$cplMainContent$ctl00$txtFuckYouBot" id="ctl00_cplMainContent_ctl00_txtFuckYouBot" tabindex="400" type="text">
+                </span>
+            </p>
+            <p>
+                This blog uses <a href="http://gfilter.net/?Post=Markdown-Parsing">Markdown</a> for comment formatting:
+                <textarea name="ctl00$cplMainContent$ctl00$txtMessage" rows="10" cols="60" id="ctl00_cplMainContent_ctl00_txtMessage" tabindex="4"></textarea>
+            </p>
+            <p>
+                <input name="ctl00$cplMainContent$ctl00$btnComment" value="Submit Comment" onclick='javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$cplMainContent$ctl00$btnComment", "", true, "", "", false, false))' id="ctl00_cplMainContent_ctl00_btnComment" type="submit">
+            </p>
+            <br>
+        </div>
+    </div>
+
+
+
+    
+
+        </div>
+        <div id="sidebar">
+            
+<br>
+<p>
+    <img src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/UglyMug.png" onclick="pewpewpew.Go()" alt="I honestly tried to find a picture of myself not squinting." title="I honestly tried to find a picture of myself not squinting.">
+</p>
+
+
+    <h3>What I'm Reading:</h3>
+    <p>
+        <a id="ctl00_SideBar1_hplBook" href="http://www.amazon.com/gp/product/1933988134?ie=UTF8&amp;tag=gfilternet-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=1933988134"><img id="ctl00_SideBar1_imgBook" title="Spring in Action" src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/springinaction.jpeg" alt="Spring in Action" style="border-style: none; border-width: 0px;"></a>
+    </p>
+    <p>    
+        <a id="ctl00_SideBar1_hplMoreBooks" href="http://gfilter.net/books/">More books I recommend...</a>
+    </p>
+
+<h3>Recent Posts:</h3>
+<div>
+    
+            <ul>
+        
+            <li>
+                <a id="ctl00_SideBar1_rptrRecent_ctl01_hplRecent" href="http://gfilter.net/?Post=Trees-in-relational-databases">Trees in relational databases</a><br><br>
+            </li>
+        
+            <li>
+                <a id="ctl00_SideBar1_rptrRecent_ctl02_hplRecent" href="http://gfilter.net/?Post=Code-Snippet-of-the-Day:-Recursive-File-Finder">Code Snippet of the Day: Recursive File Finder</a><br><br>
+            </li>
+        
+            <li>
+                <a id="ctl00_SideBar1_rptrRecent_ctl03_hplRecent" href="http://gfilter.net/?Post=In-retrospect,-maybe-we-were-wrong">In retrospect, maybe we were wrong</a><br><br>
+            </li>
+        
+            <li>
+                <a id="ctl00_SideBar1_rptrRecent_ctl04_hplRecent" href="http://gfilter.net/?Post=First-Look:-Windows-7">First Look: Windows 7</a><br><br>
+            </li>
+        
+            <li>
+                <a id="ctl00_SideBar1_rptrRecent_ctl05_hplRecent" href="http://gfilter.net/?Post=Making-Document.Write-Actually-Work">Making Document.Write Actually Work</a><br><br>
+            </li>
+        
+            <li>
+                <a id="ctl00_SideBar1_rptrRecent_ctl06_hplRecent" href="http://gfilter.net/?Post=3-2-1-Marketing%21">3-2-1 Marketing!</a><br><br>
+            </li>
+        
+            <li>
+                <a id="ctl00_SideBar1_rptrRecent_ctl07_hplRecent" href="http://gfilter.net/?Post=Game-development-on-Android-and-garbage-collection">Game development on Android and garbage collection</a><br><br>
+            </li>
+        
+            <li>
+                <a id="ctl00_SideBar1_rptrRecent_ctl08_hplRecent" href="http://gfilter.net/?Post=The-best-tool-for-the-job-is?">The best tool for the job is?</a><br><br>
+            </li>
+        
+            <li>
+                <a id="ctl00_SideBar1_rptrRecent_ctl09_hplRecent" href="http://gfilter.net/?Post=Traversing-a-JavaScript-Array-Using-Callbacks">Traversing a JavaScript Array Using Callbacks</a><br><br>
+            </li>
+        
+            <li>
+                <a id="ctl00_SideBar1_rptrRecent_ctl10_hplRecent" href="http://gfilter.net/?Post=JSManager.js---Easily-manage-JS-dependancies">JSManager.js - Easily manage JS dependancies</a><br><br>
+            </li>
+        
+            </ul>
+        
+</div>
+
+<p>
+    <a href="http://gfilter.net/feed/">
+        <img src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/feed.png" alt="RSS Feed" title="RSS Feed" border="0"> RSS Feed
+    </a>
+</p>
+<br><br>
+
+        </div>
+        <div style="clear: both;">
+        </div>
+    </div>
+    
+<script type="text/javascript">
+//<![CDATA[
+var Page_Validators =  new Array(document.getElementById("ctl00_cplMainContent_ctl00_RequiredFieldValidator1"), document.getElementById("ctl00_cplMainContent_ctl00_RequiredFieldValidator2"), document.getElementById("ctl00_cplMainContent_ctl00_RegularExpressionValidator1"));
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+var ctl00_cplMainContent_ctl00_RequiredFieldValidator1 = document.all ? document.all["ctl00_cplMainContent_ctl00_RequiredFieldValidator1"] : document.getElementById("ctl00_cplMainContent_ctl00_RequiredFieldValidator1");
+ctl00_cplMainContent_ctl00_RequiredFieldValidator1.controltovalidate = "ctl00_cplMainContent_ctl00_txtName";
+ctl00_cplMainContent_ctl00_RequiredFieldValidator1.errormessage = "Name is Required.";
+ctl00_cplMainContent_ctl00_RequiredFieldValidator1.display = "Dynamic";
+ctl00_cplMainContent_ctl00_RequiredFieldValidator1.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_cplMainContent_ctl00_RequiredFieldValidator1.initialvalue = "";
+var ctl00_cplMainContent_ctl00_RequiredFieldValidator2 = document.all ? document.all["ctl00_cplMainContent_ctl00_RequiredFieldValidator2"] : document.getElementById("ctl00_cplMainContent_ctl00_RequiredFieldValidator2");
+ctl00_cplMainContent_ctl00_RequiredFieldValidator2.controltovalidate = "ctl00_cplMainContent_ctl00_txtEmail";
+ctl00_cplMainContent_ctl00_RequiredFieldValidator2.errormessage = "Email is Required.";
+ctl00_cplMainContent_ctl00_RequiredFieldValidator2.display = "Dynamic";
+ctl00_cplMainContent_ctl00_RequiredFieldValidator2.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_cplMainContent_ctl00_RequiredFieldValidator2.initialvalue = "";
+var ctl00_cplMainContent_ctl00_RegularExpressionValidator1 = document.all ? document.all["ctl00_cplMainContent_ctl00_RegularExpressionValidator1"] : document.getElementById("ctl00_cplMainContent_ctl00_RegularExpressionValidator1");
+ctl00_cplMainContent_ctl00_RegularExpressionValidator1.controltovalidate = "ctl00_cplMainContent_ctl00_txtEmail";
+ctl00_cplMainContent_ctl00_RegularExpressionValidator1.errormessage = "Email is invalid.";
+ctl00_cplMainContent_ctl00_RegularExpressionValidator1.display = "Dynamic";
+ctl00_cplMainContent_ctl00_RegularExpressionValidator1.evaluationfunction = "RegularExpressionValidatorEvaluateIsValid";
+ctl00_cplMainContent_ctl00_RegularExpressionValidator1.validationexpression = "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
+//]]>
+</script>
+
+<div>
+
+	<input name="__SCROLLPOSITIONX" id="__SCROLLPOSITIONX" value="0" type="hidden">
+	<input name="__SCROLLPOSITIONY" id="__SCROLLPOSITIONY" value="0" type="hidden">
+</div>
+
+<script type="text/javascript">
+<!--
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+// -->
+</script>
+        
+<script type="text/javascript">
+//<![CDATA[
+
+theForm.oldSubmit = theForm.submit;
+theForm.submit = WebForm_SaveScrollPositionSubmit;
+
+theForm.oldOnSubmit = theForm.onsubmit;
+theForm.onsubmit = WebForm_SaveScrollPositionOnSubmit;
+//]]>
+</script>
+</form>
+    <div id="footer">
+        <div class="innerFooter">
+            <div style="float: left;">
+                <p>
+                    Content Copyright © 2007 -
+                    2009
+                    by Jonathan Holland
+                     - 7 queries.
+                </p>
+            </div>
+            <div style="float: right;">
+                <p>
+                    <a href="http://validator.w3.org/check?uri=referer">
+                        <img src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/valid-xhtml10-blue.png" alt="Valid XHTML 1.0 Transitional" border="0" width="88" height="31">
+                    </a>
+                </p>
+            </div>
+        </div>
+        <div style="clear: both;">
+        </div>
+    </div>
+
+    <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script><script src="Jonathan%20Holland%20-%20Trees%20in%20relational%20databases_files/ga.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+            try {
+            var pageTracker = _gat._getTracker("UA-2328314-3");
+            pageTracker._trackPageview();
+            } catch(err) {}
+    </script>    
+</body></html>

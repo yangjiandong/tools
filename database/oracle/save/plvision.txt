@@ -1,0 +1,121 @@
+一、下载和安装软件包
+
+软件包下载： http://www.toadworld.com/LinkClick.aspx?fileticket=YJTcriH32PQ=&tabid=316
+unzip the KXPLVISION_v1.0.zip file into your directory of choice.
+Run the KXPLVISION_v1.0.exe to install the Code Library.
+To view the Code Library, from your Start Menu, select Programs > Quest Software > PL/Vision Code Library > PL/Vision Code Library.
+
+二、安装PL/Vision到数据库
+
+1、安装过程就是新建一些表和package对象到指定的数据库用户下。
+unix服务器上安装注意：
+把 C:\Program Files\Quest Software\PLVision Code Library 下各目录的文件以Ascii方式上传至unix服务器后，一些unix主机会把传输的文件名转成大写，这样就需要执行 $ sh ./plvlcase.sh < filelist 把文件名转成小写。
+
+2、新建一个用户（最好取名为plvision）并且赋权，当然也可以使用一个已经存在的数据库用户。
+
+create user plvision  identified by plvision;
+grant dba to plvision;
+grant select on DBA_COL_COMMENTS to plvision;
+grant select on DBA_CONS_COLUMNS to plvision;
+grant select on DBA_CONSTRAINTS to plvision;
+grant select on DBA_DEPENDENCIES to plvision;
+grant select on DBA_IND_COLUMNS to plvision;
+grant select on DBA_JOBS_RUNNING to plvision;
+grant select on DBA_TAB_COLUMNS to plvision;
+grant select on DBA_ERRORS to plvision;
+grant select on DBA_INDEXES to plvision;
+grant select on DBA_JOBS to plvision;
+grant select on DBA_OBJECTS to plvision;
+grant select on DBA_SEQUENCES to plvision;
+grant select on DBA_SOURCE to plvision;
+grant select on DBA_SYNONYMS to plvision;
+grant select on DBA_TABLES to plvision;
+grant select on DBA_TRIGGERS to plvision;
+grant select on DBA_VIEWS to plvision;
+grant execute on DBMS_PIPE to plvision;
+grant create PROCEDURE, create PUBLIC SYNONYM, drop PUBLIC SYNONYM,
+create SEQUENCE, create TABLE, create VIEW to plvision;
+grant unlimited tablespace to plvision;
+
+commit;
+
+3、以新用户登陆并安装
+C:\Documents and Settings\sz>cd C:\Program Files\Quest Software\PLVision Code Library\Source
+C:\Program Files\Quest Software\PLVision Code Library\Source>sqlplus plvision/oss@orcl42
+SQL> @plvinstall
+按照提示一步步确认：
+...
+Install (I) or Quit (Q): I
+...
+Press <ENTER> to install for Oracle 9.2, or choose from the list: 5
+...
+Enter component(s) you want to install (1/2/3/P) : 3
+...
+*** Press ENTER to acknowledge and continue...
+...
+... Press <ENTER> to continue ...
+...
+... Press <ENTER> to continue ...
+...
+Installation process complete. Press ENTER to close SQL*Plus...
+
+4、安装后工作
+1） 为了操作OS文件和调度jobs，需要确认Oracle本身已经安装了 UTL_FILE 和 DBMS_JOB 两个包。
+并设置以下初始化参数：
+utl_file_dir = <directory>
+job_queue_processes=<number, 0-36, recommended 3>
+job_queue_interval=<seconds, 1-3600, recommended 60>
+job_queue_keep_connections = <TRUE or FALSE>
+C:\Program Files\Quest Software\PLVision Code Library\Source>sqlplus sys/change_on_install@orcl42 as sysdba
+SQL> set lines 256
+SQL> alter system set utl_file_dir='/opt/oracle' scope=spfile;
+SQL> alter system set job_queue_processes=3 scope=spfile;
+SQL> shutdown immediate
+SQL> startup
+SQL> show parameter utl_file_dir
+SQL> show parameter job
+2）为了使用PLVdyn包（PLVdyn offers an easy-to-use interface to the built-in DBMS_SQL package）
+SQL> conn plvision/oss@orcl42
+SQL> grant execute on plvdyn to public;
+3）检查是否有失效对象
+
+四、分析PL/Vision
+
+SQL> conn plvision/oss@orcl42
+SQL> @plvanalyze
+
+五、删除PL/Vision
+
+SQL> conn plvision/oss@orcl42
+SQL> @plvremove
+...
+Enter option : 4
+...
+... Press <ENTER> to continue ...
+
+五、使用PL/Vision
+
+SQL> conn wacos/oss@orcl42
+SQL> exec PLVddd.tbl(user,'tab_test2');
+/*============PL/Vision Reverse Engineering ==============
+| Auto-Generated DDL (3？ 13, 2008 17:01:38)
+| --------------------------------------------------------
+| Table Generated For wacos.tab_test2
+|========================================================*/
+CREATE TABLE wacos.tab_test2
+(
+col2 VARCHAR2(10),
+col5 CHAR(1)
+     CHECK (col5 in ('1','2','3')),
+testlob BLOB
+)
+;
+ALTER TABLE wacos.tab_test2
+   ADD (
+         PRIMARY KEY (COL2,COL5)
+   );
+PL/SQL 过程已成功完成。
+SQL>
+
+
+   --END

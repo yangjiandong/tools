@@ -1,0 +1,508 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>XtraDB存储引擎</title></head><body>﻿﻿
+
+
+
+  
+  <link rel="Shortcut Icon" href="http://www.ningoo.net/html/2009/favicon.ico">
+  <link rel="openid.server" href="http://www.openid.cn/openid.server">
+  <link rel="openid.delegate" href="http://ningoo.openid.cn/">
+
+  <link rel="stylesheet" href="xtradb_storage_engine_files/style.css" type="text/css" media="screen">
+  <link rel="alternate" type="application/rss+xml" title="NinGoo.net RSS Feed" href="http://www.ningoo.net/feed">
+  <link rel="stylesheet" href="xtradb_storage_engine_files/comment.css" type="text/css" media="screen">
+  <link rel="stylesheet" href="xtradb_storage_engine_files/coolcode.css">
+  <link rel="stylesheet" href="xtradb_storage_engine_files/pagenavi-css.htm" type="text/css" media="screen">
+  <script type="text/javascript" src="xtradb_storage_engine_files/coolcode.js"></script>
+
+<div id="navbar">
+    <a href="http://www.ningoo.net/" title="home">首页</a>
+    <a href="http://www.google.com/ig/add?feedurl=http://rss.ningoo.net"><strong>Google订阅</strong></a>
+    <a href="http://www.xianguo.com/subscribe.php?url=http://rss.ningoo.net"><strong>鲜果订阅</strong></a>
+    <a href="http://twitter.com/NinGoo">Twitter</a>
+    <a href="http://www.taobaodba.com/">TaobaoDBA</a>
+    <a href="http://www.askdba.net/" title="AskDBA"><strong>AskDBA</strong></a>
+    <a href="http://www.ningoo.net/wp-admin" title="admin">管理</a>
+    <a href="http://www.ningoo.net/about_me" title="About">关于</a>
+</div>
+<div id="header">
+    <div class="blogname">
+        <a href="http://www.ningoo.net/">NinGoo.net</a>
+    </div>
+    <div class="desc">
+        High Availability DBA &amp; Simple Life    </div>
+</div>
+<div id="page">
+<div id="content">
+		<table style="border: 0px none ;" width="100%">
+    <tbody><tr colspan="2">
+     <td width="50%">上一篇：<a href="http://www.ningoo.net/html/2009/taobao_university_recruitment_wuhan.html">武汉校园招聘归来</a>     </td>
+     <td align="right" width="50%">下一篇：<a href="http://www.ningoo.net/html/2009/xtradb_enhancements_in_show-innodb-status.html">从show innodb status看XtraDB的增强特性</a>     </td>
+    </tr>
+    </tbody></table>
+
+	<h1><a href="http://www.ningoo.net/html/2009/xtradb_storage_engine.html" rel="bookmark" title="Permanent Link: XtraDB存储引擎">XtraDB存储引擎</a></h1>
+	<div id="copyright">作者：NinGoo | 【转载须以超链接形式标明文章原始出处和作者信息】
+	</div>
+	
+	 <script type="text/javascript"><!--
+google_ad_client = "pub-5453951276515381";
+/* 728x90, 创建于 08-8-4 */
+google_ad_slot = "6748094299";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript" src="xtradb_storage_engine_files/show_ads.js">
+</script><script src="xtradb_storage_engine_files/expansion_embed.js"></script><script src="xtradb_storage_engine_files/test_domain.js"></script><script>google_protectAndRun("ads_core.google_render_ad", google_handleError, google_render_ad);</script><ins style="border: medium none ; margin: 0pt; padding: 0pt; display: inline-table; height: 90px; position: relative; visibility: visible; width: 728px;"><ins style="border: medium none ; margin: 0pt; padding: 0pt; display: block; height: 90px; position: relative; visibility: visible; width: 728px;"><iframe allowtransparency="true" hspace="0" id="google_ads_frame1" marginheight="0" marginwidth="0" name="google_ads_frame" src="xtradb_storage_engine_files/ads.htm" style="left: 0pt; position: absolute; top: 0pt;" vspace="0" scrolling="no" frameborder="0" height="90" width="728"></iframe></ins></ins>
+				
+	<div class="entry">
+		<p>XtraDB存储引擎是<a href="http://www.percona.com/">percona</a>公司对于innodb存储引擎进行改进加强后的产品，第一个版本为<a href="http://www.mysqlperformanceblog.com/2008/12/16/announcing-percona-xtradb-storage-engine-a-drop-in-replacement-for-standard-innodb/">1.0.2-1</a>，发布于2008年底。XtraDB兼容innodb的所有特性，并且在IO性能，锁性能，内存管理等多个方面进行了增强。</p>
+<p>下载MySQL源代码，当前最新的5.1版本为5.1.40<br>
+<a href="http://dev.mysql.com/downloads/mysql/5.1.html#source">http://dev.mysql.com/downloads/mysql/5.1.html#source</a></p>
+<p>下载XtraDB源代码，当前最新的版本为1.0.4-8<br>
+<a href="http://launchpad.net/percona-xtradb/release-8/1.0.4-8/+download/percona-xtradb-1.0.4-8.tar.gz">http://launchpad.net/percona-xtradb/release-8/1.0.4-8/+download/percona-xtradb-1.0.4-8.tar.gz</a></p>
+<p>解压MySQL</p>
+<pre>tar -zxvf mysql-5.1.40.tar.gz
+</pre>
+<p>解压XtraDB</p>
+<pre>tar -zxvf percona-xtradb-1.0.4-8.tar.gz
+</pre>
+<p>将MySQL原来的innodb源码删除或者重命名</p>
+<pre>cd mysql-5.1.40/storage
+mv innobase innobase_bak
+</pre>
+<p>将XtraDB拷贝为innobase</p>
+<pre>cp -r ../../percona-xtradb-1.0.4-8 innobase/
+</pre>
+<p>重新编译安装MySQL</p>
+<pre>cd ../
+
+./configure --prefix=/home/mysql/mysql --with-extra-charsets=all
+--enable-assembler --enable-profiling --enable-community-features
+--with-plugins=max --with-client-ldflags=-all-static --with-plugins=all
+
+make &amp;&amp; make install
+</pre>
+<p>安装完成后，就可以按照普通的MySQL安装创建数据库流程执行相应操作即可。XtraDB实际上是基于innodb plugin的代码修改而来，所以以上安装过程和innodb plugin的安装一致。</p>
+<pre>root@information_schema 04:19:48&gt;show plugins;
++--------------------------------+----------+--------------------+---------+---------+
+| Name                           | Status   | Type               | Library | License |
++--------------------------------+----------+--------------------+---------+---------+
+| binlog                         | ACTIVE   | STORAGE ENGINE     | NULL    | GPL     |
+| partition                      | ACTIVE   | STORAGE ENGINE     | NULL    | GPL     |
+| ARCHIVE                        | ACTIVE   | STORAGE ENGINE     | NULL    | GPL     |
+| BLACKHOLE                      | ACTIVE   | STORAGE ENGINE     | NULL    | GPL     |
+| CSV                            | ACTIVE   | STORAGE ENGINE     | NULL    | GPL     |
+| FEDERATED                      | DISABLED | STORAGE ENGINE     | NULL    | GPL     |
+| MEMORY                         | ACTIVE   | STORAGE ENGINE     | NULL    | GPL     |
+| InnoDB                         | ACTIVE   | STORAGE ENGINE     | NULL    | GPL     |
+| INNODB_RSEG                    | ACTIVE   | INFORMATION SCHEMA | NULL    | GPL     |
+| INNODB_BUFFER_POOL_PAGES       | ACTIVE   | INFORMATION SCHEMA | NULL    | GPL     |
+| INNODB_BUFFER_POOL_PAGES_INDEX | ACTIVE   | INFORMATION SCHEMA | NULL    | GPL     |
+| INNODB_BUFFER_POOL_PAGES_BLOB  | ACTIVE   | INFORMATION SCHEMA | NULL    | GPL     |
+| INNODB_TRX                     | ACTIVE   | INFORMATION SCHEMA | NULL    | GPL     |
+| INNODB_LOCKS                   | ACTIVE   | INFORMATION SCHEMA | NULL    | GPL     |
+| INNODB_LOCK_WAITS              | ACTIVE   | INFORMATION SCHEMA | NULL    | GPL     |
+| INNODB_CMP                     | ACTIVE   | INFORMATION SCHEMA | NULL    | GPL     |
+| INNODB_CMP_RESET               | ACTIVE   | INFORMATION SCHEMA | NULL    | GPL     |
+| INNODB_CMPMEM                  | ACTIVE   | INFORMATION SCHEMA | NULL    | GPL     |
+| INNODB_CMPMEM_RESET            | ACTIVE   | INFORMATION SCHEMA | NULL    | GPL     |
+| INNODB_TABLE_STATS             | ACTIVE   | INFORMATION SCHEMA | NULL    | GPL     |
+| INNODB_INDEX_STATS             | ACTIVE   | INFORMATION SCHEMA | NULL    | GPL     |
+| XTRADB_ENHANCEMENTS            | ACTIVE   | INFORMATION SCHEMA | NULL    | GPL     |
+| MyISAM                         | ACTIVE   | STORAGE ENGINE     | NULL    | GPL     |
+| MRG_MYISAM                     | ACTIVE   | STORAGE ENGINE     | NULL    | GPL     |
+| ndbcluster                     | DISABLED | STORAGE ENGINE     | NULL    | GPL     |
++--------------------------------+----------+--------------------+---------+---------+
+</pre>
+<p>这里显示的innodb其实已经是XtraDB引擎了。可以简单看一下XtraDB引擎的特性来验证，例如XtraDB在information_schema中引入了xtradb_enhancements来记录其相对于innodb的增强特性。</p>
+<pre>root@information_schema 04:18:02&gt;desc information_schema.xtradb_enhancements;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| name        | varchar(255) | NO   |     |         |       |
+| description | varchar(255) | NO   |     |         |       |
+| comment     | varchar(100) | NO   |     |         |       |
+| link        | varchar(255) | NO   |     |         |       |
++-------------+--------------+------+-----+---------+-------+
+
+root@information_schema 04:19:45&gt;select * from information_schema.xtradb_enhancements\G
+*************************** 1. row ***************************
+       name: xtradb_show_enhancements
+description: I_S.XTRADB_ENHANCEMENTS
+    comment:
+       link: http://www.percona.com/docs/wiki/percona-xtradb
+*************************** 2. row ***************************
+       name: innodb_show_status
+description: Improvements to SHOW INNODB STATUS
+    comment: Memory information and lock info fixes
+       link: http://www.percona.com/docs/wiki/percona-xtradb
+*************************** 3. row ***************************
+       name: innodb_io
+description: Improvements to InnoDB IO
+    comment:
+       link: http://www.percona.com/docs/wiki/percona-xtradb
+*************************** 4. row ***************************
+       name: innodb_opt_lru_count
+description: Fix of buffer_pool mutex
+    comment: Decreases contention on buffer_pool mutex on LRU operations
+       link: http://www.percona.com/docs/wiki/percona-xtradb
+*************************** 5. row ***************************
+       name: innodb_buffer_pool_pages
+description: Information of buffer pool content
+    comment:
+       link: http://www.percona.com/docs/wiki/percona-xtradb
+*************************** 6. row ***************************
+       name: innodb_expand_undo_slots
+description: expandable maximum number of undo slots
+    comment: from 1024 (default) to about 4000
+       link: http://www.percona.com/docs/wiki/percona-xtradb
+*************************** 7. row ***************************
+       name: innodb_extra_rseg
+description: allow to create extra rollback segments
+    comment: When create new db, the new parameter allows to create more rollback segments
+       link: http://www.percona.com/docs/wiki/percona-xtradb
+*************************** 8. row ***************************
+       name: innodb_overwrite_relay_log_info
+description: overwrite relay-log.info when slave recovery
+    comment: Building as plugin, it is not used.
+       link: http://www.percona.com/docs/wiki/percona-xtradb:innodb_overwrite_relay_log_info
+*************************** 9. row ***************************
+       name: innodb_thread_concurrency_timer_based
+description: use InnoDB timer based concurrency throttling (backport from MySQL 5.4.0)
+    comment:
+       link:
+*************************** 10. row ***************************
+       name: innodb_expand_import
+description: convert .ibd file automatically when import tablespace
+    comment: the files are generated by xtrabackup export mode.
+       link: http://www.percona.com/docs/wiki/percona-xtradb
+*************************** 11. row ***************************
+       name: innodb_dict_size_limit
+description: Limit dictionary cache size
+    comment: Variable innodb_dict_size_limit in bytes
+       link: http://www.percona.com/docs/wiki/percona-xtradb
+*************************** 12. row ***************************
+       name: innodb_split_buf_pool_mutex
+description: More fix of buffer_pool mutex
+    comment: Spliting buf_pool_mutex and optimizing based on innodb_opt_lru_count
+       link: http://www.percona.com/docs/wiki/percona-xtradb
+*************************** 13. row ***************************
+       name: innodb_stats
+description: Additional features about InnoDB statistics/optimizer
+    comment:
+       link: http://www.percona.com/docs/wiki/percona-xtradb
+*************************** 14. row ***************************
+       name: innodb_recovery_patches
+description: Bugfixes and adjustments about recovery process
+    comment:
+       link: http://www.percona.com/docs/wiki/percona-xtradb
+*************************** 15. row ***************************
+       name: innodb_purge_thread
+description: Enable to use purge devoted thread
+    comment:
+       link: http://www.percona.com/docs/wiki/percona-xtradb
+15 rows in set (0.00 sec)
+</pre>
+<p>可以看到引入了很多新的innodb控制参数，允许用户对xtradb引擎的工作方式做更多的控制</p>
+<pre>root@information_schema 04:22:01&gt;show variables like '%innodb%';
++---------------------------------------+------------------------+
+| Variable_name                         | Value                  |
++---------------------------------------+------------------------+
+| have_innodb                           | YES                    |
+| ignore_builtin_innodb                 | OFF                    |
+| innodb_adaptive_checkpoint            | none                   |
+| innodb_adaptive_flushing              | ON                     |
+| innodb_adaptive_hash_index            | ON                     |
+| innodb_additional_mem_pool_size       | 8388608                |
+| innodb_autoextend_increment           | 8                      |
+| innodb_autoinc_lock_mode              | 1                      |
+| innodb_buffer_pool_size               | 134217728              |
+| innodb_change_buffering               | inserts                |
+| innodb_checksums                      | ON                     |
+| innodb_commit_concurrency             | 0                      |
+| innodb_concurrency_tickets            | 500                    |
+| innodb_data_file_path                 | ibdata1:10M:autoextend |
+| innodb_data_home_dir                  |                        |
+| innodb_dict_size_limit                | 0                      |
+| innodb_doublewrite                    | ON                     |
+| innodb_enable_unsafe_group_commit     | 0                      |
+| innodb_expand_import                  | 0                      |
+| innodb_extra_rsegments                | 0                      |
+| innodb_extra_undoslots                | OFF                    |
+| innodb_fast_recovery                  | OFF                    |
+| innodb_fast_shutdown                  | 1                      |
+| innodb_file_format                    | Antelope               |
+| innodb_file_format_check              | Antelope               |
+| innodb_file_io_threads                | 4                      |
+| innodb_file_per_table                 | OFF                    |
+| innodb_flush_log_at_trx_commit        | 1                      |
+| innodb_flush_method                   |                        |
+| innodb_flush_neighbor_pages           | 1                      |
+| innodb_force_recovery                 | 0                      |
+| innodb_ibuf_accel_rate                | 100                    |
+| innodb_ibuf_active_contract           | 0                      |
+| innodb_ibuf_max_size                  | 67092480               |
+| innodb_io_capacity                    | 200                    |
+| innodb_lock_wait_timeout              | 50                     |
+| innodb_locks_unsafe_for_binlog        | OFF                    |
+| innodb_log_buffer_size                | 8388608                |
+| innodb_log_file_size                  | 5242880                |
+| innodb_log_files_in_group             | 2                      |
+| innodb_log_group_home_dir             | ./                     |
+| innodb_max_dirty_pages_pct            | 75                     |
+| innodb_max_purge_lag                  | 0                      |
+| innodb_mirrored_log_groups            | 1                      |
+| innodb_open_files                     | 300                    |
+| innodb_overwrite_relay_log_info       | OFF                    |
+| innodb_read_ahead                     | linear                 |
+| innodb_read_ahead_threshold           | 56                     |
+| innodb_read_io_threads                | 4                      |
+| innodb_replication_delay              | 0                      |
+| innodb_rollback_on_timeout            | OFF                    |
+| innodb_show_locks_held                | 10                     |
+| innodb_show_verbose_locks             | 0                      |
+| innodb_spin_wait_delay                | 6                      |
+| innodb_stats_auto_update              | 1                      |
+| innodb_stats_method                   | nulls_equal            |
+| innodb_stats_on_metadata              | ON                     |
+| innodb_stats_sample_pages             | 8                      |
+| innodb_stats_update_need_lock         | 1                      |
+| innodb_strict_mode                    | OFF                    |
+| innodb_support_xa                     | ON                     |
+| innodb_sync_spin_loops                | 30                     |
+| innodb_table_locks                    | ON                     |
+| innodb_thread_concurrency             | 0                      |
+| innodb_thread_concurrency_timer_based | OFF                    |
+| innodb_thread_sleep_delay             | 10000                  |
+| innodb_use_purge_thread               | OFF                    |
+| innodb_use_sys_malloc                 | ON                     |
+| innodb_version                        | 1.0.4-7                |
+| innodb_write_io_threads               | 4                      |
++---------------------------------------+------------------------+
+70 rows in set (0.00 sec)
+</pre>
+<p>对比一下原版的5.1.40，innodb相关参数只有37个，整整多了33个参数。</p>
+<pre>mysql&gt; show variables like '%innodb%';
++-----------------------------------------+------------------------+
+| Variable_name                           | Value                  |
++-----------------------------------------+------------------------+
+| have_innodb                             | YES                    |
+| ignore_builtin_innodb                   | OFF                    |
+| innodb_adaptive_hash_index              | ON                     |
+| innodb_additional_mem_pool_size         | 1048576                |
+| innodb_autoextend_increment             | 8                      |
+| innodb_autoinc_lock_mode                | 1                      |
+| innodb_buffer_pool_size                 | 8388608                |
+| innodb_checksums                        | ON                     |
+| innodb_commit_concurrency               | 0                      |
+| innodb_concurrency_tickets              | 500                    |
+| innodb_data_file_path                   | ibdata1:10M:autoextend |
+| innodb_data_home_dir                    |                        |
+| innodb_doublewrite                      | ON                     |
+| innodb_fast_shutdown                    | 1                      |
+| innodb_file_io_threads                  | 4                      |
+| innodb_file_per_table                   | OFF                    |
+| innodb_flush_log_at_trx_commit          | 1                      |
+| innodb_flush_method                     |                        |
+| innodb_force_recovery                   | 0                      |
+| innodb_lock_wait_timeout                | 50                     |
+| innodb_locks_unsafe_for_binlog          | OFF                    |
+| innodb_log_buffer_size                  | 1048576                |
+| innodb_log_file_size                    | 5242880                |
+| innodb_log_files_in_group               | 2                      |
+| innodb_log_group_home_dir               | ./                     |
+| innodb_max_dirty_pages_pct              | 90                     |
+| innodb_max_purge_lag                    | 0                      |
+| innodb_mirrored_log_groups              | 1                      |
+| innodb_open_files                       | 300                    |
+| innodb_rollback_on_timeout              | OFF                    |
+| innodb_stats_on_metadata                | ON                     |
+| innodb_support_xa                       | ON                     |
+| innodb_sync_spin_loops                  | 20                     |
+| innodb_table_locks                      | ON                     |
+| innodb_thread_concurrency               | 8                      |
+| innodb_thread_sleep_delay               | 10000                  |
+| innodb_use_legacy_cardinality_algorithm | ON                     |
++-----------------------------------------+------------------------+
+37 rows in set (0.00 sec)
+</pre>
+	</div>     
+
+   <p><b>本文网址：</b><a href="http://www.ningoo.net/html/2009/xtradb_storage_engine.html">http://www.ningoo.net/html/2009/xtradb_storage_engine.html</a></p>
+   
+   <p>
+   <a href="http://rss.ningoo.net/"><img src="xtradb_storage_engine_files/gif.gif" align="middle"></a> 
+     <a href="http://www.google.com/ig/add?feedurl=http://rss.ningoo.net">订阅到Google</a> | <a href="http://del.icio.us/post" onclick="window.open('http://del.icio.us/post?v=4&amp;noui&amp;jump=close&amp;url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title),'delicious', 'toolbar=no,width=700,height=400'); return false;">收藏到Del.icio.us</a> | <a title="推荐到鲜果热文" href="http://www.xianguo.com/api/submitdigg/?feed=http://rss.ningoo.net&amp;link=WEB_URL">推荐到鲜果</a>
+   </p>
+ 
+	 <p class="postmetadata">
+			Posted by <a href="http://www.ningoo.net/">NinGoo</a>
+			2009-11-05 17:33 星期四					
+	 </p>
+	 
+   <table style="border: 1px solid rgb(221, 221, 221); padding: 5px; font-size: 12px;" width="100%">
+    <tbody><tr colspan="2">
+     <td width="50%"><b>相关文章</b>
+     </td>
+     <td width="50%"><b>随机文章</b>
+     </td>
+    </tr>
+    <tr colspan="2">
+     <td valign="top"> <ul class="related_post"><li><a href="http://www.ningoo.net/html/2009/xtradb_enhancements_in_show-innodb-status.html" title="从show innodb status看XtraDB的增强特性">从show innodb status看XtraDB的增强特性</a></li><li><a href="http://www.ningoo.net/html/2009/about_innodb_thread_concurrency.html" title="InnoDB线程并发检查机制">InnoDB线程并发检查机制</a></li><li><a href="http://www.ningoo.net/html/2009/an_introduce_of_innodb_monitor%e4%bb%8b%e7%bb%8d.html" title="Innodb monitor介绍">Innodb monitor介绍</a></li><li><a href="http://www.ningoo.net/html/2009/using_xtrabackup_backup_mysql_database_2.html" title="使用Xtrabackup备份MySQL数据库(续)">使用Xtrabackup备份MySQL数据库(续)</a></li><li><a href="http://www.ningoo.net/html/2008/mysql_innodb_transaction_isolation_level.html" title="MySQL InnoDB存储引擎的事务隔离级别">MySQL InnoDB存储引擎的事务隔离级别</a></li><li><a href="http://www.ningoo.net/html/2008/mysql_innodb_parametes.html" title="MySQL InnoDB存储引擎的一些参数">MySQL InnoDB存储引擎的一些参数</a></li></ul>     </td>
+     <td valign="top"><ul class="randome_post"><li><a href="http://www.ningoo.net/html/2007/dreamhost_database_down.html" title="遭遇DreamHost数据库故障">遭遇DreamHost数据库故障</a></li><li><a href="http://www.ningoo.net/html/2007/databse_link_cannot_connect_because_oracle11g_password_case_sensitive.html" title="Oracle11g密码区分大小写导致database link无法连接">Oracle11g密码区分大小写导致database link无法连接</a></li><li><a href="http://www.ningoo.net/html/2009/learn_oci_programming_from_ociuldr.html" title="学习oci编程，从ociuldr开始">学习oci编程，从ociuldr开始</a></li><li><a href="http://www.ningoo.net/html/2007/xian_guo_bugs.html" title="鲜果，web2.0?">鲜果，web2.0?</a></li><li><a href="http://www.ningoo.net/html/2007/dba_memo_data_guard_add_data_file.html" title="DBA备忘录：Data Guard之添加数据文件">DBA备忘录：Data Guard之添加数据文件</a></li><li><a href="http://www.ningoo.net/html/2008/using_pipeline_function_for_realtime_output.html" title="使用pipeline function获得实时输出">使用pipeline function获得实时输出</a></li></ul>     </td>
+    </tr>
+   </tbody></table>
+
+   <p><b>本文Tags: <a href="http://www.ningoo.net/html/tag/innodb" rel="tag">InnoDB</a>, <a href="http://www.ningoo.net/html/tag/mysql" rel="tag">MySQL</a>, <a href="http://www.ningoo.net/html/tag/xtradb" rel="tag">xtradb</a></b></p>
+            
+	 
+
+
+<div class="clear"></div>
+<script type="text/javascript"> 
+var blogurl="http://www.ningoo.net"; 
+var needemail="1";
+var nowurl="http://www.ningoo.net/wp-content/themes/yuewei/jscript/getpost.php?id=1014";
+var md5 = "73e53a364294a226b28f8e620698a17e";
+</script>
+<h3>3 条评论</h3>
+<ul class="commentslist" id="comments">
+			<li id="comment-13115" class="borderc1">
+		<div class="commenthead">At 2009.11.05 18:00, <a name="comment-13115"></a><span>cccgw</span> said: </div>
+		<div class="body">
+						<p>先坐沙发，回头再看。</p>
+		</div>
+		<div class="meta">
+			[<a href="javascript:moveForm(13115)" title="reply">Reply</a>]</div><ul></ul></li>		<li id="comment-13117" class="borderc2">
+		<div class="commenthead">At 2009.11.05 20:19, <a name="comment-13117"></a><span><a href="http://www.penglixun.com/" rel="external nofollow" class="url">P.Linux</a></span> said: </div>
+		<div class="body">
+						<p>从官方文档来看，1.0.4-8版本是基于MySQL 5.1.39发布的，放到5.1.40中没有什么问题吗？</p>
+		</div>
+		<div class="meta">
+			[<a href="javascript:moveForm(13117)" title="reply">Reply</a>]</div><ul>		<li id="comment-13118" class="mine">
+		<div class="commenthead">At 2009.11.06 09:04, <a name="comment-13118"></a><span><a href="http://www.ningoo.net/" rel="external nofollow" class="url">NinGoo</a></span> said: </div>
+		<div class="body">
+						<p>@P.Linux
+MySQL存储引擎的版本是独立的，跟MySQL版本没有强关联性。除非MySQL改动了存储引擎接口定义，否则小版本的差异是没有影响的。并不是
+1.0.4-8是基于MySQL5.1.39发布的，只是当时MySQL的版本是5.1.39，percona也只是以同样的方式将他们集成在一起而已</p>
+		</div>
+		<div class="meta">
+			[<a href="javascript:moveForm(13118)" title="reply">Reply</a>]</div><ul></ul></li></ul></li></ul>
+<div id="cmtForm">
+<form action="http://www.ningoo.net/wp-comments-post.php" method="post" id="commentform" onsubmit="AjaxSendComment();return false;">
+<div id="caie">
+<br>
+<input name="author" id="author" tabindex="11" onclick="this.select();" type="text"><label for="author">名称</label><span id="authorrequire"> (Required)</span><br>
+<input name="email" id="email" tabindex="12" onclick="this.select();" type="text"><label for="email">Mail</label><span id="emailrequire"> (Required, will not be published)</span><br>
+<input name="url" id="url" tabindex="13" onclick="this.select();" type="text"><label for="url">网站</label>
+</div>
+<div id="commentarea">
+<div id="commentdiv"><textarea name="comment" id="comment" tabindex="14" rows="6" cols="70"></textarea></div>
+<div id="copreview" ondblclick="comment_preview();"></div>
+<div id="comoper"><input value="Say it!" name="submit" tabindex="15" type="submit">
+<input value="Preview" name="preview" onclick="javascript:comment_preview();" tabindex="16" id="prectr" type="button">
+<input id="reRoot" onclick="javascript:moveForm(0)" style="display: none;" value="Cancel" tabindex="17" type="button">
+<input name="comment_post_ID" value="1014" type="hidden">
+<input name="comment_reply_ID" id="comment_reply_ID" value="0" type="hidden"></div>
+</div>
+		<script language="JavaScript" type="text/javascript" src="xtradb_storage_engine_files/common.php"></script>
+		<script language="JavaScript" type="text/javascript">
+		//<![CDATA[
+		var hash = "73e53a364294a226b28f8e620698a17e";
+		var author_cookie = "comment_author_" + hash;
+		var email_cookie = "comment_author_email_" + hash;
+		var url_cookie = "comment_author_url_" + hash; 
+		var adminmail = "seaman.ning{_}gmail.com";
+		var adminurl = "http://www.ningoo.net";
+		setCommForm();
+		//]]>
+		</script>
+	</form>
+</div>
+<script type="text/javascript" src="xtradb_storage_engine_files/comment.js"></script>
+	 
+</div>
+﻿<div id="sidebar">
+    <!-- SiteSearch Google -->
+         <form action="http://www.ningoo.net/search" id="cse-search-box">
+  <div class="sidecontent">
+    <input name="cx" value="016470294474004421804:nombwl9udh0" type="hidden">
+    <input name="cof" value="FORID:11" type="hidden">
+    <input name="ie" value="UTF-8" type="hidden">
+    <input style="border: 1px solid rgb(126, 157, 185); padding: 2px; background: rgb(255, 255, 255) url(http://www.google.com/cse/intl/zh-Hans/images/google_custom_search_watermark.gif) no-repeat scroll left center; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" name="q" size="20" type="text">
+    <input name="sa" value="搜索" type="submit">
+  </div>
+</form>
+<script type="text/javascript" src="xtradb_storage_engine_files/brand.htm"></script>
+        <!-- SiteSearch Google -->
+    		
+    <h2>订阅本站 | Subscribe</h2>
+    <div class="sidecontent">
+        <a href="http://rss.ningoo.net/"><img src="xtradb_storage_engine_files/gif.gif" align="middle"> </a>
+        <a href="http://feeds2.feedburner.com/NinGoo"><img src="xtradb_storage_engine_files/NinGoo.gif" style="border: 0pt none ;" alt="" align="middle" height="26" width="88"></a>
+         <br>
+         <a href="http://www.google.com/ig/add?feedurl=http://rss.ningoo.net">
+          <img src="xtradb_storage_engine_files/icon_subshot02_google.gif" alt="订阅到Google Reader" border="0"></a>
+         <a target="_blank" href="http://www.xianguo.com/subscribe.php?url=http://rss.ningoo.net" alt="订阅到鲜果">
+          <img src="xtradb_storage_engine_files/icon_subshot02_xianguo.gif" alt="订阅到鲜果" border="0"></a><br>
+        <a target="_blank" href="http://www.zhuaxia.com/add_channel.php?sourceid=102&amp;url=http://rss.ningoo.net">
+          <img src="xtradb_storage_engine_files/icon_subshot02_zhuaxia.gif" alt="订阅到抓虾" border="0"></a>
+         <a href="http://reader.yodao.com/#url=http://rss.ningoo.net">
+          <img src="xtradb_storage_engine_files/icon_subshot02_youdao.gif" alt="订阅到有道" border="0"></a>
+   </div> 
+   	   
+       	<h2>文章分类 | Categories</h2>
+    	<div class="sidecontent">
+    	    <ul>
+    	    	<li class="cat-item cat-item-3"><a href="http://www.ningoo.net/html/category/database" title="查看 数据库 下的所有文章">数据库</a> (180)
+</li>
+	<li class="cat-item cat-item-4"><a href="http://www.ningoo.net/html/category/dwbi" title="查看 数据仓库 下的所有文章">数据仓库</a> (23)
+</li>
+	<li class="cat-item cat-item-5"><a href="http://www.ningoo.net/html/category/miscellanea" title="查看 杂记 下的所有文章">杂记</a> (108)
+</li>
+	<li class="cat-item cat-item-6"><a href="http://www.ningoo.net/html/category/web" title="查看 互联网 下的所有文章">互联网</a> (39)
+</li>
+	<li class="cat-item cat-item-7"><a href="http://www.ningoo.net/html/category/os" title="Unix,Linux or Windows">操作系统</a> (25)
+</li>
+	<li class="cat-item cat-item-8"><a href="http://www.ningoo.net/html/category/storage" title="存储，主机，硬件相关">存储</a> (10)
+</li>
+	<li class="cat-item cat-item-292"><a href="http://www.ningoo.net/html/category/tools" title="DBA工具">工具</a> (7)
+</li>
+    	    </ul>
+    	</div>
+		
+	    	<h2>最近文章 | Recent posts</h2>
+    	<div class="sidecontent">
+    	    <ul>
+    	    <li><a href="http://www.ningoo.net/html/2009/xtradb_storage_engine.html" rel="bookmark" title="Permanent Link: XtraDB存储引擎">XtraDB存储引擎</a></li><li><a href="http://www.ningoo.net/html/2009/taobao_university_recruitment_wuhan.html" rel="bookmark" title="Permanent Link: 武汉校园招聘归来">武汉校园招聘归来</a></li><li><a href="http://www.ningoo.net/html/2009/oow2009_ppt_managing_statistics_for_optimal_query_performance.html" rel="bookmark" title="Permanent Link: OOW2009 PPT:Managing Statistics for Optimal Query Performance">OOW2009 PPT:Managing Statistics for Optimal Query Performance</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_golden_gate_and_obama.html" rel="bookmark" title="Permanent Link: OOW2009美国行:金门大桥与奥巴马">OOW2009美国行:金门大桥与奥巴马</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_fouth_day.html" rel="bookmark" title="Permanent Link: OOW2009美国行:大会第四天">OOW2009美国行:大会第四天</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_third_day_2.html" rel="bookmark" title="Permanent Link: OOW2009美国行:大会第三天续">OOW2009美国行:大会第三天续</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_third_day.html" rel="bookmark" title="Permanent Link: OOW2009美国行:大会第三天">OOW2009美国行:大会第三天</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_second_day.html" rel="bookmark" title="Permanent Link: OOW2009美国行:大会第二天">OOW2009美国行:大会第二天</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_first_day.html" rel="bookmark" title="Permanent Link: OOW2009美国行:大会第一天">OOW2009美国行:大会第一天</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_end_of_america_east_tour.html" rel="bookmark" title="Permanent Link: OOW2009美国行:东部之旅结束">OOW2009美国行:东部之旅结束</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_washington_dc.html" rel="bookmark" title="Permanent Link: OOW2009美国行:帝都华盛顿">OOW2009美国行:帝都华盛顿</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_boston.html" rel="bookmark" title="Permanent Link: OOW2009美国行:宁静安详的波士顿">OOW2009美国行:宁静安详的波士顿</a></li>    	    </ul>
+    	</div>
+			
+		
+	
+    <h2>站点信息 | Statistics</h2>
+        <div class="sidecontent">
+            				文章总数：380<br>
+				评论总数：863<br>
+				Start@2007-05-19<br><br>
+				
+				Powered by <a href="http://www.wordpress.com/">WordPress</a><br>
+				Hosted by <a href="http://www.dreamhost.com/r.cgi?287455">DreamHost</a><br>
+				UI Designed by <a href="http://www.ningoo.net/">NinGoo</a>
+				
+				<p>
+				 <a href="http://rss.ningoo.net/"><img src="xtradb_storage_engine_files/gif.gif" alt="通过Feedsky订阅" align="middle"> </a>
+				</p>
+
+		</div> 
+</div><!--cos-html-cache-safe-tag-->﻿<div style="clear: both;"></div>
+<div style="clear: both;"></div>
+﻿</div>
+<div id="footer">
+(©)版权所有 2007 - 2008 <a href="http://www.ningoo.net/">www.NinGoo.net</a> 本Blog内容仅代表个人观点, 与其他任何组织或公司无关
+<br>
+<script type="text/javascript" src="xtradb_storage_engine_files/tongji.js"></script><img src="xtradb_storage_engine_files/tongji.gif" border="0" height="0" width="0"><noscript><span><a href="<a href="http://www.linezing.com/">http://www.linezing.com</a>"&gt;&lt;img src="<a href="http://img.tongji.linezing.com/11613/tongji.gif">http://img.tongji.linezing.com/11613/tongji.gif</a>"/&gt;&lt;/a&gt;</span></noscript>
+</div>
+﻿﻿
+<!--this is a real static html file created at 2009-11-07 20:36:21 by cos-html-cache 2.7.3 --></body></html>

@@ -1,0 +1,10 @@
+CREATE TABLE t_sales
+(invoice_no NUMBER,
+sale_date varchar2(10) NOT NULL )
+PARTITION BY RANGE (sale_date)
+(PARTITION sales2009
+VALUES LESS THAN ('2010.01.01')
+TABLESPACE scott_tbs_01,
+PARTITION sales2010
+VALUES LESS THAN ('2011.01.01')
+TABLESPACE scott_tbs_02);

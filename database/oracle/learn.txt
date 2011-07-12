@@ -1,0 +1,108 @@
+涂抹oracle学习笔记
+====================
+
+2010.01.10
+----------
+
+1、设置数据库为归档模式
+   p467
+   sqlplus system/system as sysdba
+   --查看归档模式
+   archive log list;
+   --设置
+   alter system set log_archive_dest_1='location=D:\oracle\oradata\dbserver\archive';
+   --重启查看归档模式
+   shutdown immediate;
+   startup mount;
+   --归档模式
+   alter database archivelog;
+
+2010.01.09
+-----------
+
+1、设置默认连接
+   set ORACLE_SID=dbserver
+
+2、手工启动
+   进入rman或sqlplus状态
+   startup nomount
+   alter database mount;
+   alter database open;
+
+   --停止
+   shutdown abort;
+
+3、save/listener.ora,sqlnet.ora,tnsnames.ora
+   D:\oracle\product\10.2.0\db_1\NETWORK\ADMIN
+
+2010.01.08
+----------
+
+1、分区学习
+   save/partion.txt
+
+   sqlplus system/123
+   @save\scott_partion.txt
+
+   conn scott/tiger
+   --只有企业版支持分区
+   @save\scott_table.txt
+
+   --插入记录
+   insert into t_sales
+   select trunc(dbms_random.value(0, 1000)) as random_id,
+                to_char(sysdate + rownum / 24, 'yyyy.mm.dd')
+           from dual
+           connect by level <= 1000;
+
+    --当前年份以前的数据
+   insert into t_sales
+   select trunc(dbms_random.value(0, 1000)) as random_id,
+                to_char(sysdate - rownum / 24*356, 'yyyy.mm.dd')
+           from dual
+           connect by level <= 1000;
+
+2010.01.01
+-----------
+
+1、定义环境ORACLE_HOME=D:\oracle10gxe\app\oracle\product\10.2.0\server
+
+   --好象不需要
+
+
+2、装载例子数据
+
+   --创建例子用表空间
+
+   sqlplus system/123
+   create tablespace scott_tbs datafile 'D:\oracle\oradata\dbserver\scott_tbs.dbf' size 100m ;
+
+   --建立用户(scott/tiger)
+
+   @%oracle_home%\rdbms\admin\scott.sql;
+   conn system/123;
+   alter user scott default tablespace scott_tbs quota unlimited on scott_tbs;
+
+   --控制文件ldr_case1.ctl
+LOAD DATA
+INFILE *
+INTO TABLE BONUS
+FIELDS TERMINATED BY ","
+(ENAME,JOB,SAL)
+BEGINDATA
+SMITH,CLEAK,3904
+ALLEN,SALESMAN,2891
+
+   --导入
+   sqlldr scott/tiger control=ldr_case1.ctl
+
+   -- 修改相关参数，提升速度
+   -- BINDSIZE=10M
+   SQLLDR SCOTT/TIGER CONTROL=LDR_OBJECT.CTL ERRORS=10 ROWS=5000 BINDSIZE=10485760
+
+   -- 再快点
+   SQLLDR SCOTT/TIGER CONTROL=LDR_OBJECT.CTL ERRORS=10 DIRECT=TRUE
+   经过时间为: 00: 00: 01.32
+   CPU 时间为: 00: 00: 00.15
+
+   --END

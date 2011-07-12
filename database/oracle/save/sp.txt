@@ -1,0 +1,68 @@
+--------------------------------------------
+-- Export file for user FAUSER            --
+-- Created by yang on 2010-2-24, 20:42:52 --
+--------------------------------------------
+
+spool sp.log
+
+prompt
+
+prompt Creating function GET_STRARRAYLENGTH
+prompt ====================================
+prompt
+
+create or replace function Get_StrArrayLength
+(
+  av_str varchar2,  --要分割的字符串
+  av_split varchar2  --分隔符号
+)
+return number
+is
+  lv_str varchar2(1000);
+  lv_length number;
+begin
+  lv_str:=ltrim(rtrim(av_str));
+  lv_length:=0;
+  while instr(lv_str,av_split)<>0 loop
+     lv_length:=lv_length+1;
+     lv_str:=substr(lv_str,instr(lv_str,av_split)+length(av_split),length(lv_str));
+  end loop;
+  lv_length:=lv_length+1;
+  return lv_length;
+end Get_StrArrayLength;
+/
+
+prompt
+
+prompt Creating function GET_STRARRAYSTROFINDEX
+prompt ========================================
+prompt
+
+create or replace function Get_StrArrayStrOfIndex
+(
+  av_str varchar2,  --要分割的字符串
+  av_split varchar2,  --分隔符号
+  av_index number --取第几个元素，从0开始
+)
+return varchar2
+--提取分割中字符
+is
+  lv_str varchar2(1024);
+  lv_strOfIndex varchar2(1024);
+  lv_length number;
+begin
+  lv_str:=ltrim(rtrim(av_str));
+  lv_str:=concat(lv_str,av_split);
+  lv_length:=av_index;
+  if lv_length=0 then
+      lv_strOfIndex:=substr(lv_str,1,instr(lv_str,av_split)-length(av_split));
+  else
+      lv_length:=av_index+1;
+      lv_strOfIndex:=substr(lv_str,instr(lv_str,av_split,1,av_index)+length(av_split),instr(lv_str,av_split,1,lv_length)-instr(lv_str,av_split,1,av_index)-length(av_split));
+  end if;
+  return  lv_strOfIndex;
+end Get_StrArrayStrOfIndex;
+/
+
+
+spool off

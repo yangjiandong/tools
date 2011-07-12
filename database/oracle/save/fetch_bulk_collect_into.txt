@@ -1,0 +1,186 @@
+通常我们获取游标数据是用 fetch some_cursor into var1, var2 的形式，当游标中的记录数不多时不打紧。
+然而自 Oracle 8i 起，Oracle 为我们提供了 fetch bulk collect 来批量取游标中的数据，存中即是合理的。
+它能在读取游标中大量数据的时候提升效率，就像 SNMP 协议中，V2 版比 V1 版新加了 GET-BULK PDU 一样，
+也是用来更高效的批量取设备上的节点值（原来做过网管软件开发，故联想到此）。
+
+fetch bulk collect into 的使用格式是：
+fetch some_cursor collect into col1, col2 limit xxx。col1、col2 是声明的集合类型变量，
+xxx 为每次取数据块的大小（记录数），相当于缓冲区的大小，可以不指定 limit xxx 大小。
+下面以实际的例子来说明它的使用，并与逐条取记录的 fetch into 执行效率上进行比较。
+测试环境是 Oracle 10g  10.2.1.0，查询的联系人表 sr_contacts 中有记录数 1802983 条，游标中以 rownum 限定返回的记录数。
+
+使用 fetch bulk collect into 获取游标数据
+
+view source
+print?
+01.declare
+02.
+03.  --声明需要集合类型及变量，参照字段的 type 来声明类型
+04.  type id_type is table of sr_contacts.sr_contact_id%type;
+05.  v_id id_type;
+06.
+07.  type phone_type is table of sr_contacts.contact_phone%type;
+08.  v_phone phone_type;
+09.
+10.  type remark_type is table of sr_contacts.remark%type;
+11.  v_remark remark_type;
+12.
+13.  cursor all_contacts_cur is --用 rownum 来限定取出的记录数来测试
+14.     select sr_contact_id,contact_phone,remark from sr_contacts where rownum <= 100000;
+15.
+16.begin
+17.
+18.    open all_contacts_cur;
+19.    loop
+20.        fetch all_contacts_cur bulk collect into v_id,v_phone,v_remark limit 256;
+21.        for i in 1..v_id.count loop --遍历集合
+22.            --用 v_id(i)/v_phone(i)/v_remark(i) 取出字段值来执行你的业务逻辑
+23.            null; --这里只放置一个空操作，只为测试循环取数的效率
+24.        end loop;
+25.        exit when all_contacts_cur%notfound; --exit 不能紧接 fetch 了，不然会漏记录
+26.    end loop;
+27.    close all_contacts_cur;
+28.end;
+
+
+使用 fetch into 逐行获取游标数据
+
+view source
+print?
+01.declare
+02.
+03.  --声明变量，参照字段的 type 来声明类型
+04.  v_id sr_contacts.sr_contact_id%type;
+05.  v_phone sr_contacts.contact_phone%type;
+06.  v_remark sr_contacts.remark%type;
+07.
+08.  cursor all_contacts_cur is  --用 rownum 来限定取出的记录数来测试
+09.     select sr_contact_id,contact_phone,remark from sr_contacts where rownum <= 100000;
+10.
+11.begin
+12.
+13.    open all_contacts_cur;
+14.    loop
+15.        fetch all_contacts_cur into v_id,v_phone,v_remark;
+16.        exit when all_contacts_cur%notfound;
+17.        --用 v_id/v_phone/v_remark 取出字段值来执行你的业务逻辑
+18.        null; --这里只放置一个空操作，只为测试循环取数的效率
+19.    end loop;
+20.    close all_contacts_cur;
+21.end;
+
+
+执行性能比较
+
+看看测试的结果，分别执行五次所耗费的秒数：
+
+当 rownum <= 100000 时：
+fetch bulk collect into 耗时：0.125秒, 0.125秒, 0.125秒, 0.125秒, 0.141秒
+fetch into 耗时：             1.266秒, 1.250秒, 1.250秒, 1.250秒, 1.250秒
+
+当 rownum <= 1000000 时：
+fetch bulk collect into 耗时：1.157秒, 1.157秒, 1.156秒, 1.156秒, 1.171秒
+fetch into 耗时：            12.128秒, 12.125秒, 12.125秒, 12.109秒, 12.141秒
+
+当 rownum <= 10000 时：
+fetch bulk collect into 耗时：0.031秒, 0.031秒, 0.016秒, 0.015秒, 0.015秒
+fetch into 耗时：             0.141秒, 0.140秒, 0.125秒, 0.141秒, 0.125秒
+
+当 rownum <= 1000 时：
+fetch bulk collect into 耗时：0.016秒, 0.015秒, 0.016秒, 0.016秒, 0.015秒
+fetch into 耗时：             0.016秒, 0.031秒, 0.031秒, 0.032秒, 0.015秒
+
+从测试结果来看游标的记录数越大时，用 fetch bulk collect into 的效率很明显示，趋于很小时就差不多了。
+
+注意了没有，前面使用 fetch bulk collect into 时前为每一个查询列都定义了一个集合，这样有些繁琐。
+我们之前也许用过表的 %rowtype 类型，同样的我们也可以定义表的 %rowtype 的集合类型。
+看下面的例子，同时在这个例子中，我们借助于集合的 first、last 属性来代替使用 count  属性来进行遍历。
+
+view source
+print?
+01.declare
+02.
+03.  --声明需要集合类型及变量，参照字段的 type 来声明类型
+04.  type contacts_type is table of sr_contacts%rowtype;
+05.  v_contacts contacts_type;
+06.
+07.  cursor all_contacts_cur is --用 rownum 来限定取出的记录数来测试
+08.     select * from sr_contacts where rownum <= 10000;
+09.
+10.begin
+11.
+12.    open all_contacts_cur;
+13.    loop
+14.        fetch all_contacts_cur bulk collect into v_contacts limit 256;
+15.        for i in v_contacts.first .. v_contacts.last loop --遍历集合
+16.            --用 v_contacts(i).sr_contact_id/v_contacts(i).contact_phone/v_contacts(i).remark
+17.            --的形式来取出各字段值来执行你的业务逻辑
+18.            null; --这里只放置一个空操作，只为测试循环取数的效率
+19.        end loop;
+20.        exit when all_contacts_cur%notfound;
+21.    end loop;
+22.    close all_contacts_cur;
+23.end;
+
+
+关于 limit 参数
+
+你可以根据你的实际来调整 limit 参数的大小，来达到你最优的性能。limit 参数会影响到 pga 的使用率。
+而且也可以在 fetch bulk 中省略 limit 参数，写成
+
+fetch all_contacts_cur bulk collect into v_contacts;
+
+有些资料中是说，如果不写 limit 参数，将会以数据库的 arraysize  参数值作为默认值。
+在 sqlplus 中用 show arraysize  可以看到该值默认为 15，set arraysize 256 可以更改该值。
+而实际上我测试不带 limit 参数时，外层循环只执行了一轮，好像不是 limit 15，
+所以不写 limit 参数时，可以去除外层循环，begin-end 部分可写成：
+
+view source
+print?
+01.begin
+02.    open all_contacts_cur;
+03.    fetch all_contacts_cur bulk collect into v_contacts;
+04.    for i in v_contacts.first .. v_contacts.last loop --遍历集合
+05.        --用 v_contacts(i).sr_contact_id/v_contacts(i).contact_phone/v_contacts(i).remark
+06.        --的形式来取出各字段值来执行你的业务逻辑
+07.        null; --这里只放置一个空操作，只为测试循环取数的效率
+08.        dbms_output.put_line(2000);
+09.    end loop;
+10.    close all_contacts_cur;
+11.end;
+
+
+bulk collect 的其他用法(总是针对集合)
+
+select into 语句中，如：
+
+SELECT sr_contact_id,contact_phone BULK COLLECT INTO v_id,v_phone
+     FROM sr_contacts WHERE ROWNUM <= 100;
+dbms_output.put_line('Count:'||v_id.count||', First:'||v_id(1)||'|'||v_phone(1));
+
+returning into 语句中，如：
+
+DELETE FROM sr_contacts WHERE sr_contact_id < 30
+    RETURNING sr_contact_id, contact_phone BULK COLLECT INTO v_id, v_phone;
+dbms_output.put_line('Count:'||v_id.count||', First:'||v_id(1)||'|'||v_phone(1));
+
+forall 的 bulk dml 操作，它大大优于 for 集合后的操作
+
+fetch all_contacts_cur bulk collect into v_contacts;
+forall i in 1 .. v_contacts.count
+--forall i in v_contacts.first .. v_contacts.last
+--forall i in indices of v_contacts --10g以上,可以是非连续的集合
+insert into sr_contacts(sr_contact_id,contact_phone,remark)
+    values(v_contacts(i).sr_contact_id,v_contacts(i).contact_phone,v_contacts(i).remark);
+    --或者是单条的 delete/update 操作
+
+参考：1. Oracle中巧用bulk collect实现cursor批量fetch
+        2. oracle批量绑定 forall bulk collect用法以及测试案例
+        3. bulk fetch limit (zt)
+        4. Oracle Bulk Binding 批量绑定
+        5. 提高大表的更新效率的过程
+        6. 使用forall语句的bulk dml操作
+        7. oracle forall
+        8. Oracle_学习开发子程序_复合数据类型三(批量绑定)
+
+   --END

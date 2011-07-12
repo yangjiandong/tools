@@ -1,0 +1,129 @@
+2009.06.22
+----------
+
+1、OracleXE版本登录并修改字符集
+
+==修改Oracle 10g Express Edition的字符集
+connect system as sysdba ;
+shutdown immediate ;
+startup mount ;
+alter system enable restricted session ;
+alter system set JOB_QUEUE_PROCESSES=0;
+alter system set AQ_TM_PROCESSES=0;
+alter database open ;
+alter database character set internal_use ZHS16GBK ;
+shutdown immediate ;
+startup ;
+
+2、目标文件夹: D:\oracle10xe\
+'Oracle 数据库监听程序' 的端口: 1522
+'用于 Microsoft Transaction Server 的 Oracle 服务' 的端口: 2030
+HTTP 监听程序的端口: 8080
+
+--更改oracle http 端口
+--pl/sql
+begin
+   dbms_xdb.sethttpport('8088');
+end;
+
+http://127.0.0.1:8080/apex/
+
+字符集采用默认安装: SIMPLIFIED CHINESE_CHINA.ZHS16GBK
+
+select * from sys.props$
+--默认字符集AL32UTF8
+select lengthb('择') from dual;
+--3
+
+3、建立表空间、用户ofbiz
+
+   create tablespace OFBIZ
+   datafile 'D:\ORACLE10EX\ORADATA\XE\OFBIZ.DBF' size 100M
+   autoextend on next 20M maxsize unlimited logging
+   extent management local autoallocate
+   segment space management auto;
+
+   --
+
+-- Create the user
+create user ofbiz
+  identified by "123"
+  default tablespace OFBIZ
+  temporary tablespace TEMP
+  profile DEFAULT;
+-- Grant/Revoke role privileges
+grant connect to ofbiz;
+grant dba to ofbiz;
+grant resource to ofbiz;
+-- Grant/Revoke system privileges
+grant unlimited tablespace to ofbiz;
+
+2009.06.21
+----------
+
+前些天试用普元的EOS，它的开发工具竟然不支持MySql和其他的一些轻量级的数据库，
+无奈装了一个Oracle Database 10g Express Edition，它提供了一个非常容易使用的基于浏览器的控制台，
+也提供了非常详细友好的教程，不过，一些高级的操作还是需要使用命令行的，下面是使用过程中的一些心得。
+
+安装完成后会在windows中注册好几个服务，其中OracleServiceXE和OracleXETNSListener默认会自动启动。
+默认的数据库名叫XE，express版的oracle数据库只能建立一个数据库，且最大为4G。
+假如我们用jdbc来连接（这里使用ojdbc14.jar），可以这样写：
+
+oracle.jdbc.driver.OracleDriver
+jdbc:oracle:thin:@127.0.0.1:1521:XE
+
+虽然只能建立一个数据库，不过我们可以建立多个表空间，可惜，可视化的控制台并没有提供创建表空间的快捷方式，所以只能使用命令来完成了：
+
+
+   1. create tablespace YHSP
+
+   2. datafile 'D:\ORACLE10EX\ORADATA\XE\YHSP.DBF' size 100M
+
+   3. autoextend on next 20M maxsize unlimited logging
+
+   4. extent management local autoallocate
+
+   5. segment space management auto;
+
+
+关键选项的说明如下：
+
+    * DATAFILE: 表空间数据文件存放路径
+
+    * SIZE: 起初设置为200M
+
+    * UNIFORM: 指定区尺寸为128k,如不指定，区尺寸默认为64k
+
+    * 空间名称MOF_TEMP与 数据文件名称 MOF_TEMP.dbf 不要求相同,可随意命名.
+
+    * AUTOEXTEND ON/OFF 表示启动/停止自动扩展表空间
+
+    * alter database datafile ' D:\oracle\product\10.2.0\oradata\orcl\MOF_TEMP.dbf ' resize 500m; //手动修改数据文件大小为500M
+
+如果要删除表空间，可执行下面的语句：
+
+   1. DROP TABLESPACE YHSP INCLUDING CONTENTS AND DATAFILES;
+
+
+
+创建了表空间后，可以在图形化管理中看到新加的表空间，也可以使用如下语句看到所有的表空间：
+
+
+   1. select * from v$tablespace;
+
+
+
+这里假定刚刚创建的这个表空间的id是17。
+
+这时新建的用户的默认表空间还是user，如果想改变这个新用户的表空间，可以在管理后台修改表user$中这个用户的datats字段为表空间的id，或执行以下sql命令：
+
+
+   1. update user$ set datats#=17 where name='UserName'
+
+
+
+注意system用户没有操作user$表的权限，要执行以上的操作必须要以sys用户登录。
+
+几年前Oracle Database 10g Express Edition刚刚发布时我也试用过，印象中好像不能在Windows 2000 Server中安装，为此我还专门安装了Windows XP。
+
+如果是想学习和联系Oracle的话，个人电脑上安装一个Express版还是不错的选择。

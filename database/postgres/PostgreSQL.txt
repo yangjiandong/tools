@@ -1,0 +1,205 @@
+数据库PostgreSQL操作
+===================
+
+2009.11.18
+-----------
+
+安装包：save/postgresql8.1.4.rar
+
+postgresql-8.1.4 for Win32安装(ntfs)
+-----------------------------------------
+
+默认为c:盘，采用了ntfs格式，按正常安装即可
+
+用户
+----
+
+postgresql user
+user:postgres
+pass:123456
+
+系统用户
+user:postgres
+pass:123456
+
+在pgadmIII下新建用户root,123，通过root新建数据库jsalary，编码采用utf8，
+--CREATE DATABASE jsalary WITH ENCODING='UTF8' OWNER=root;
+
+在cmd下，还原数据库"C:\Program Files\PostgreSQL\8.1\bin\psql.exe"  -h localhost -p 5432 root jsalary<f:\data\back.txt
+
+PostgreSQL 8.1在Windows xp 的安装步骤(fat32)
+-----------------------------------------
+
+1. 启动安装，修改默认安装目录，例如我改为E:\ssd7数据库原理\PostgreSQL\8.1，
+   在安装为服务时不选，即只安装程序，不初始化数据库，也不安装为服务。
+
+2. 在启动控制面板/管理工具/计算机管理/本地用户和组，增加一个普通用户，
+   如postgres，密码123，设为永不过期。
+
+3. 系统环境变量的PATH增加E:\ssd7数据库原理\PostgreSQL\8.1\bin。
+  (如果不设定，则第5步必须先进入E:\ssd7数据库原理\PostgreSQL\8.1\bin目录再继续执行)
+
+4. 以Administrator身份进入command窗，输入命令runas /user:postgres cmd，输入密码123，
+  成功后进入E:\ssd7数据库原理\PostgreSQL\8.1。输入命令initdb -E UTF-8 -D data。
+  (注：-D后面是初始化的数据库文件夹，在当前目录E:\ssd7数据库原理\PostgreSQL\8.1创建，
+  否则可用完全地址限定所需创建的地址)
+
+5. 以Administrator再次身份进入command窗，输入命令：
+  pg_ctl register -N postgres -D "E:\ssd7数据库原理\PostgreSQL\8.1\data" -U postgres -P 123
+  (注：－N后面是服务名　－D是所用数据库名，即第四步初始化的data,应使用完全路径，-U后面是此服务的用户，-P后面是用户密码)
+
+6. 如5成功，启动控制面板/管理工具/服务，可以看到名为postgres的服务。
+  将其启动类型改为手动，在属性/登录标签下输入密码和确认密码123。
+
+7. 在控制面板－管理工具－服务里面启动服务。
+  (也可以：进入command窗，输入命令runas /user:postgres cmd，输入密码123，然后pg_ctl start -D "E:\ssd7数据库原理\PostgreSQL\8.1\data")
+
+8. 以postgres身份输入命令psql可进入客户端。
+
+9.恭喜你，千淘万漉始到金！ Welcome to postgres 8.1!
+
+
+window2000下备份数据库
+--------------------------
+
+  D:\Program Files\pgAdmin III\1.4>pg_dump.exe -h 61.132.90.140 -p 5432 -U root jreport>C:\back.txt
+
+2004.11.08
+----------
+
+1、删除数据库
+
+dropdb dbname
+
+2004.05.30
+----------
+
+1、pg_hba.conf
+
+local  all  all  ident    sameuser
+host   all  all  0.0.0.0  0.0.0.0  md5
+
+第一条便于crontab中每日备份操作
+第二条增加用户连接的认证
+
+2004.05.28
+----------
+
+1、认证方式
+
+  采用红帽子9.0作为服务器安装时，在安装时选择安装PostgreSQL。
+
+  1)、红帽子默认的情况下是不允许通过tcp/ip连接到PostgreSQL数据库的，
+
+   这里首先要修改文件postgresql.conf（默认情况下在目录/var/lib/pgsql/data/中),
+
+   通过文本编辑器打开该文件，可以看到其中有这样一条："#tcpip_socket = false"
+
+   修改成为："tcpip_socket = true", 这样就可以通过tcp/ip协议连接数据库。
+
+  2)、设置用户远程访问数据库密码。
+
+   需要修改文件pg_hba.conf默认情况下在目录/var/lib/pgsql/data/中),
+
+   在文件中添加条目："host all all 0.0.0.0  0.0.0.0  md5" (该条的意思是:对于远程
+
+   访问的情况,对所有数据库,所有用户都采用md5认证)。
+
+   如果发现有设置为："host all all 0.0.0.0  0.0.0.0  trust",将其修改成为:
+
+   "#host all all 0.0.0.0 0.0.0.0  trust"
+
+  1和2修改成功后重新启动数据库就需要通过密码远程访问数据库了。
+
+2、启动及停止
+
+   1)、有时需要手工启动数据库，可以查看错误信息，方法是：
+
+        a、改变当前用户为postgres : "su - postgres"
+
+        b、启动数据库"postmaster -iD /var/lib/pgsql/data/"
+
+    2)、在手工安装PostgreSQL的情况下，可以用批处理启动数据库，在其处理文件中输入：
+
+        su - postgres -s /bin/sh -c "/usr/local/pgsql/bin./postmaster -iD /usr/local/pgsql/data/"
+
+    3)、其它方式启动
+
+        pg_ctl start -D /var/lib/pgsql/data/
+
+        如果有“-l 文件名”这个参数，所有的错误都会被记录到这个文件里。
+
+    4)、停止服务
+
+        pg_ctl stop -D /var/lib/pgsql/data/
+
+    5)、重启服务
+
+        pg_ctl restart -D /var/lib/pgsql/data/
+
+    6)、如果对配置文件做了修改，想不中断服务而立即生效
+
+        pg_ctl reload -D /var/lib/pgsql/data/
+
+    注:以上数据库所在目录根据实际情况来定
+
+3、用户及密码
+
+    用户:root
+
+    密码:jsite12345
+
+    用户:postgres
+
+    密码:jsite12345
+
+
+    注：五星，经委服务器统一采用以上设置。
+
+    五星的postgresql是手工编译的，存放目录在/usr/local/pgsql，经委服务器是系统自带的，存放目录/var/lib/pgsql
+
+4、新建用户
+
+    createuser -P username
+    提示输入口令
+
+5、修改用户口令
+
+    psql中:	alter user username password 'pas';
+
+    或者可通过pgadmin3中设置用户口令
+
+6、新建数据库
+
+    createdb -E UNICODE -U username dbname
+
+7、备份
+
+    pg_dump dbanme>dbname.txt
+
+    通过linux的crontab命令，每日备份，备份脚本(postgreport):
+
+    YEAR='date +%y'
+    MONTH='date +%m'
+    DAY='date +%d'
+    NOW=$YEAR-$MONTH-$DAY
+
+    su - root -s /bin/sh -c "pg_dump databasename>/root/databasebackdir/db_$NOW"
+
+    crontab -e(创建一个crontab)
+    10  12  *  *  *  postgreport
+
+    以上命令的意思是每天12点10分时备份
+
+8、恢复
+
+    psql dbname<dbname.txt;
+
+9、定期整理
+
+    $ vacuumdb -dfzv dbname &> vacuum_full.log
+
+10、psql -h localhost -U postgres
+
+
+  -- end

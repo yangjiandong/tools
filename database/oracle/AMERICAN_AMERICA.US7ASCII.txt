@@ -1,0 +1,51 @@
+HLM -> ORACLE -> NLS_LANG
+       ORACLE -> HOMEO -> NL
+
+AMERICAN_AMERICA.US7ASCII
+
+有中文问题，改为 AMERICAN_AMERICA.ZHS16GBK
+
+数据库服务器字符集
+  select * from nls_database_parameters
+
+对字符集的讨论
+  http://www.itpub.net/276524.html
+  doc/oracle_lang_character
+
+svrmgrl
+
+connect internal/oracle;
+shutdown abort;
+startup mount;
+alter database open;
+
+dbserver
+orcl
+sys change_on_install
+system manager
+
+脚本：
+
+create tablespace tsp_hcost
+	datafile 'D:\Oracle\oradata\dbserver\aphcost.dbf'
+	size 10M
+	reuse
+	autoextend on
+	next 5M
+	maxsize unlimited;
+
+create tablespace tsp_hcost
+	datafile 'D:\Oracle\oradata\dbserver\aphcost.dbf'
+	size 10M
+	reuse
+	autoextend on
+	next 5M
+	maxsize unlimited;
+
+CREATE USER "HCOST"
+  PROFILE "DEFAULT" IDENTIFIED BY "123"
+  DEFAULT TABLESPACE "TSP_HCOST" TEMPORARY TABLESPACE "TEMP"
+  ACCOUNT UNLOCK;
+GRANT "CONNECT" TO "HCOST";
+GRANT "RESOURCE" TO "HCOST";
+

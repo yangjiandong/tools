@@ -1,0 +1,293 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>MySQL压力测试工具mysqlslap</title></head><body>﻿﻿
+
+
+
+  
+  <link rel="Shortcut Icon" href="http://www.ningoo.net/html/2008/favicon.ico">
+  <link rel="openid.server" href="http://www.openid.cn/openid.server">
+  <link rel="openid.delegate" href="http://ningoo.openid.cn/">
+
+  <link rel="stylesheet" href="mysql_load_test_tool_mysqlslap_files/style.css" type="text/css" media="screen">
+  <link rel="alternate" type="application/rss+xml" title="NinGoo.net RSS Feed" href="http://www.ningoo.net/feed">
+  <link rel="stylesheet" href="mysql_load_test_tool_mysqlslap_files/comment.css" type="text/css" media="screen">
+  <link rel="stylesheet" href="mysql_load_test_tool_mysqlslap_files/coolcode.css">
+  <link rel="stylesheet" href="mysql_load_test_tool_mysqlslap_files/pagenavi-css.htm" type="text/css" media="screen">
+  <script type="text/javascript" src="mysql_load_test_tool_mysqlslap_files/coolcode.js"></script>
+
+<div id="navbar">
+    <a href="http://www.ningoo.net/" title="home">首页</a>
+    <a href="http://www.google.com/ig/add?feedurl=http://rss.ningoo.net"><strong>Google订阅</strong></a>
+    <a href="http://www.xianguo.com/subscribe.php?url=http://rss.ningoo.net"><strong>鲜果订阅</strong></a>
+    <a href="http://twitter.com/NinGoo">Twitter</a>
+    <a href="http://www.taobaodba.com/">TaobaoDBA</a>
+    <a href="http://www.askdba.net/" title="AskDBA"><strong>AskDBA</strong></a>
+    <a href="http://www.ningoo.net/wp-admin" title="admin">管理</a>
+    <a href="http://www.ningoo.net/about_me" title="About">关于</a>
+</div>
+<div id="header">
+    <div class="blogname">
+        <a href="http://www.ningoo.net/">NinGoo.net</a>
+    </div>
+    <div class="desc">
+        High Availability DBA &amp; Simple Life    </div>
+</div>
+<div id="page">
+<div id="content">
+		<table style="border: 0px none ;" width="100%">
+    <tbody><tr colspan="2">
+     <td width="50%">上一篇：<a href="http://www.ningoo.net/html/2008/oracle10gr2_logical_standby_database_failover.html">Oracle10gR2 Logical Standby(六)逻辑备库的Failover</a>     </td>
+     <td align="right" width="50%">下一篇：<a href="http://www.ningoo.net/html/2008/oracle11g_real_application_testing_available_earlier_releases.html">Oracle11g部分新特性移植到9i和10g</a>     </td>
+    </tr>
+    </tbody></table>
+
+	<h1><a href="http://www.ningoo.net/html/2008/mysql_load_test_tool_mysqlslap.html" rel="bookmark" title="Permanent Link: MySQL压力测试工具mysqlslap">MySQL压力测试工具mysqlslap</a></h1>
+	<div id="copyright">作者：NinGoo | 【转载须以超链接形式标明文章原始出处和作者信息】
+	</div>
+	
+	 <script type="text/javascript"><!--
+google_ad_client = "pub-5453951276515381";
+/* 728x90, 创建于 08-8-4 */
+google_ad_slot = "6748094299";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript" src="mysql_load_test_tool_mysqlslap_files/show_ads.js">
+</script><script src="mysql_load_test_tool_mysqlslap_files/expansion_embed.js"></script><script src="mysql_load_test_tool_mysqlslap_files/test_domain.js"></script><script>google_protectAndRun("ads_core.google_render_ad", google_handleError, google_render_ad);</script><ins style="border: medium none ; margin: 0pt; padding: 0pt; display: inline-table; height: 90px; position: relative; visibility: visible; width: 728px;"><ins style="border: medium none ; margin: 0pt; padding: 0pt; display: block; height: 90px; position: relative; visibility: visible; width: 728px;"><iframe allowtransparency="true" hspace="0" id="google_ads_frame1" marginheight="0" marginwidth="0" name="google_ads_frame" src="mysql_load_test_tool_mysqlslap_files/ads.htm" style="left: 0pt; position: absolute; top: 0pt;" vspace="0" scrolling="no" frameborder="0" height="90" width="728"></iframe></ins></ins>
+				
+	<div class="entry">
+		<p>MySQL从5.1.4版开始带有一个压力测试工具<strong>mysqlslap</strong>，通过模拟多个并发客户端访问mysql来执行测试，使用起来非常的简单。通过mysqlslap –help可以获得可用的选项，这里列一些主要的参数，更详细的说明参考<a href="http://dev.mysql.com/doc/refman/5.1/en/mysqlslap.html">官方手册</a>。</p>
+<blockquote><p>
+–auto-generate-sql, -a<br>
+自动生成测试表和数据</p>
+<p>–auto-generate-sql-load-type=type<br>
+测试语句的类型。取值包括：read，key，write，update和mixed(默认)。</p>
+<p>–number-char-cols=N, -x N<br>
+自动生成的测试表中包含多少个字符类型的列，默认1</p>
+<p>–number-int-cols=N, -y N<br>
+自动生成的测试表中包含多少个数字类型的列，默认1</p>
+<p>–number-of-queries=N<br>
+总的测试查询次数(并发客户数×每客户查询次数)</p>
+<p>–query=name,-q<br>
+使用自定义脚本执行测试，例如可以调用自定义的一个存储过程或者sql语句来执行测试。</p>
+<p>–create-schema<br>
+测试的schema，MySQL中schema也就是database</p>
+<p>–commint=N<br>
+多少条DML后提交一次</p>
+<p>–compress, -C<br>
+如果服务器和客户端支持都压缩，则压缩信息传递</p>
+<p>–concurrency=N, -c N<br>
+并发量，也就是模拟多少个客户端同时执行select。可指定多个值，以逗号或者–delimiter参数指定的值做为分隔符</p>
+<p>–engine=engine_name, -e engine_name<br>
+创建测试表所使用的存储引擎，可指定多个</p>
+<p>–iterations=N, -i N<br>
+测试执行的迭代次数</p>
+<p>–detach=N<br>
+执行N条语句后断开重连</p>
+<p>–debug-info, -T<br>
+打印内存和CPU的信息</p>
+<p>–only-print<br>
+只打印测试语句而不实际执行</p></blockquote>
+<p>测试的过程需要生成测试表，插入测试数据，这个mysqlslap可以自动生成，默认生成一个mysqlslap的schema，如果已经存在则先
+删除，这里要注意了，不要用–create-schema指定已经存在的库，否则后果可能很严重。可以用–only-print来打印实际的测试过程：</p>
+<div class="hl-surround"><div class="hl-main">$mysqlslap -a --only-print<br>DROP SCHEMA IF EXISTS `mysqlslap`;<br>CREATE SCHEMA `mysqlslap`;<br>use mysqlslap;<br>CREATE TABLE `t1` (intcol1 INT(32) ,charcol1 VARCHAR(128));<br>INSERT
+INTO t1 VALUES
+(1804289383,'mxvtvmC9127qJNm06sGB8R92q2j7vTiiITRDGXM9ZLzkdekbWtmXKwZ2qG1llkRw5m9DHOFilEREk3q7oce8O3BEJC0woJsm6uzFAEynLH2xCsw1KQ1lT4zg9rdxBL');<br>...<br>SELECT intcol1,charcol1 FROM t1;<br>INSERT
+INTO t1 VALUES
+(364531492,'qMa5SuKo4M5OM7ldvisSc6WK9rsG9E8sSixocHdgfa5uiiNTGFxkDJ4EAwWC2e4NL1BpAgWiFRcp1zIH6F1BayPdmwphatwnmzdwgzWnQ6SRxmcvtd6JRYwEKdvuWr');<br>DROP SCHEMA IF EXISTS `mysqlslap`;</div></div>
+<p>可以看到最后由删除一开始创建的schema的动作，整个测试完成后不会在数据库中留下痕迹。假如我们执行一次测试，分别50和100个并发，执行1000次总查询，那么：</p>
+<div class="hl-surround"><div class="hl-main">$mysqlslap -a --concurrency=50,100 --number-of-queries 1000 --debug-info<br>Benchmark<br>&nbsp; Average number of seconds to run all queries: 0.375 seconds<br>&nbsp; Minimum number of seconds to run all queries: 0.375 seconds<br>&nbsp; Maximum number of seconds to run all queries: 0.375 seconds<br>&nbsp; Number of clients running queries: 50<br>&nbsp; Average number of queries per client: 20<br><br>Benchmark<br>&nbsp; Average number of seconds to run all queries: 0.453 seconds<br>&nbsp; Minimum number of seconds to run all queries: 0.453 seconds<br>&nbsp; Maximum number of seconds to run all queries: 0.453 seconds<br>&nbsp; Number of clients running queries: 100<br>&nbsp; Average number of queries per client: 10<br><br>User time 0.29, System time 0.11<br>Maximum resident set size 0, Integral resident set size 0<br>Non-physical pagefaults 4032, Physical pagefaults 0, Swaps 0<br>Blocks in 0 out 0, Messages in 0 out 0, Signals 0<br>Voluntary context switches 7319, Involuntary context switches 681</div></div>
+<p>上结果可以看出，50和100个并发分别得到一次测试结果(Benchmark)，并发数越多，执行完所有查询的时间越长。为了准确起见，可以多迭代测试几次:</p>
+<div class="hl-surround"><div class="hl-main">$ mysqlslap -a --concurrency=50,100 --number-of-queries 1000 --iterations=5 --debug-info <br>Benchmark<br>&nbsp; Average number of seconds to run all queries: 0.380 seconds<br>&nbsp; Minimum number of seconds to run all queries: 0.377 seconds<br>&nbsp; Maximum number of seconds to run all queries: 0.385 seconds<br>&nbsp; Number of clients running queries: 50<br>&nbsp; Average number of queries per client: 20<br><br>Benchmark<br>&nbsp; Average number of seconds to run all queries: 0.447 seconds<br>&nbsp; Minimum number of seconds to run all queries: 0.444 seconds<br>&nbsp; Maximum number of seconds to run all queries: 0.451 seconds<br>&nbsp; Number of clients running queries: 100<br>&nbsp; Average number of queries per client: 10<br><br>User time 1.44, System time 0.67<br>Maximum resident set size 0, Integral resident set size 0<br>Non-physical pagefaults 17922, Physical pagefaults 0, Swaps 0<br>Blocks in 0 out 0, Messages in 0 out 0, Signals 0<br>Voluntary context switches 36796, Involuntary context switches 4093</div></div>
+<p>测试同时不同的存储引擎的性能进行对比：</p>
+<div class="hl-surround"><div class="hl-main">$ mysqlslap -a --concurrency=50,100 --number-of-queries 1000 --iterations=5 --engine=myisam,innodb --debug-info<br>Benchmark<br>&nbsp; Running for engine myisam<br>&nbsp; Average number of seconds to run all queries: 0.200 seconds<br>&nbsp; Minimum number of seconds to run all queries: 0.188 seconds<br>&nbsp; Maximum number of seconds to run all queries: 0.210 seconds<br>&nbsp; Number of clients running queries: 50<br>&nbsp; Average number of queries per client: 20<br><br>Benchmark<br>&nbsp; Running for engine myisam<br>&nbsp; Average number of seconds to run all queries: 0.238 seconds<br>&nbsp; Minimum number of seconds to run all queries: 0.228 seconds<br>&nbsp; Maximum number of seconds to run all queries: 0.251 seconds<br>&nbsp; Number of clients running queries: 100<br>&nbsp; Average number of queries per client: 10<br><br>Benchmark<br>&nbsp; Running for engine innodb<br>&nbsp; Average number of seconds to run all queries: 0.375 seconds<br>&nbsp; Minimum number of seconds to run all queries: 0.370 seconds<br>&nbsp; Maximum number of seconds to run all queries: 0.379 seconds<br>&nbsp; Number of clients running queries: 50<br>&nbsp; Average number of queries per client: 20<br><br>Benchmark<br>&nbsp; Running for engine innodb<br>&nbsp; Average number of seconds to run all queries: 0.443 seconds<br>&nbsp; Minimum number of seconds to run all queries: 0.440 seconds<br>&nbsp; Maximum number of seconds to run all queries: 0.447 seconds<br>&nbsp; Number of clients running queries: 100<br>&nbsp; Average number of queries per client: 10<br><br>User time 2.83, System time 1.66<br>Maximum resident set size 0, Integral resident set size 0<br>Non-physical pagefaults 34692, Physical pagefaults 0, Swaps 0<br>Blocks in 0 out 0, Messages in 0 out 0, Signals 0<br>Voluntary context switches 87306, Involuntary context switches 10326</div></div>
+	</div>     
+
+   <p><b>本文网址：</b><a href="http://www.ningoo.net/html/2008/mysql_load_test_tool_mysqlslap.html">http://www.ningoo.net/html/2008/mysql_load_test_tool_mysqlslap.html</a></p>
+   
+   <p>
+   <a href="http://rss.ningoo.net/"><img src="mysql_load_test_tool_mysqlslap_files/gif.gif" align="middle"></a> 
+     <a href="http://www.google.com/ig/add?feedurl=http://rss.ningoo.net">订阅到Google</a> | <a href="http://del.icio.us/post" onclick="window.open('http://del.icio.us/post?v=4&amp;noui&amp;jump=close&amp;url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title),'delicious', 'toolbar=no,width=700,height=400'); return false;">收藏到Del.icio.us</a> | <a title="推荐到鲜果热文" href="http://www.xianguo.com/api/submitdigg/?feed=http://rss.ningoo.net&amp;link=WEB_URL">推荐到鲜果</a>
+   </p>
+ 
+	 <p class="postmetadata">
+			Posted by <a href="http://www.ningoo.net/">NinGoo</a>
+			2008-06-13 13:33 星期五					
+	 </p>
+	 
+   <table style="border: 1px solid rgb(221, 221, 221); padding: 5px; font-size: 12px;" width="100%">
+    <tbody><tr colspan="2">
+     <td width="50%"><b>相关文章</b>
+     </td>
+     <td width="50%"><b>随机文章</b>
+     </td>
+    </tr>
+    <tr colspan="2">
+     <td valign="top"> <ul class="related_post"><li><a href="http://www.ningoo.net/html/2008/mysql_benchmark_function.html" title="MySQL的benchmark函数">MySQL的benchmark函数</a></li><li><a href="http://www.ningoo.net/html/2009/performance_test_tool_sysbench.html" title="性能测试工具sysbench简介">性能测试工具sysbench简介</a></li><li><a href="http://www.ningoo.net/html/2009/about_innodb_thread_concurrency.html" title="InnoDB线程并发检查机制">InnoDB线程并发检查机制</a></li><li><a href="http://www.ningoo.net/html/2009/xtradb_enhancements_in_show-innodb-status.html" title="从show innodb status看XtraDB的增强特性">从show innodb status看XtraDB的增强特性</a></li><li><a href="http://www.ningoo.net/html/2009/xtradb_storage_engine.html" title="XtraDB存储引擎">XtraDB存储引擎</a></li><li><a href="http://www.ningoo.net/html/2009/xtrabackup-0-9_released.html" title="Xtrabackup 0.9发布">Xtrabackup 0.9发布</a></li></ul>     </td>
+     <td valign="top"><ul class="randome_post"><li><a href="http://www.ningoo.net/html/2008/oracle11g_asm_tool_amdu.html" title="Oracle11g ASM强大的新工具AMDU">Oracle11g ASM强大的新工具AMDU</a></li><li><a href="http://www.ningoo.net/html/2008/so_many_spam_mails.html" title="垃圾邮件的生命力如此顽强">垃圾邮件的生命力如此顽强</a></li><li><a href="http://www.ningoo.net/html/2008/2008_china_best_oracledba.html" title="2008中国ORACLE数据库精英工程师评选">2008中国ORACLE数据库精英工程师评选</a></li><li><a href="http://www.ningoo.net/html/2007/do_you_fanfou.html" title="今日你饭否？">今日你饭否？</a></li><li><a href="http://www.ningoo.net/html/2009/how_to_monitor_stats_of_memcached.html" title="如何监控MemCached的状态">如何监控MemCached的状态</a></li><li><a href="http://www.ningoo.net/html/2008/five_years_after_graduating.html" title="惊回首，五年秋">惊回首，五年秋</a></li></ul>     </td>
+    </tr>
+   </tbody></table>
+
+   <p><b>本文Tags: <a href="http://www.ningoo.net/html/tag/benchmark" rel="tag">benchmark</a>, <a href="http://www.ningoo.net/html/tag/mysql" rel="tag">MySQL</a>, <a href="http://www.ningoo.net/html/tag/mysqlslap" rel="tag">mysqlslap</a>, <a href="http://www.ningoo.net/html/tag/%e6%b5%8b%e8%af%95" rel="tag">测试</a></b></p>
+            
+	 
+
+
+<div class="clear"></div>
+<script type="text/javascript"> 
+var blogurl="http://www.ningoo.net"; 
+var needemail="1";
+var nowurl="http://www.ningoo.net/wp-content/themes/yuewei/jscript/getpost.php?id=368";
+var md5 = "73e53a364294a226b28f8e620698a17e";
+</script>
+<h3>2 条评论</h3>
+<ul class="commentslist" id="comments">
+			<li id="comment-2921" class="borderc1">
+		<div class="commenthead">At 2008.07.26 13:48, <a name="comment-2921"></a><span>bulletming</span> said: </div>
+		<div class="body">
+						<p>50，100个并发情况跟你的是相同的，总是50并发更快，但是如果150的并发，那么久150的并发也可能会比50并发的更快<br>
+dba-test-A1-104:/usr/local #<br>
+dba-test-A1-104:/usr/local # mysqlslap -a –concurrency=50,150 –number-of-queries 1000 –debug-info<br>
+Benchmark<br>
+        Average number of seconds to run all queries: 0.152 seconds<br>
+        Minimum number of seconds to run all queries: 0.152 seconds<br>
+        Maximum number of seconds to run all queries: 0.152 seconds<br>
+        Number of clients running queries: 50<br>
+        Average number of queries per client: 20</p>
+<p>Benchmark<br>
+        Average number of seconds to run all queries: 0.140 seconds<br>
+        Minimum number of seconds to run all queries: 0.140 seconds<br>
+        Maximum number of seconds to run all queries: 0.140 seconds<br>
+        Number of clients running queries: 150<br>
+        Average number of queries per client: 6</p>
+<p>User time 0.16, System time 0.06<br>
+Maximum resident set size 0, Integral resident set size 0<br>
+Non-physical pagefaults 2689, Physical pagefaults 0, Swaps 0<br>
+Blocks in 0 out 0, Messages in 0 out 0, Signals 0<br>
+Voluntary context switches 6262, Involuntary context switches 1717</p>
+		</div>
+		<div class="meta">
+			[<a href="javascript:moveForm(2921)" title="reply">Reply</a>]</div><ul></ul></li>		<li id="comment-3337" class="borderc2">
+		<div class="commenthead">At 2008.09.04 15:15, <a name="comment-3337"></a><span><a href="http://www.uulike.net/x2/?p=153" rel="external nofollow" class="url">Hector’s Blog » Blog Archive » 用HSCALE实现MySQL的数据分布式存储</a></span> said: </div>
+		<div class="body">
+						<p>[...] 作者利用mysqlslap对HSCALE和MySQL Proxy做了几组性能测试，结果参考这里，还有这里。 [...]</p>
+		</div>
+		<div class="meta">
+			[<a href="javascript:moveForm(3337)" title="reply">Reply</a>]</div><ul></ul></li></ul>
+<div id="cmtForm">
+<form action="http://www.ningoo.net/wp-comments-post.php" method="post" id="commentform" onsubmit="AjaxSendComment();return false;">
+<div id="caie">
+<br>
+<input name="author" id="author" tabindex="11" onclick="this.select();" type="text"><label for="author">名称</label><span id="authorrequire"> (Required)</span><br>
+<input name="email" id="email" tabindex="12" onclick="this.select();" type="text"><label for="email">Mail</label><span id="emailrequire"> (Required, will not be published)</span><br>
+<input name="url" id="url" tabindex="13" onclick="this.select();" type="text"><label for="url">网站</label>
+</div>
+<div id="commentarea">
+<div id="commentdiv"><textarea name="comment" id="comment" tabindex="14" rows="6" cols="70"></textarea></div>
+<div id="copreview" ondblclick="comment_preview();"></div>
+<div id="comoper"><input value="Say it!" name="submit" tabindex="15" type="submit">
+<input value="Preview" name="preview" onclick="javascript:comment_preview();" tabindex="16" id="prectr" type="button">
+<input id="reRoot" onclick="javascript:moveForm(0)" style="display: none;" value="Cancel" tabindex="17" type="button">
+<input name="comment_post_ID" value="368" type="hidden">
+<input name="comment_reply_ID" id="comment_reply_ID" value="0" type="hidden"></div>
+</div>
+		<script language="JavaScript" type="text/javascript" src="mysql_load_test_tool_mysqlslap_files/common.php"></script>
+		<script language="JavaScript" type="text/javascript">
+		//<![CDATA[
+		var hash = "73e53a364294a226b28f8e620698a17e";
+		var author_cookie = "comment_author_" + hash;
+		var email_cookie = "comment_author_email_" + hash;
+		var url_cookie = "comment_author_url_" + hash; 
+		var adminmail = "seaman.ning{_}gmail.com";
+		var adminurl = "http://www.ningoo.net";
+		setCommForm();
+		//]]>
+		</script>
+	</form>
+</div>
+<script type="text/javascript" src="mysql_load_test_tool_mysqlslap_files/comment.js"></script>
+	 
+</div>
+﻿<div id="sidebar">
+    <!-- SiteSearch Google -->
+         <form action="http://www.ningoo.net/search" id="cse-search-box">
+  <div class="sidecontent">
+    <input name="cx" value="016470294474004421804:nombwl9udh0" type="hidden">
+    <input name="cof" value="FORID:11" type="hidden">
+    <input name="ie" value="UTF-8" type="hidden">
+    <input style="border: 1px solid rgb(126, 157, 185); padding: 2px; background: rgb(255, 255, 255) url(http://www.google.com/cse/intl/zh-Hans/images/google_custom_search_watermark.gif) no-repeat scroll left center; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" name="q" size="20" type="text">
+    <input name="sa" value="搜索" type="submit">
+  </div>
+</form>
+<script type="text/javascript" src="mysql_load_test_tool_mysqlslap_files/brand.htm"></script>
+        <!-- SiteSearch Google -->
+    		
+    <h2>订阅本站 | Subscribe</h2>
+    <div class="sidecontent">
+        <a href="http://rss.ningoo.net/"><img src="mysql_load_test_tool_mysqlslap_files/gif.gif" align="middle"> </a>
+        <a href="http://feeds2.feedburner.com/NinGoo"><img src="mysql_load_test_tool_mysqlslap_files/NinGoo.gif" style="border: 0pt none ;" alt="" align="middle" height="26" width="88"></a>
+         <br>
+         <a href="http://www.google.com/ig/add?feedurl=http://rss.ningoo.net">
+          <img src="mysql_load_test_tool_mysqlslap_files/icon_subshot02_google.gif" alt="订阅到Google Reader" border="0"></a>
+         <a target="_blank" href="http://www.xianguo.com/subscribe.php?url=http://rss.ningoo.net" alt="订阅到鲜果">
+          <img src="mysql_load_test_tool_mysqlslap_files/icon_subshot02_xianguo.gif" alt="订阅到鲜果" border="0"></a><br>
+        <a target="_blank" href="http://www.zhuaxia.com/add_channel.php?sourceid=102&amp;url=http://rss.ningoo.net">
+          <img src="mysql_load_test_tool_mysqlslap_files/icon_subshot02_zhuaxia.gif" alt="订阅到抓虾" border="0"></a>
+         <a href="http://reader.yodao.com/#url=http://rss.ningoo.net">
+          <img src="mysql_load_test_tool_mysqlslap_files/icon_subshot02_youdao.gif" alt="订阅到有道" border="0"></a>
+   </div> 
+   	   
+       	<h2>文章分类 | Categories</h2>
+    	<div class="sidecontent">
+    	    <ul>
+    	    	<li class="cat-item cat-item-3"><a href="http://www.ningoo.net/html/category/database" title="查看 数据库 下的所有文章">数据库</a> (178)
+</li>
+	<li class="cat-item cat-item-4"><a href="http://www.ningoo.net/html/category/dwbi" title="查看 数据仓库 下的所有文章">数据仓库</a> (23)
+</li>
+	<li class="cat-item cat-item-5"><a href="http://www.ningoo.net/html/category/miscellanea" title="查看 杂记 下的所有文章">杂记</a> (108)
+</li>
+	<li class="cat-item cat-item-6"><a href="http://www.ningoo.net/html/category/web" title="查看 互联网 下的所有文章">互联网</a> (39)
+</li>
+	<li class="cat-item cat-item-7"><a href="http://www.ningoo.net/html/category/os" title="Unix,Linux or Windows">操作系统</a> (25)
+</li>
+	<li class="cat-item cat-item-8"><a href="http://www.ningoo.net/html/category/storage" title="存储，主机，硬件相关">存储</a> (10)
+</li>
+	<li class="cat-item cat-item-292"><a href="http://www.ningoo.net/html/category/tools" title="DBA工具">工具</a> (9)
+</li>
+    	    </ul>
+    	</div>
+		
+	    	<h2>最近文章 | Recent posts</h2>
+    	<div class="sidecontent">
+    	    <ul>
+    	    <li><a href="http://www.ningoo.net/html/2009/xtradb_storage_engine.html" rel="bookmark" title="Permanent Link: XtraDB存储引擎">XtraDB存储引擎</a></li><li><a href="http://www.ningoo.net/html/2009/taobao_university_recruitment_wuhan.html" rel="bookmark" title="Permanent Link: 武汉校园招聘归来">武汉校园招聘归来</a></li><li><a href="http://www.ningoo.net/html/2009/oow2009_ppt_managing_statistics_for_optimal_query_performance.html" rel="bookmark" title="Permanent Link: OOW2009 PPT:Managing Statistics for Optimal Query Performance">OOW2009 PPT:Managing Statistics for Optimal Query Performance</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_golden_gate_and_obama.html" rel="bookmark" title="Permanent Link: OOW2009美国行:金门大桥与奥巴马">OOW2009美国行:金门大桥与奥巴马</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_fouth_day.html" rel="bookmark" title="Permanent Link: OOW2009美国行:大会第四天">OOW2009美国行:大会第四天</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_third_day_2.html" rel="bookmark" title="Permanent Link: OOW2009美国行:大会第三天续">OOW2009美国行:大会第三天续</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_third_day.html" rel="bookmark" title="Permanent Link: OOW2009美国行:大会第三天">OOW2009美国行:大会第三天</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_second_day.html" rel="bookmark" title="Permanent Link: OOW2009美国行:大会第二天">OOW2009美国行:大会第二天</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_first_day.html" rel="bookmark" title="Permanent Link: OOW2009美国行:大会第一天">OOW2009美国行:大会第一天</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_end_of_america_east_tour.html" rel="bookmark" title="Permanent Link: OOW2009美国行:东部之旅结束">OOW2009美国行:东部之旅结束</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_washington_dc.html" rel="bookmark" title="Permanent Link: OOW2009美国行:帝都华盛顿">OOW2009美国行:帝都华盛顿</a></li><li><a href="http://www.ningoo.net/html/2009/oracle_open_world_2009_boston.html" rel="bookmark" title="Permanent Link: OOW2009美国行:宁静安详的波士顿">OOW2009美国行:宁静安详的波士顿</a></li>    	    </ul>
+    	</div>
+			
+		
+	
+    <h2>站点信息 | Statistics</h2>
+        <div class="sidecontent">
+            				文章总数：380<br>
+				评论总数：863<br>
+				Start@2007-05-19<br><br>
+				
+				Powered by <a href="http://www.wordpress.com/">WordPress</a><br>
+				Hosted by <a href="http://www.dreamhost.com/r.cgi?287455">DreamHost</a><br>
+				UI Designed by <a href="http://www.ningoo.net/">NinGoo</a>
+				
+				<p>
+				 <a href="http://rss.ningoo.net/"><img src="mysql_load_test_tool_mysqlslap_files/gif.gif" alt="通过Feedsky订阅" align="middle"> </a>
+				</p>
+
+		</div> 
+</div><!--cos-html-cache-safe-tag-->﻿<div style="clear: both;"></div>
+<div style="clear: both;"></div>
+﻿</div>
+<div id="footer">
+(©)版权所有 2007 - 2008 <a href="http://www.ningoo.net/">www.NinGoo.net</a> 本Blog内容仅代表个人观点, 与其他任何组织或公司无关
+<br>
+<script type="text/javascript" src="mysql_load_test_tool_mysqlslap_files/tongji.js"></script><img src="mysql_load_test_tool_mysqlslap_files/tongji.gif" border="0" height="0" width="0"><noscript><span><a href="<a href="http://www.linezing.com/">http://www.linezing.com</a>"&gt;&lt;img src="<a href="http://img.tongji.linezing.com/11613/tongji.gif">http://img.tongji.linezing.com/11613/tongji.gif</a>"/&gt;&lt;/a&gt;</span></noscript>
+</div>
+﻿﻿
+<!--this is a real static html file created at 2009-11-07 22:33:54 by cos-html-cache 2.7.3 --></body></html>

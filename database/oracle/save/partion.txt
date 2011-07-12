@@ -1,0 +1,159 @@
+一、 分区概述：
+
+为了简化数据库大表的管理，ORACLE8推出了分区选项。分区将表分离在若干不同的表空间上，用分而治之的方法来
+支撑无限膨胀的大表，给大表在物理一级的可管理性。将大表分割成较小的分区可以改善表的维护、备份、恢复、
+事务及查询性能。针对当前社保及电信行业的大量日常业务数据，可以推荐使用 ORACLE8的该选项。
+
+二、分区的优点：
+
+1 、增强可用性：如果表的一个分区由于系统故障而不能使用，表的其余好的分区仍然可以使用；
+2 、减少关闭时间：如果系统故障只影响表的一部分分区，那么只有这部分分区需要修复，故能比整个大表修复花的时间更少；
+3 、维护轻松：如果需要重建表，独立管理每个分区比管理单个大表要轻松得多；
+4 、均衡I/O:可以把表的不同分区分配到不同的磁盘来平衡I/O改善性能；
+5 、改善性能：对大表的查询、增加、修改等操作可以分解到表的不同分区来并行执行，可使运行速度更快；
+6 、分区对用户透明，最终用户感觉不到分区的存在。
+
+三、分区的管理：
+
+1 、分区表的建立：
+某公司的每年产生巨大的销售记录，DBA向公司建议每季度的数据放在一个分区内，以下示范的是该公司1999年的数
+据(假设每月产生30M的数据)，操作如下：
+
+STEP1、建立表的各个分区的表空间：
+CREATE TABLESPACE ts_sale1999q1
+DATAFILE '/u1/oradata/sales/sales1999_q1.dat'
+SIZE 100M
+DEFAULT STORAGE (INITIAL 30m NEXT 30m MINEXTENTS 3 PCTINCREASE 0)
+CREATE TABLESPACE ts_sale1999q2
+DATAFILE '/u1/oradata/sales/sales1999_q2.dat'
+SIZE 100M
+DEFAULT STORAGE (INITIAL 30m NEXT 30m MINEXTENTS 3 PCTINCREASE 0)
+CREATE TABLESPACE ts_sale1999q3
+DATAFILE '/u1/oradata/sales/sales1999_q3.dat'
+SIZE 100M
+DEFAULT STORAGE (INITIAL 30m NEXT 30m MINEXTENTS 3 PCTINCREASE 0)
+CREATE TABLESPACE ts_sale1999q4
+DATAFILE '/u1/oradata/sales/sales1999_q4.dat'
+SIZE 100M
+DEFAULT STORAGE (INITIAL 30m NEXT 30m MINEXTENTS 3 PCTINCREASE 0)
+STEP2、建立基于分区的表：
+CREATE TABLE sales
+(invoice_no NUMBER,
+...
+sale_date DATE NOT NULL )
+PARTITION BY RANGE (sale_date)
+(PARTITION sales1999_q1
+VALUES LESS THAN (TO_DATE('1999-04-01','YYYY-MM-DD')
+TABLESPACE ts_sale1999q1,
+PARTITION sales1999_q2
+VALUES LESS THAN (TO_DATE('1999-07-01','YYYY-MM-DD')
+TABLESPACE ts_sale1999q2,
+PARTITION sales1999_q3
+VALUES LESS THAN (TO_DATE('1999-10-01','YYYY-MM-DD')
+TABLESPACE ts_sale1999q3,
+PARTITION sales1999_q4
+VALUES LESS THAN (TO_DATE('2000-01-01','YYYY-MM-DD')
+TABLESPACE ts_sale1999q4 );
+
+2 、分区表的扩容：
+
+到了1999年年底，DBA应向表中加入2000年的表空间，同样是每季度一个表空间，由于公司业务欣欣向荣，预计每个
+分区为40M，操作如下。
+
+STEP1、建立表空间：
+CREATE TABLESPACE ts_sale2000q1
+DATAFILE '/u1/oradata/sales/sales2000_q1.dat'
+SIZE 130M
+DEFAULT STORAGE (INITIAL 40m NEXT 40m MINEXTENTS 3 PCTINCREASE 0)
+其他表空间ts_sale2000q2,ts_sale2000q3,ts_sales2000q4如法炮制。
+STEP2、为表添加表空间：
+ALTER TABLE sales
+ADD PARTITION sales2000_q1
+VALUES LESS THAN (TO_DATE('2000-04-01','YYYY-MM-DD')
+TABLESPACE ts_sale2000q1;
+其他分区sales2000_q1，sales2000_q1，sales2000_q1如法炮制。
+
+
+3 、删除不必要的分区：
+
+公司规定：销售的明细数据两年内必须保存在线。到2001年，DBA必须将1999年的数据备份（备份方法见5、EXPORT分区），
+将1999年的分区删除，将空间供后来的数据使用。如此循环，永远保持两年的销售数据在线。
+
+STEP1、DROP 分区：
+ALTER TABLE sales
+DROP PARTION sales1999_q1;
+ALTER TABLE sales
+DROP PARTION sales1999_q2;
+ALTER TABLE sales
+DROP PARTION sales1999_q3;
+ALTER TABLE sales
+DROP PARTION sales1999_q4;
+STEP2、利用操作系统的工具删除以上表空间占用的文件
+      （表空间基于裸设备无须次步）,UNIX系统为例：
+oracle$ rm /u1/oradata/sales/sales1999_q1.dat
+oracle$ rm /u1/oradata/sales/sales1999_q2.dat
+oracle$ rm /u1/oradata/sales/sales1999_q3.dat
+oracle$ rm /u1/oradata/sales/sales1999_q4.dat
+
+4 、分区的其他操作：
+
+分区的其他操作包括截短分区（truncate），将存在的分区划分为多个分区(split)，交换分区(exchange)，重命名（rename）,
+为分区建立索引等。DBA可以根据适当的情况使用。以下仅说明分裂分区（split）,例如该公司1999年第四季度销售
+明细数据急剧增加（因为庆国庆、迎千禧、贺回归），DBA向公司建议将第四季度的分区划分为两个分区，每个分区
+放两个月份的数据，操作如下：
+
+STEP1、按（1）的方法建立两个分区的表空间ts_sales1999q4p1,
+ts_sales1999q4p2；
+STEP2、给表添加两个分区sales1999_q4_p1,sales1999_q4_p2;
+STEP3、分裂分区：
+ALTER TABLE sales
+SPLIT PARTITON sales1999_q4
+AT TO_DATE ('1999-11-01','YYYY-MM-DD')
+INTO (partition sales1999_q4_p1, partition sales1999_q4_p2)
+
+
+5 、查看分区信息：
+
+DBA要查看表的分区信息，可查看数据字典USER_EXTENTS,操作如下：
+SVRMGRL>SELECT * FROM user_extents WHERE SEGMENT_NAME='SALES';
+SEGMENT_NA PARTITION_ SEGMENT_TYPE TABLESPACE
+---------- ------------ --------------- --------------
+SALES SALES1999_Q1 TABLE PARTITION TS_SALES1999Q1
+SALES SALES1999_Q2 TABLE PARTITION TS_SALES1999Q2
+SALES SALES1999_Q3 TABLE PARTITION TS_SALES1999Q3
+SALES SALES1999_Q4 TABLE PARTITION TS_SALES1999Q4
+SALES SALES2000_Q1 TABLE PARTITION TS_SALES1999Q1
+SALES SALES2000_Q2 TABLE PARTITION TS_SALES1999Q2
+SALES SALES2000_Q3 TABLE PARTITION TS_SALES1999Q3
+SALES SALES2000_Q4 TABLE PARTITION TS_SALES1999Q4
+
+
+5 、EXPORT分区：
+
+ORACLE8的EXPORT 工具可在表的分区以及导出数据，例如到2001年，DBA必须将1999年的数据按分区导出，操作如下：
+
+oracle$ exp sales/sales_password tables=sales:sales1999_q1 rows=Y
+file=sales1999_q1.dmp
+oracle$ exp sales/sales_password tables=sales:sales1999_q2 rows=Y
+file=sales1999_q2.dmp
+oracle$ exp sales/sales_password tables=sales:sales1999_q3 rows=Y
+file=sales1999_q3.dmp
+oracle$ exp sales/sales_password tables=sales:sales1999_q4 rows=Y
+file=sales1999_q4.dmp
+
+6 、IMPORT分区：
+
+ORACLE8的IMPORT 工具可在表的分区以及导入数据，例如在2001年，用户要查看1999年的数据，DBA必须导入1999年的数据，使之在线，操作如下：
+
+STEP1、建立表的1999年的四个表空间和相应的分区，参照（2）；
+STEP2、导入数据：
+oracle$ imp sales/sales_password FILE =sales1999_q1.dmp
+TABLES = (sales:sales1999_q1) IGNORE=y
+oracle$ imp sales/sales_password FILE =sales1999_q2.dmp
+TABLES = (sales:sales1999_q2) IGNORE=y
+oracle$ imp sales/sales_password FILE =sales1999_q3.dmp
+TABLES = (sales:sales1999_q3) IGNORE=y
+oracle$ imp sales/sales_password FILE =sales1999_q4.dmp
+TABLES = (sales:sales1999_q4) IGNORE=y
+
+   --END

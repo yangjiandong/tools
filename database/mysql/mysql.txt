@@ -1,0 +1,376 @@
+2010.02.25
+----------
+
+1、修改mysql最大连接数
+
+使用root用户登录mysql后,执行mysql> set GLOBAL max_connections=200;
+
+2009.12.02
+----------
+
+1、mysql更改时区
+[mysqld]
+#default-time-zone       = "UTC"
+default-time-zone = +8:00
+
+2009.11.11
+----------
+
+1、mysql 高并发编译
+http://blog.s135.com/post/349/
+
+2009.11.09
+----------
+
+1、XtraDB存储引擎
+save/xtradb_storage_engine.html
+http://www.ningoo.net/html/2009/xtradb_storage_engine.html
+http://blog.chinaunix.net/u2/79920/showart_1212857.html
+
+下载MySQL源代码，当前最新的5.1版本为5.1.40
+http://dev.mysql.com/downloads/mysql/5.1.html#source
+下载XtraDB源代码，当前最新的版本为1.0.4-8
+http://launchpad.net/percona-xtradb/release-8/1.0.4-8/+download/percona-xtradb-1.0.4-8.tar.gz
+
+解压MySQL
+tar -zxvf mysql-5.1.40.tar.gz
+解压XtraDB
+tar -zxvf percona-xtradb-1.0.4-8.tar.gz
+将MySQL原来的innodb源码删除或者重命名
+cd mysql-5.1.40/storage
+mv innobase innobase_bak
+将XtraDB拷贝为innobase
+cp -r ../../percona-xtradb-1.0.4-8 innobase/
+重新编译安装MySQL
+cd ../
+./configure --prefix=/home/ekman/dd/mysql/mysql --with-extra-charsets=all --enable-assembler --enable-profiling --enable-community-features --with-plugins=max --with-client-ldflags=-all-static --with-plugins=all --with-unix-socket-path=/tmp/mysql5037.sock --with-tcp-port=3308
+make && make install
+
+编辑my.cnf，新建var,data目录
+mkdir var
+mkdir data
+cd var
+ln -s /home/ekman/dd/mysql/mysql/my.cnf my.cnf
+
+初始化数据
+./bin/mysql_install_db --defaults-file=my.cnf --user=mysql
+
+启动
+cd dd/mysql/mysql
+./bin/mysqld_safe --defaults-file=/home/ekman/dd/mysql/mysql/my.cnf --socket=/home/ekman/dd/mysql/mysql/var/mysql5140.sock  --port=3308
+
+查看端口
+netstat -anp|grep LISTEN
+--有3308
+
+给 root 指定密码：
+./bin/mysqladmin --defaults-file=/home/ekman/dd/mysql/mysql/my.cnf --socket=/home/ekman/dd/mysql/mysql/var/mysql5140.sock --port=3308 -u root password 'root'
+
+mysql:
+./bin/mysql --defaults-file=/home/ekman/dd/mysql/mysql/my.cnf -u root -p
+-- 增加用户
+insert into mysql.user (Host,User,Password) VALUES ('%','dev',PASSWORD('dev'));
+INSERT INTO mysql.user (Host,User,Password) VALUES('localhost','dev',PASSWORD('dev'));
+FLUSH PRIVILEGES
+
+--my.cnf
+save/my.cnf
+
+ubuntu 下编译安装http://www.phpweblog.net/cicisoso/articles/5677.html
+
+2、查看mysql安装信息
+mysqladmin -u root -p --host=localhost --port=3306 variables
+
+3、mysql tip
+通过/etc/my.cnf配置文件的[mysql]部分，可以设置MySQL命令行的一些运行参数。例如：
+[mysql]
+prompt=\\u@\\d \\r:\\m:\\s>
+pager='less -S'
+tee='/tmp/mysql.log'
+通过prompt设置显示用户名，当前数据库和当前时间，注意在配置文件里最好使用双斜杠：
+root@poster 10:26:35>
+通过pager设置使用less来显示查询结果，-S表示截断超过屏幕宽度的行，一行太长MySQL的显示格式就显得很乱，如果要看完整的行，建议使用\G将行垂直输出。当然，你也可以添加更多less的参数来控制输出。
+tee则将MySQL执行的所有输出保存到一个日志文件中，即使使用less -S截断了超长行，在日志中还是会记录整个的结果，另外，前面通过prompt设置了当前时间显示，这样也便于在日志文件中查看每次操作的时间。由于 tee的结果是附加到文件中的，日志文件需要定期清除。
+
+4、5.1.4自带压力测试mysqlslap
+http://www.ningoo.net/html/2008/mysql_load_test_tool_mysqlslap.html
+
+2009.10.17
+----------
+
+1、mysql监测工具
+   apt-get install cacti
+
+   ?安装时设置password为123
+
+   访问：http://61.132.90.250/cacti
+
+   第一次登录,admin,admin,改口令为123
+
+2009.06.10
+----------
+
+1、Find which tables use INNODB with MySQL
+
+http://www.electrictoolbox.com/article/mysql/
+
+SELECT table_schema, table_name
+FROM INFORMATION_SCHEMA.TABLES
+WHERE engine = 'innodb';
+
+2、How to change the storage engine a MySQL table uses
+
+ALTER TABLE products ENGINE = innodb
+
+   How to tell which storage engine a MySQL table uses
+
+SELECT ENGINE
+FROM information_schema.TABLES
+WHERE TABLE_SCHEMA = 'test'
+AND TABLE_NAME = 'products'
+
+   If you wanted to see the storage engine for all tables in your database, do this instead:
+
+SELECT TABLE_NAME, ENGINE
+FROM information_schema.TABLES
+WHERE TABLE_SCHEMA = 'test'
+
+   Renaming a table in MySQL
+
+RENAME TABLE tablename TO tablename_renamed
+
+
+2009.01.13
+----------
+
+MYSQL 常用命令列表
+
+1、系统管理
+mysql -h主机地址 -u用户名 －p  :  连接MYSQL   （在mysql/bin）
+
+exit  :  退出MYSQL命令
+
+mysqladmin -u用户名 -p旧密码  password 新密码  : 修改密码（在mysql/bin）
+
+grant select [insert][,update][,delete]on 数据库.* to 用户名@localhost（"%"，表示任何主机） identified by "密码"  :  增加用户
+
+mysql.server start :  启动服务器
+
+mysql.server stop : 停止服务器
+
+2、查询命令
+select version()  :   查询版本号
+
+select current_date  :  查询当前日期
+
+3、显示命令
+show databases  :  显示数据库列表
+
+show tables  :  显示库中的数据表
+
+describe 表名  :  显示数据表的结构
+
+show engines    命令来查看当前的mysql服务器所支持的存储引擎
+
+扩展正则表达式:
+Select * from 表名 where 字段名 regexp（not regexp）或者rlike（not rlike）
+1)    “.”匹配任何单个的字符
+2)     一个字符类[…]匹配方框内任何字符。例如[a]，[asd]，[a-z]匹配任何小写字母，[0-9]匹配任何数字。
+3)    “*”匹配零个或者多个在它前面的东西。
+4)     正则表达式区分大小写[aA]。
+5)     如果它出现在被测试值的任何地方，模式都匹配。
+6)     定位，在模式开始处用“^”，结尾处用“$”，例如“^b”
+
+4、编辑命令
+
+Load data infile “/path/filename” into table 表名  :  从文件中向表添加数据，文件每行包括一条记录，用定位符（tab）把值分开。
+
+2008.12.16
+----------
+
+1、mysql 1130連接錯誤的解決方法
+
+   mysql -u root -p
+   mysql>use mysql;
+   mysql>update user set host ='%'  where user ='dev';
+   mysql>flush privileges;
+
+   dev可以远程连接
+
+2008.11.12
+----------
+
+mysql 工具：navicat8_mysql_cs.exe
+
+2008.09.18
+----------
+
+Linux下MySQL的大小写区分问题
+
+1、linux下mysql安装完后是默认：区分表名的大小写，不区分列名的大小写；
+
+2、用root帐号登录后，在/etc/my.cnf 中的[mysqld]后添加添加lower_case_table_names=1，重启MYSQL服务，这时已设置成功：不区分表名的大小写；
+
+    lower_case_table_names参数详解：
+
+        lower_case_table_names = 0
+
+        其中 0：区分大小写，1：不区分大小写
+
+        MySQL在Linux下数据库名、表名、列名、别名大小写规则是这样的：
+
+　　        1、数据库名与表名是严格区分大小写的；
+
+　　        2、表的别名是严格区分大小写的；
+
+　　        3、列名与列的别名在所有的情况下均是忽略大小写的；
+
+　　        4、变量名也是严格区分大小写的；
+
+        MySQL在Windows下都不区分大小写。
+
+
+3、如果想在查询时区分字段值的大小写，则：字段值需要设置BINARY属性，设置的方法有多种：
+
+    A、创建时设置：
+                    CREATE TABLE T(
+                        A VARCHAR(10) BINARY
+                    );
+
+    B、使用alter修改：
+                     ALTER TABLE `tablename` MODIFY COLUMN `cloname` VARCHAR(45) BINARY;
+
+    C、mysql table editor中直接勾选BINARY项。
+
+
+2007.12.28
+----------
+
+1、增加连接时间
+  my.ini or /etc/mysql/my.conf
+
+  wait_timeout = 10
+
+2007.12.28
+----------
+
+1、取消windows下表名大写
+
+  my.ini中增加
+    lower_case_table_names=0
+
+2007.08.30
+----------
+
+~/mysqlback.sh
+
+#!/bin/sh
+
+HOST=192.168.1.189
+USER=dev
+PASSWORD="123"
+BACKDIR=/home/ekman/sqlbackup
+DATESTR=`date +%F-%H%M%S`
+
+if [ -d $BACKDIR ]
+then
+echo "passthis"
+else
+mkdir $BACKDIR
+fi
+mysqldump -h $HOST -u $USER --password=$PASSWORD --database divo > $BACKDIR/$DATESTR.sql
+
+crontab -e(创建一个crontab)
+10  23  *  *  *  /home/ekman/mysqlback.sh
+
+2007.08.08
+----------
+
+1、新建数据库指定字符集
+
+  注意，在linux下，需配置/etc/mysql/my.conf
+  [mysqld]
+  default-character-set=utf8
+
+  重启 mysql
+
+  create database test2  DEFAULT CHARACTER SET gbk COLLATE gbk_chinese_ci;
+
+2、备份还原
+
+  备份：mysqldump -h localhost -u root -p dbname > c:\db.sql
+
+  还原：mysql -h localhost -u root -p dbname < c:\db.sql
+
+2007.03.16
+----------
+
+1、mysql启动失败
+  http://forums.vpslink.com/archive/index.php/t-405.html
+  找原因： /usr/bin/mysqld_safe --log-error=/var/log/mysql.err
+  TODO:http://blog.sina.com.cn/u/4a890238010008el
+
+2005.10.29
+----------
+
+1、设置root用户口令123
+
+  二院服务器上root口令也为 "123"
+    GRANT ALL PRIVILEGES ON *.* TO root@localhost IDENTIFIED BY "123";
+
+  登录
+    mysql -u root -p
+    pass:123
+
+2、增加用户dev
+  GRANT ALL PRIVILEGES ON *.* TO dev@"%" IDENTIFIED BY "123";  -- 可任意机器访问，没测试通过
+
+3、字符集
+
+my.cnf
+[mysqld]
+...
+default-character-set=utf8
+default-collation=utf8_general_ci
+
+创建数据库或表时：
+CREATE DATABASE db_name ... DEFAULT CHARACTER SET utf8 -- 还不支持 (todo)
+CREATE TABLE tbl_name ... DEFAULT CHARACTER SET utf8
+
+启动：sudo /usr/sbin/mysqld
+
+2005.10.22
+----------
+
+1、安装MySQL
+这个应该很简单了，而且我觉得大家在安装方面也没什么太大问题，所以也就不多说了，下面我们来讲讲配置。
+2、配置MySQL
+注意，在Ubuntu下MySQL缺省是只允许本地访问的，如果你要其他机器也能够访问的话，
+那么需要改变/etc/mysql/my.cnf配置文件了！下面我们一步步地来：
+默认的MySQL安装之后根用户是没有密码的，所以首先用根用户进入：
+$mysql -u root
+在这里之所以用-u root是因为我现在是一般用户（firehare），如果不加-u root的话，mysql会以为是firehare在登录。
+注意，我在这里没有进入根用户模式，因为没必要。一般来说，对mysql中的数据库进行操作，根本没必要进入根用户模式，
+只有在设置时才有这种可能。
+进入mysql之后，最要紧的就是要设置Mysql中的root用户密码了，否则，Mysql服务无安全可言了。
+mysql> GRANT ALL PRIVILEGES ON *.* TO root@localhost IDENTIFIED BY "123456";
+注意，我这儿用的是123456做为root用户的密码，但是该密码是不安全的，请大家最好使用大小写字母与数字混合的密码，
+且不少于8位。
+这样的话，就设置好了MySQL中的root用户密码了，然后就用root用户建立你所需要的数据库。我这里就以xoops为例：
+mysql>CREATE DATABASE xoops；
+mysql>GRANT ALL PRIVILEGES ON xoops.* TO xoops_root@localhost IDENTIFIED BY "654321";
+这样就建立了一个xoops_roots的用户，它对数据库xoops有着全部权限。以后就用xoops_root来对xoops数据库进行管理，
+而无需要再用root用户了，而该用户的权限也只被限定在xoops数据库中。
+如果你想进行远程访问或控制，那么你要做两件事：
+其一：
+mysql>GRANT ALL PRIVILEGES ON xoops.* TO xoops_root@"%" IDENTIFIED BY "654321";
+允许xoops_root用户可以从任意机器上登入MySQL。
+其二：
+$sudo gedit /etc/mysql/my.cnf
+>skip-networking => # skip-networking
+这样就可以允许其他机器访问MySQL了。
+
+新版的设置为
+#bind-address           = 127.0.0.1
+# 改为实际的ip地址
+bind-address            = 192.168.1.189

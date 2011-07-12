@@ -1,0 +1,103 @@
+第一步：以管理员用户登陆
+
+   conn system/123@xe as sysdba
+
+第二步：设置可操作目录
+
+   -需要指定utl_file包可以操作的目录。统一采用以下方法：
+
+   1、alter system set utl_file_dir='d:\utl' scope=spfile;
+   2、在init.ora文件中，配置如下:
+
+   UTL_FILE=E:\utl或者UTL_FILE_DIR=E:\utl
+
+第三步：授权给指定用户，以便执行utl_file
+
+   GRANT EXECUTE ON utl_file TO nan21;
+
+第四步：测试
+
+http://blog.csscss.org/post/53.shtml
+
+在Oracle中使用UTL_FILE导出csv文件函数：
+
+create or replace function  dump_csv( p_query     in varchar2,
+                                      p_separator in varchar2
+                                                    default ',',
+                                      p_dir       in varchar2 ,
+                                      p_filename  in varchar2 )
+return number
+AUTHID CURRENT_USER
+is
+    l_output        utl_file.file_type;
+    l_theCursor     integer default dbms_sql.open_cursor;
+    l_columnValue   varchar2(2000);
+    l_status        integer;
+    l_colCnt        number default 0;
+    l_separator     varchar2(10) default '';
+    l_cnt           number default 0;
+begin
+    l_output := utl_file.fopen( p_dir, p_filename, 'w' );
+
+    dbms_sql.parse(  l_theCursor,  p_query, dbms_sql.native );
+
+    for i in 1 .. 255 loop
+        begin
+            dbms_sql.define_column( l_theCursor, i,
+                                    l_columnValue, 2000 );
+            l_colCnt := i;
+        exception
+            when others then
+                if ( sqlcode = -1007 ) then exit;
+                else
+                    raise;
+                end if;
+        end;
+    end loop;
+
+    dbms_sql.define_column( l_theCursor, 1, l_columnValue,
+                            2000 );
+
+    l_status := dbms_sql.execute(l_theCursor);
+
+    loop
+        exit when ( dbms_sql.fetch_rows(l_theCursor) <= 0 );
+        l_separator := '';
+        for i in 1 .. l_colCnt loop
+            dbms_sql.column_value( l_theCursor, i,
+                                   l_columnValue );
+            utl_file.put( l_output, l_separator ||
+                                    l_columnValue );
+            l_separator := p_separator;
+        end loop;
+        utl_file.new_line( l_output );
+        l_cnt := l_cnt+1;
+    end loop;
+    dbms_sql.close_cursor(l_theCursor);
+
+    utl_file.fclose( l_output );
+    return l_cnt;
+end dump_csv;
+/
+
+
+试验：
+sqlplus:>
+conn nan21/nan21;
+select dump_csv('select * from menuitem',',','d:\utl','menuitem.csv') from dual;
+
+建立控制文件 menuitem.ctl
+
+load data
+infile 'd:\utl\menuitem.csv'
+append into table t_menuitem
+fields terminated by ','
+(id,active,code,createdby,createdon,link,menubar_code,menuitem_id,name,position,target,updatedby,updatedon)
+
+sqlldr 导入
+
+sqlldr userid=play/play contgrol=menuitem.ctl
+
+
+
+   --END

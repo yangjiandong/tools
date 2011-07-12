@@ -1,0 +1,121 @@
+102程序安装
+===========
+
+数据库部分
+------------
+
+1、安装oracle数据库8i
+
+	注：
+
+	  1.新建数据库时，类型选“数据仓库”,
+	  2.如果客户现场已安装了oracle，在新建数据库时，选择字符集时一定要选ZHS16GBK。
+
+
+2、新建表空间
+
+   -- 存放接口数据表
+   -- 文件位置需根据实际情况指定
+   -- 文件大小需根据实际情况指定，默认10g,每次扩展5g
+
+   create tablespace tsp_hcost
+	datafile 'e:\Oracle\oradata\dbserver\aphcost.dbf'
+	size 10000M
+	reuse
+	autoextend on
+	next 5000M;
+
+3、新建oracle用户
+
+   CREATE USER "HCOST"
+  	PROFILE "DEFAULT" IDENTIFIED BY "123"
+  	DEFAULT TABLESPACE "TSP_HCOST" TEMPORARY TABLESPACE "TEMP"
+  	ACCOUNT UNLOCK;
+
+   GRANT "DBA" TO "HCOST";
+   GRANT "CONNECT" TO "HCOST";
+   GRANT "RESOURCE" TO "HCOST";
+
+4、导入数据
+
+   cmd环境下
+
+     imp system/manager@dbserver fromuser=hcost touser=hcost file=d:\hcost.dmp
+
+   注意：在执行以上语句时，客户端的字符集一定要为 AMERICAN_AMERICA.ZHS16GBK。
+
+   文件来源：如果是第一次安装，则采用软件公司提供的 hcost.dmp，该数据库中不含业务数据。
+   
+             如果是用户重装软件时，应采用用户自己的备份
+   
+5、建立dblink
+
+   a.修改oracle_home\admin\sid\pfile\init.ora 
+
+     global_names=false；并重新启动机器，注意：目录名sid,文件名init.ora 要根据实际情况来定
+     如果global_names=true时，要求数据库连接名和远端数据库名称一样。
+
+   b.定义一个his数据库的命名服务名，如his，也可直接修改oracle_home/../network/ADMIN/tnsnames.ora，增加以下内容
+
+	   his =
+	  (DESCRIPTION =
+	    (ADDRESS_LIST =
+	      (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.2.121)(PORT = 1521))
+	    )
+	    (CONNECT_DATA =
+	      (SID = oracle)
+	    )
+	  )
+
+      ip地址,sid根据实际情况来定。
+
+   c.定义dblink
+
+     create database link his_link
+   	 connect to system identified by manager
+   	 using 'his';
+
+     用户名和密码根据实际情况来定。
+
+     几个有用的查询：
+       查询已建的dblink:
+         select * from all_db_links;
+       删除dblink:
+         drop database link
+
+6、asc7数据中文处理
+
+  his数据库所需的视图表中有关中文信息的字段采用UTL_RAW.CAST_TO_RAW(colname)处理。
+  导入存储过程中对该字段再进行UTL_RAW.CAST_TO_VARCHAR2(colname)处理即可。
+
+
+7、定义导入文件所在目录
+
+  在init.ora增加一行 utl_file_dir = c:\hcost，c:\hcost即为导入文件所在目录(根据现场情况定)
+
+  需重启数据库。
+
+  show parameter utl 可用来查看该参数设置值。
+
+
+程序安装
+--------
+
+1、安装 jdk
+
+2、运行hcost_setup.exe，根据提示进行安装。
+
+3、配置数据库连接
+
+   打开 tomcat/webapps/hcost/WEB-INF/config/expresso-config.xml，找到以下部分：
+   
+     	url="jdbc:oracle:thin:@192.168.1.111:1521:dbserver"
+	connectFormat="1"
+	login="hcost"
+	password="123"   
+   
+   修改为真实的数据库地址、数据库实例、用户名和密码。
+   
+4、重启 tomcat，访问浏览器 http://localhost:8080/hcost 即可。   
+   
+ -- end

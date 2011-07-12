@@ -1,0 +1,4 @@
+create tablespace scott_tbs_01 datafile 'D:\oracle\oradata\dbserver\scott_tbs_01.dbf' size 10m
+autoextend on next 10M maxsize unlimited logging extent management local autoallocate segment space management auto;
+create tablespace scott_tbs_02 datafile 'D:\oracle\oradata\dbserver\scott_tbs_02.dbf' size 10m
+autoextend on next 10M maxsize unlimited logging extent management local autoallocate segment space management auto;

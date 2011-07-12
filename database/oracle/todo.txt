@@ -1,0 +1,82 @@
+1、同义词
+
+2、数据库连接
+
+3、gbk字符集数据库取ascii字符集数据库内容
+
+  取his数据时会用到该技术
+
+4、手工建表
+
+5、一个update的写法。
+create table t_aa(employeeno varchar(10),employeename varchar(20));
+
+insert into t_aa values('01','aaa');
+insert into t_aa values('02','aaa2');
+insert into t_aa values('03','aaa3');
+insert into t_aa values('04','aaa4');
+commit;
+
+create table t_bb(employeeno varchar(10),employeename varchar(20),money number);
+
+insert into t_bb values(null,'aaa',123);
+insert into t_bb values('','aaa',234);
+insert into t_bb values('','aaa2',123);
+insert into t_bb values('','aaa3',234);
+insert into t_bb values('','aaa4',234);
+insert into t_bb values('','aaa66',234);
+
+commit;
+
+select * from t_bb;
+update t_bb set employeeno='zz';
+
+update t_bb a
+set employeeno=(select employeeno from t_aa b
+                where b.employeename=a.employeename);
+
+--以下执行可以
+update t_bb a
+set employeeno=(select employeeno from t_aa b
+                where b.employeename=a.employeename)
+where employeename in(select employeename from t_aa);
+
+or
+
+update t_bb a 
+   set employeeno = (select employeeno 
+                       from t_aa b 
+                      where b.employeename = a.employeename) 
+ where exists (select 1 
+                 from t_aa 
+                where employeename = a.employeename)
+
+--or --
+
+create table t_aa(employeeno varchar(10),employeename varchar(20));
+insert into t_aa values('01','aaa');
+
+create table t_bb(employeeno varchar(10),money number);
+insert into t_bb values('aaa',123);
+insert into t_bb values('aaa',234);
+insert into t_bb values('aaa4',234);
+insert into t_bb values('aaa66',234);
+commit;
+
+
+select * from t_bb;
+update t_bb a
+set employeeno=(select employeeno from t_aa b
+                where b.employeename=a.employeename)
+where employeename in(select employeename from t_aa);
+
+select * from t_bb
+update t_bb set employeeno ='z'
+
+update t_bb a 
+   set employeeno = (select employeeno 
+                       from t_aa b 
+                      where b.employeename = a.employeeno) 
+ where exists (select 1 
+                 from t_aa 
+                where employeename = a.employeeno)

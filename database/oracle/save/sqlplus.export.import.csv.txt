@@ -1,0 +1,74 @@
+sqlplus 导出导入数据
+=====================
+
+    1、导出
+
+    sqlplus -S eking/eking@his @export2.sql
+
+    export2.sql
+    set colsep ,
+    set heading off
+    set feedback off
+    set linesize 4000
+    set trimspool on
+    set pagesize 0
+    spool detail.csv
+
+    select * from inpbill.inp_settle_detail where rcpt_no='00114023';
+
+    spool off;
+    exit
+
+    2、导入
+
+    sqlldr userid=eking/eking@ora92 control=input.ctl
+
+    input.ctl
+load data
+infile 'outp_bill_items.csv'
+append into table OUTPBILL.OUTP_BILL_ITEMS
+fields terminated by ','
+TRAILING NULLCOLS
+(
+PATIENT_ID,
+  VISIT_ID,
+  SERIAL_NO,
+  PRESC_NO,
+  ORDER_NO,
+  ORDER_SUB_NO,
+  RCPT_NO,
+  ITEM_NO,
+  ITEM_CLASS,
+  CLASS_ON_RCPT,
+  ITEM_CODE,
+  ITEM_NAME,
+  ITEM_SPEC char(1000),
+  AMOUNT,
+  UNITS,
+  PERFORMED_BY,
+  COSTS,
+  CHARGES,
+  FEE_STATUS,
+  PRICE,
+  CLASS_TYPE,
+  VISIT_DATE "sysdate",
+  VISIT_NO "0",
+  EMP_NO,
+  ORDERED_BY,
+  FCLASS,
+  YB_CALC "nvl(null,0)",
+  HIS_PRE_NO,
+  AUT_ID "nvl(null,0)",
+  ISQX,
+  APP_NO,
+  PRE_ORDER,
+  ASS_NO "nvl(null,0)",
+  REQ_NO,
+  REQ_ITEM_NO "nvl(null,0)",
+  QTY,
+  UNIT,
+  PRESC_TYPE,
+  FY_FLAG,
+  PRODUCE_TYPE "nvl(null,0)",
+  APPLY_DATE
+)
