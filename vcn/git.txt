@@ -1,6 +1,20 @@
 git
 ====
 
+2011.07.17
+----------
+
+1. 导出变动文件
+
+   //还没提交到缓存,before add .
+   git archive --output=<file> HEAD $(git diff --name-only)
+   //after add .
+   git archive --output=<file> HEAD $(git diff HEAD --name-only)
+
+   //建议采用以下两种，在linux shell下运行
+   tar -czf <file> $(git diff HEAD --name-only)
+   cp $(git diff HEAD --name-only) <export-directory>
+
 2011.07.09
 ----------
 
