@@ -1,3 +1,44 @@
+2011.08.03
+----------
+
+1 、动态查询，行转列
+declare @sql1 varchar(8000)
+declare @sql2 varchar(8000)
+set @sql1=''
+set @sql2=''
+select @sql1=@sql1+',SUM(case when incomecatname='''+incomecatname+''' then b.money ELSE 0 end) as ['+incomecatname+']'
+  from hcostdata..T_IncomeCategory where incomecatcode IN('A01','A02','A03')
+  order by incomecatname
+SET @sql2=N'select c.orgname as 名称'+@sql1+
+ ' from hcostdata..t_incomecategory a,hcostdata..t_reportdata b,hcostdata..t_org c
+where b.orgid=c.orgid and a.incomecatcode=b.incomecatcode AND B.BUSDATE=''2007.01.01''
+group by c.orgname'
+--print @sql1
+print @sql2
+exec(@sql2)
+
+--增加合计栏
+declare @sql1 varchar(8000)
+declare @sql2 varchar(8000)
+set @sql1=''
+set @sql2=''
+select @sql1=@sql1+',SUM(case when incomecatname='''+incomecatname+''' then b.money ELSE 0 end) as ['+incomecatname+']'
+  --+',SUM( b.money ) as HJ '
+  from hcostdata..T_IncomeCategory
+  where incomecatcode like 'A%'
+  --where incomecatcode IN('A01','A02','A03')
+  order by incomecatname
+
+select @sql1=@sql1+
+  --+',SUM(case when a.incomecatcode='''+'A01'+  '''  or a.incomecatcode='''+'A02'+'''  or a.incomecatcode='''+'A03' +''' then b.money ELSE 0 end ) as HJ '
+   +',SUM(case when a.incomecatcode like '''+'A%' + '''then b.money else 0 end ) as HJ '
+  --from hcostdata..T_IncomeCategory where incomecatcode IN('A01','A02','A03')
+
+save/dynamic_sql.html
+
+2、bcp 导入导出数据 
+save/bcp.in.out.txt
+
 2010.02.24
 ----------
 

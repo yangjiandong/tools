@@ -1,0 +1,182 @@
+2008.07.07
+----------
+
+1、生成现场导出一个月数据脚本
+
+ 步骤：a.用sql2005导出所有表结构
+
+       b.现场建立以下存储过程，参看例子执行，拷贝输出结果，生成一个bat文件，执行该文件，生成所有表的bcp文件
+
+--exec [file2table] '192.168.1.200','sa','123','hcostdata','c:\bcp','2007.01.01','2007.01.31'
+ALTER procedure [dbo].[File2Table]
+ 
+/**
+	导入调用示例
+
+	1.导出单个表
+
+	exec file2table 'serverName','userName','passwd','database..tablename','c:\bcp\tablename.txt'
+
+	2.导出整个数据库
+
+	exec file2table 'serverName','userName','passwd','database','c:\bcp','2007.01.01','2007.01.31'
+**/
+
+@servername varchar(200)  --服务器名
+,@username varchar(200)   --用户名,如果用NT验证方式,则为空’’
+,@password varchar(200)   --密码
+,@tbname varchar(500)     --数据库.dbo.表名,如果不指定:.dbo.表名,则导出数据库的所有用户表
+,@filename varchar(1000),  --导入/导出路径/文件名,如果@tbname参数指明是导出整个数据库,则这个参数是文件存放路径,文件名自动用表名.txt
+--,@isout bit               --1为导出,0为导入
+@startdate varchar(10),
+@enddate varchar(10)
+as
+
+DECLARE @sql varchar(8000)
+
+IF @tbname like '%.%.%' --如果指定了表名,则直接导出单个表
+BEGIN
+  SET @sql='bcp '+@tbname
+   + ' out ' 
+   +'"'+@filename+'"/w'
+   +' /S '+@servername
+   +CASE WHEN ISNULL(@username,'')='' THEN '' ELSE '/U '+@username END
+   +' /P '+ISNULL(@password,'')
+  EXEC master..xp_cmdshell @sql
+END
+
+ELSE
+BEGIN --导出整个数据库,定义游标,取出所有的用户表
+  DECLARE @m_tbname varchar(250)
+  DECLARE @is_busdate char(1)
+
+  IF right(@filename,1)<>'\' SET @filename=@filename+'\'
+
+  SET @m_tbname='declare #tb cursor for select name from '+@tbname+'..sysobjects where xtype=''U'''
+
+  EXEC(@m_tbname)
+  OPEN #tb
+  FETCH NEXT FROM #tb INTO @m_tbname
+  WHILE @@fetch_status=0
+  BEGIN
+
+  --判断是否有年月字段
+  IF (LEFT(@m_tbname,2)='G_') or (LEFT(@m_tbname,2)='S_') or 
+	 (@m_tbname='T_ReportData') or (@m_tbname='T_Sumup')  or
+     (@m_tbname='T_SumupDirectCost') or (@m_tbname='T_SumupDirectCost2')  or
+     (@m_tbname='T_SumupDrugIncome') or (@m_tbname='T_SumupExpense')  or
+     (@m_tbname='T_SumupForByOrg') or (@m_tbname='T_SumupIncomeByOrg')  or
+     (@m_tbname='T_SumupIncomeByPerson') 
+     SET @is_busdate='1'
+  ELSE
+     SET @is_busdate='0'
+
+   SET @sql='bcp '
+    + CASE WHEN @is_busdate=1 THEN ' "select * from ' + @tbname+'..'+@m_tbname + ' where busdate>='''+ @startdate + ''' and busdate<='''+@enddate+''' " queryout ' 
+		ELSE @tbname+'..'+@m_tbname + ' out ' END
+    +' "'+@filename+@m_tbname+'.txt " -c -t, -q '
+    +' -S '+@servername
+    +CASE WHEN isnull(@username,'')='' THEN '' ELSE ' -U '+@username END
+    +' -P '+isnull(@password,'')
+   print @sql
+   --EXEC master..xp_cmdshell @sql
+   FETCH next from #tb into @m_tbname
+  END
+  CLOSE #tb
+  DEALLOCATE #tb
+END
+
+
+2008.01.10
+----------
+
+1、bcp
+
+  bcp hcostdata..t_employee out d:\temp1.txt -c -t, -q -S"192.168.1.200" -U"sa" -P"123"
+
+old
+------
+
+/********************
+/* 需要SSEUtil工具
+
+用bcp实现的存储过程 导整个数据库
+
+实现数据导入/导出的存储过程,根据不同的参数,可以实现导入/导出整个数据库/单个表
+
+--调用示例--
+
+导出调用示例
+
+1.导出单个表
+
+exec file2table 'serverName','userName','passwd','database..tablename','c:\bcp\tablename.txt',1
+
+2.导出整个数据库
+
+exec file2table 'serverName','userName','passwd','database','c:\bcp',1
+
+注意：c:\bcp一定要存在
+
+导入调用示例
+
+1.导入单个表
+
+exec file2table 'serverName','userName','passwd','database..tablename','c:\bcp\tablename.txt',0
+
+2.导入整个数据库
+
+exec file2table 'serverName','userName','passwd','database','c:\bcp',0
+
+********************/
+
+if exists(select 1 from sysobjects where name='File2Table' and objectproperty(id,'IsProcedure')=1)
+  drop procedure File2Table
+go
+
+create procedure File2Table
+@servername varchar(200)  --服务器名
+,@username varchar(200)   --用户名,如果用NT验证方式,则为空’’
+,@password varchar(200)   --密码
+,@tbname varchar(500)     --数据库.dbo.表名,如果不指定:.dbo.表名,则导出数据库的所有用户表
+,@filename varchar(1000)  --导入/导出路径/文件名,如果@tbname参数指明是导出整个数据库,则这个参数是文件存放路径,文件名自动用表名.txt
+,@isout bit               --1为导出,0为导入
+as
+
+declare @sql varchar(8000)
+
+if @tbname like '%.%.%' --如果指定了表名,则直接导出单个表
+begin
+  set @sql='bcp'+@tbname
+   +case when @isout=1 then 'out' else 'in' end
+   +'"'+@filename+'"/w'
+   +' /S '+@servername
+   +case when isnull(@username,'')='' then '' else '/U '+@username end
+   +' /P '+isnull(@password,'')
+  exec master..xp_cmdshell @sql
+end
+else
+begin --导出整个数据库,定义游标,取出所有的用户表
+  declare @m_tbname varchar(250)
+  if right(@filename,1)<>'\' set @filename=@filename+'\'
+
+  set @m_tbname='declare #tb cursor for select name from '+@tbname+'..sysobjects where xtype=''U'''
+
+  exec(@m_tbname)
+  open #tb
+  fetch next from #tb into @m_tbname
+  while @@fetch_status=0
+  begin
+   set @sql='bcp '+@tbname+'..'+@m_tbname
+    +case when @isout=1 then ' out ' else ' in ' end
+    +' "'+@filename+@m_tbname+'.txt " /w'
+    +' /S '+@servername
+    +case when isnull(@username,'')=''then '' else ' /U '+@username end
+    +' /P '+isnull(@password,'')
+   exec master..xp_cmdshell @sql
+   fetch next from #tb into @m_tbname
+  end
+  close #tb
+  deallocate #tb
+end
+go
