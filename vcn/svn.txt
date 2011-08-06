@@ -1,6 +1,22 @@
 svn
 ====
 
+2011.08.06
+----------
+
+1、导出差异文件
+
+tar cvfz changes.tar.gz --exclude-vcs `svn diff -rM:N --summarize . | grep . | awk '{print $2}' | grep -E -v '^\.$'`
+
+M,N 为比较的版本标识
+ A revision argument can be one of:
+NUMBER       revision number
+'{' DATE '}' revision at start of the date
+'HEAD'       latest in repository
+'BASE'       base rev of item's working copy
+'COMMITTED'  last commit at or before BASE
+'PREV'       revision just before COMMITTED
+
 2010.06.03
 ----------
 
