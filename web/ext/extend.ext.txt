@@ -1,0 +1,152 @@
+
+扩展Ext的新手教程（转载）
+
+博客分类： ExtJs
+EXTOO
+一般你会希望使用类（class）来诠释面何对象的思想。本教程的所述几点理点亦体现了这种思想。
+ 
+复用的类
+有时候你打算生成一个带有若干配置项（config options）的组件（component），这些配置项你会想是让它可复的。就好像一种情况，有一部分的面板是已经固定好高、宽的，其中只有标题是不同的，我们可以把它做成预配置类（preconfigured class）。
+使用构造器函数
+构造器函数是完成该任务的方法之一，如下例：
+// 构造器函数
+var MyPanel = function(config) {
+    Ext.apply(this, { 
+        // 在这里设定预配置的参数项
+ 
+        width: 300,
+        height: 300
+    });
+    MyPanel.superclass.constructor.apply(this, arguments);
+};
+// My Panel继承了Ext.Panel
+Ext.extend(MyPanel, Ext.Panel, {});
+ 
+var myfirstpanel = new MyPanel({
+    title: 'My First Panel'
+});
+ 
+var mysecondpanel = new MyPanel({
+    title: 'My Second Panel'
+});
+工厂模式
+生成“预配置对象”的一种途径是使用工厂模式（Factong Design Pattern）。透过工厂函数返回一个全新的实例（该函数包含了预先配置好的参数项），工厂模式的方法不需要类的继承。如果纯粹为了制定固定的配置项参数来讲工厂模式是一个不错的方法，其内部原理比继承、覆盖某个类来得简单。
+function createMyPanel(config) {
+    return new Ext.Panel(Ext.apply({//在这里设定预配置的参数项
+        width: 300,
+        height: 300
+    }, config));
+};
+ 
+var myfirstpanel = createMyPanel({
+    title: 'My First Panel'
+});
+ 
+var mysecondpanel = createMyPanel({
+    title: 'My Second Panel'
+});
+扩展功能
+使用OO的类的其中一个原因是你打算从另外一个类的基础上扩展新的功能，假设现在有一面板类，我们在此基础上增加一个新的方法并重写（override）父类的一个方法，过程如下：
+// Constructor
+var MyPanel = function(config) {
+    //这里复用配置项
+    Ext.apply(this,
+        width: 300,
+        height: 300
+    });
+    // 调用父类的构造函数，提取父类的功能
+    MyPanel.superclass.constructor.apply(this, arguments);
+    // 在这里你可以为当前对象新添加功能
+    // 如事件： 
+    this.on('click', function() {alert("You Clicked " + this.title);}, this);
+};
+// My Panel继承了Ext.Panel
+Ext.extend(MyPanel, Ext.Panel, {
+    // 在这里你可以为当前的类加入静态的变量，所有这个类生成的实例都是使用这里声明的变量
+    // 如果你不确定请在构造器内设定。不要在这里放置由'new'或'xtype'操作而成的对象。在构造器内设定配置项对象会更安全。
+ 
+    // 新添加的函数
+    myNewFunction: function() {
+    },
+    // 重写原有函数
+    onRender: function() {
+        MyPanel.superclass.onRender.apply(this, arguments);
+        this.myNewFunction();
+    }
+});
+ 
+var myfirstpanel = new MyPanel({
+    title: 'My First Panel'
+});
+ 
+var mysecondpanel = new MyPanel({
+    title: 'My Second Panel'
+});
+另一种方法是用构造器的方式写出代码：
+var MyPanel = function(config) {
+    // 调用父类的构造函数，提取父类的功能
+    MyPanel.superclass.constructor.call(this, Ext.apply({
+        //这里复用配置项
+        width: 300,
+        height: 300
+    }, config));
+ 
+    // 位于构造器之后，在这里你可以为当前对象新添加功能（如处理如事件）
+    this.on('click', function() {alert("你已点击" + this.title);}, this);
+};
+以上的方法是重写构造器的方式实现继承的，另外我们还可以重写initComponents方法写出相同的功能，但需要指出是initComponent方法是属于 Ext.Components的方法，只能在组件上使用，不是一个通用的方法。这里是一个示例：
+var MyPanel = Ext.extend(Ext.Panel, {
+    // 在这里你可以为当前的类加入静态的变量，所有这个类生成的实例都是使用这里声明的变量
+    // 如果你不确定请在构造器内设定。不要在这里放置由'new'或'xtype'操作而成的对象。在构造器内设定配置项对象会更安全。
+ 
+    initComponent: function() {
+        //Reusable config options here
+        Ext.apply(this,
+            width: 300,
+            height: 300
+        });
+       // 调用父类的构造函数，提取父类的功能
+       MyPanel.superclass.initComponent.apply(this, arguments);
+        // 位于构造器之后，在这里你可以为当前对象新添加功能（如处理如事件）
+        this.on(
+            'click',
+            function() {
+                alert("你已点击" + this.title);
+            },
+            this
+        );
+    },
+    // 新添加的函数
+    myNewFunction: function() {
+    },
+    // 重写原有函数
+    onRender: function() {
+        MyPanel.superclass.onRender.apply(this, arguments);
+        this.myNewFunction();
+    }
+});
+
+你首先可能会观察到的是这儿没有构造函数。Ext会为你创建构造函数。这个构造函数有点不同，叫initComponent。
+这在高级教程和例子常见的使用方法。只要简单记住它做的事情与构造函数是差不多的。
+推荐在调用父类的构造器或initComponent方法之后，为当前对象新添加事件。
+MyPanel.superclass.constructor.apply(this, arguments);
+    // 位于构造器之后，在这里你可以为当前对象新添加功能（如处理如事件）
+    this.on(
+        'click',
+        function() {
+            alert("你已点击" + this.title);
+        },
+        this
+    );
+工厂模式的案例中你可以在工厂方法以外的地方登记事件的处理函数。
+myFirstPanel.on(
+        'click',
+        function() {
+            alert("你已点击" + this.title);
+        },
+        myFirstPanel //作用域
+    );
+
+另外，除了添加listeners配置项还有其他处理监听器的方法，不过我推荐高级用户使用。
+完成同一件事在Ext中有不同的方式。挑选一种你较倾向的方法。
+
