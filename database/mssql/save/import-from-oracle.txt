@@ -1,0 +1,64 @@
+declare @ctablename varchar(50)
+declare  aa cursor for
+select name from sysobjects where xtype='U' and name<>'dtproperties' and charindex('QRTZ',name)=0
+open  aa
+fetch aa into @ctablename
+while (@@FETCH_STATUS=0)
+begin
+-----------------
+
+SELECT
+    (case when a.colorder=1 then d.name else '' end) 表名,
+    a.colorder 字段序号,
+    a.name 字段名,
+    (case when COLUMNPROPERTY( a.id,a.name,'IsIdentity')=1 then '√'else '' end) 标识,
+    (case when (SELECT count(*)
+                FROM sysobjects
+                WHERE (name in (SELECT name
+                                FROM sysindexes
+                                WHERE (id = a.id) AND (indid in (SELECT indid
+                                                                 FROM sysindexkeys
+                                                                 WHERE (id = a.id) AND (colid in (SELECT colid
+                                                                                                  FROM syscolumns
+                                                                                                  WHERE (id = a.id) AND (name = a.name)
+                                                                                                  )
+                                                                                        )
+                                                                )
+                                                        )
+                                )
+                        ) AND (xtype = 'PK')
+                ) > 0 then '√' else '' end) 主键,
+    b.name 类型,
+    a.length 占用字节数,
+    COLUMNPROPERTY(a.id,a.name,'PRECISION') as 长度,
+    isnull(COLUMNPROPERTY(a.id,a.name,'Scale'),0) as 小数位数,
+    (case when a.isnullable=1 then '√'else '' end) 允许空,
+    isnull(e.text,'') 默认值,
+    isnull(g.[value],'') AS 字段说明
+into #tmp
+FROM  syscolumns a
+    left join systypes b on a.xtype=b.xusertype
+    inner join sysobjects d on a.id=d.id  and  d.xtype='U' and d.name=@ctablename
+    left join syscomments e on a.cdefault=e.id
+    left join sysproperties g on a.id=g.id AND a.colid = g.smallid
+order by a.id,a.colorder
+
+declare @sqlcmd varchar(4000)
+set @sqlcmd='delete from '+@ctablename
+print @sqlcmd
+exec(@sqlcmd)
+set @sqlcmd=''
+set @sqlcmd='INSERT INTO '+@ctablename+'('
+select @sqlcmd=@sqlcmd+字段名+',' from #tmp
+set @sqlcmd=substring(@sqlcmd,1,len(rtrim(@sqlcmd))-1)+')
+select '
+select @sqlcmd=@sqlcmd+字段名+',' from #tmp where 标识<>'√'
+set @sqlcmd=substring(@sqlcmd,1,len(rtrim(@sqlcmd))-1)+' from openquery(dbserver,'+char(39)+'select * from '+ @ctablename+char(39)+')'
+exec(@sqlcmd)
+DROP TABLE #TMP
+----------------------
+fetch aa into @ctablename
+end
+close aa
+deallocate aa
+
