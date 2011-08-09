@@ -1,6 +1,21 @@
 java 
 ======
 
+2011.08.09
+----------
+
+1. el
+
+http://code.google.com/p/aviator/
+
+<dependency>
+  <groupId>com.googlecode.aviator</groupId>
+  <artifactId>aviator</artifactId>
+  <version>2.0</version>
+</dependency>
+
+2. Spring Expression Language (SpEL) 
+
 2011.03.24
 -----------
 
