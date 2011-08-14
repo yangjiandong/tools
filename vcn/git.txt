@@ -1,6 +1,12 @@
 git
 ====
 
+2011.08.14
+----------
+
+1. tig
+http://gitready.com/advanced/2009/07/31/tig-the-ncurses-front-end-to-git.html
+
 2011.07.17
 ----------
 
