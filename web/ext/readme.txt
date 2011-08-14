@@ -1,6 +1,14 @@
 extjs
 ======
 
+2011.08.10
+----------
+
+  1. String 显示省略格式
+
+   var xf = Ext.util.Format;
+   p.body = '<p>' + xf.ellipsis(xf.stripTags(string), 10) + '</p>';
+
 2011.08.09
 ----------
 
