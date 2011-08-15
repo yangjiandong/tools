@@ -1,6 +1,36 @@
 git
 ====
 
+2011.08.14
+----------
+
+1. tig
+http://gitready.com/advanced/2009/07/31/tig-the-ncurses-front-end-to-git.html
+
+This will bring up visual git-log, 
+but the nice thing about it is that you can navigate up and down the log using the up and down keys
+(or j and k keys if you’re used to vim keys). 
+Hit <enter> on a log entry, and it will open a split-pane window with the diff of that commit. 
+Using <space> will move you through the diff, and up and down will move you between commits. 
+Hitting q will close the split-pane, and hitting q again will close tig altogether.
+
+Another useful aspect of tig is the tree-view. When you launch tig,
+hit t when you’re in log view and it will bring up a navigatable tree view of the repository. 
+Hit <enter> to descend into directories or view files, or <shift>-B on a file to see an annotated view.
+
+I personally find this useful for seeing what’s going on in remote branches, by using a command like tig origin/rel-1.5.
+
+Showing another branch from within a different branch can also be incredibly handy if you’d like to cherry-pick a change from another branch into the current branch. 
+Say I’ve committed a change to master that I’d like to make available to the release branch origin/rel-1.5. 
+All I need to do is checkout the release branch with git checkout -b 1.5 origin/rel-1.5, 
+open tig using tig master, navigate to the changeset I’d like to cherry-pick, and hit <shift>-C. Repeat as necessary.
+
+I haven’t really had a chance to investigate many of the other features of tig, 
+other than tig show [rev] and tig blame [file] which I use every day. 
+If anyone has some more tips as to how to make good use of tig, be sure to share them in the comments!
+   
+   save/tig.manual_files
+
 2011.07.17
 ----------
 

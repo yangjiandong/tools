@@ -7,6 +7,14 @@ extjs
   1. ext对ocx控件的扩展
   http://www.iteye.com/topic/1113112
   ext.ocx.txt
+=======
+2011.08.10
+----------
+
+  1. String 显示省略格式
+
+   var xf = Ext.util.Format;
+   p.body = '<p>' + xf.ellipsis(xf.stripTags(string), 10) + '</p>';
 
 2011.08.09
 ----------
