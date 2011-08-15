@@ -1,0 +1,66 @@
+ext ocx
+========
+
+/**
+ * 集成IWebOffice2009 Office控件，以方便实现签名，签章等功能
+ * @class IWebOfficePanel
+ * @extends Ext.Panel
+ */
+IWebOfficePanel=Ext.extend(Ext.Panel,{
+	constructor:function(conf){
+		Ext.applyIf(conf,this);
+		this.initUI();
+		IWebOfficePanel.superclass.constructor.call(this,{
+			region:'center',
+			layout:'form',
+			items:[
+			]
+		});
+		this.on('afterrender',function(){
+			this.body.appendChild(this.officeObj);
+			//新建文档
+			this.officeObj.CreateFile();
+		},this);
+		
+		this.on('destroy',function(){
+			try{
+				//文档关闭
+				this.officeObj.WebClose();
+			  }catch(e){
+			    alert(e.description);
+			  }
+		},this);
+	},
+	initUI:function(){
+		this.officeObj= document.createElement('object');
+		this.officeObj.classid= "clsid:8B23EA28-2009-402F-92C4-59BE0E063499"; 
+		this.officeObj.codebase = __ctxPath+'/js/core/iweboffice/iWebOffice2009.cab#version=10,3,0,0';
+		this.officeObj.width = "100%";
+		this.officeObj.height = "100%";
+	},
+	
+	openDoc:function(){
+		//call the officeObj function
+	},
+	//签名
+	sign:function(){
+		//TODO
+	}
+});
+
+example:
+
+var officePanel=new IWebOfficePanel({
+					region:'center'
+				});
+				
+				var mywin=new Ext.Window({
+					title:'J.Office中采用第三方Office控件及签章',
+					height:600,
+					width:1090,
+					layout:'border',
+					items:[officePanel]
+				});
+				
+				mywin.show();
+
