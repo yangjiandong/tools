@@ -1,3 +1,13 @@
+2011.08.16
+----------
+
+1、mysql 5.5.8 utf8 下中文支持
+my.ini
+[mysqld]
+loose_default-character-set = utf8
+loose_character_set_server =  utf8
+loose_character_set_database =utf8
+
 2010.02.25
 ----------
 
