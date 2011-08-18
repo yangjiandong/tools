@@ -7,6 +7,82 @@ ext学习系列
 
    http://lyndon-lin.iteye.com/blog/1008573 
 
+2. ext 循环
+http://edspencer.net/2009/07/ext-js-iterator-functions.html
 
-   --END
+var people = ['Bill', 'Saul', 'Gaius'];
+
+//using each to detect Cylons:
+Ext.each(people, function(person, index) {
+  var cylon = (index + 1) % 2 == 0; //every second man is a toaster
+  alert(person + (cylon ? ' is ' : ' is not ') + 'a fraking cylon');
+});
+
+//is the same as
+for (var i=0; i < people.length; i++) {
+  var person = people[i];
+  var cylon = (index + 1) % 2 == 0; //every second man is a toaster
+
+  alert(person + (cylon ? ' is ' : ' is not ') + 'a frakin cylon');
+};
+
+//use iterate
+var ships  = {'Bill': 'Galactica', 'Laura': 'Colonial One'};
+
+Ext.iterate(ships, function(key, value) {
+  alert(key + "'s ship is the " + value);
+});
+
+//is the same as
+for (key in ships) {
+  var value = ships[key];
+  alert(key + "'s ship is the " + value);
+}
+
+var myFunction = function(item, index) {
+  //does some clever thing
+}
+
+Ext.each(people, myFunction);
+Ext.each(['another', 'array'], myFunction);
+
+var animals = [
+  {name: 'Ed', species: 'Unknown'},
+  {name: 'Bumble', species: 'Cat'},
+  {name: 'Triumph', species: 'Insult Dog'}
+];
+
+Ext.pluck(animals, 'species'); //returns ['Unknown', 'Cat', 'Insult Dog']
+Ext.pluck(animals, 'name'); //returns ['Ed', 'Bumble', 'Triumph']
+
+var describeAnimal = function(animal) {
+  return String.format("{0} is a {1}", animal.name, animal.species);
+}
+
+var describedAnimals = Ext.invoke(animals, describeAnimal);
+console.log(describedAnimals); // ['Ed is a Unknown', 'Bumble is a Cat', 'Triumph is a Insult Dog'];
+
+//Ext.Partition splits an array into two sets based on a function you provide:/
+var trees = [
+  {name: 'Oak',    height: 20},
+  {name: 'Willow', height: 10},
+  {name: 'Cactus', height: 5}
+];
+
+var isTall = function(tree) {return tree.height > 15};
+
+Ext.partition(trees, isTall);
+
+//returns:
+[
+  [{name: 'Oak', height: 20}],
+  [{name: 'Willow', height: 10}, {name: 'Cactus', height: 5}]
+]
+
+//math functions
+var numbers = [1, 2, 3, 4, 5];
+Ext.min(numbers); //1
+Ext.max(numbers); //5
+Ext.sum(numbers); //15
+Ext.mean(numbers); //3
 
