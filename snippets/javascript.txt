@@ -1,3 +1,23 @@
+2011.08.17
+----------
+
+节日倒计时
+<script language=JavaScript>
+	var urodz= new Date("8/8/2018");
+	var s="8/8/2018";
+	var now = new Date();
+	var ile = urodz.getTime() - now.getTime();
+	var dni = Math.floor(ile / (1000 * 60 * 60 * 24));
+	if (dni > 1)
+	document.write(""+s+"还有"+dni +"天")
+	else if (dni == 1)
+	document.write("只有2天啦！")
+	else if (dni == 0)
+	document.write("只有1天啦！")
+	else
+	document.write("好象已经过了哦！");
+</script>
+
 2011.03.08
 ----------
 

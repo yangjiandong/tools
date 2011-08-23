@@ -13,6 +13,21 @@ $ /bin/rebaseall -v
 Once you are done, restart your PC.
 (on vista: 1. close the cygwin shell 2. type cmd in the search box of the start menu. 3. type cd cygwin/bin 4. type ash 5. type ./rebaseall -v)
 
+If, during the “configure” step, you get the following error: “error: could not configure a cxx compiler!” Do the following:
+
+Close your Cygwin terminal.
+Start -> Run -> ash
+/bin/rebaseall
+Close ash, re-open your Cygwin shell, and try again.
+
+rebaseall:'/cygdrive/c/Users/ADMINI~1/AppData/Local/Temp' is not writable
+Open up a Cygwin shell and run:
+
+$ chmod 777 ~/AppData/Local/Temp
+
+   -- 注意，以上操作需用cygwin.bat 进入
+
+
    --END
 
 
