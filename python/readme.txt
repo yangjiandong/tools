@@ -1,6 +1,25 @@
 python
 ========
 
+2011.08.24
+----------
+
+1. win7 + cygwin
+http://blog.adlibre.org/2011/01/11/how-to-install-and-setup-a-python-django-development-environment-on-windows-7/
+
+cygwin install:
+   python2.6
+   gcc
+   libjpeg-devel
+
+install python setup tools:
+   wget http://pypi.python.org/packages/2.6/s/setuptools/setuptools-0.6c11-py2.6.egg#md5=bfa92100bd772d5a213eedd356d64086 
+   ./setuptools-xx.egg
+
+--暂时没有用
+virutalenvwrapper:
+   easy_install virtualenvwrapper 
+
 2011.04.10
 -----------
 
