@@ -1,6 +1,18 @@
 git
 ====
 
+2011.08.25
+----------
+
+1. 较全的git 命令
+save/git.cmd.jpg
+
+2. 日志标签 topgit 
+http://blog.ossxp.com/tag/topgit/
+make
+make install
+--默认安装到home/bin,需将该目录加到path
+
 2011.08.14
 ----------
 

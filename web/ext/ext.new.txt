@@ -86,3 +86,45 @@ Ext.max(numbers); //5
 Ext.sum(numbers); //15
 Ext.mean(numbers); //3
 
+3. 事件
+
+处理自定义事件 
+
+在ExtJS中使用自定义事件，需要从Ext.util.Observable继承，示例代码如下： 
+
+Employee = function(name){ 
+   this.name = name; 
+   this.addEvents({ 
+      "fired" : true, 
+      "quit" : true 
+   }); 
+} 
+Ext.extend(Employee, Ext.util.Observable, { ... }); 
+
+在这段代码中，定义了一个Employee类，定义了fired和quit两个事件。如何触发这两个事件呢，基类Ext.util.Observable提供了触发自定义事件的方法fireEvent(eventName, arg1, arg2, ... argn), eventName是要触发的时间的名称（不区分大小写），后面的参数arg1，arg2等是要传给事件处理函数的参数。用上面的Employee类做示例，触发quit事件： 
+
+this.fireEvent('quit', this); 
+
+这行代码将触发quit事件，并将Empolyee类的实例传给quit事件的处理函数，quit事件的订阅可以采用如下代码： 
+
+function myHandler1(empolyee){ ... } 
+function myHandler2(empolyee){ ... } 
+
+var emp = new Empolyee('tom'); 
+emp.on('quit', myHandler1); 
+emp.on('quit', myHandler2); 
+
+在上面的代码中，为quit事件注册了两个处理函数（myHandler1与myHandler），当quit事件被激发时，将会依次调用myHandler1和myHandler2两个函数。 
+
+值得注意的是，不管是HTML元素的标准事件还是自定义事件，如果为某个时间注册了多个处理函数，如前面的例子，如果myHandler1返回false 的话，则会取消在myHandler1之后注册的处理函数的执行，即该事件被取消，从而停止继续执行该事件的处理函数，而这个返回值false会作为事件激发的结果，返回给empolyee，即： 
+
+var result = this.fireEvent('quit', this); 
+if (result === false) { 
+   alert('event canceled'); //这里表示事件被某个处理函数取消 
+} 
+else { 
+   alert('event complete'); // 这里表示事件执行完毕 
+} 
+
+通过Ext的自定义事件的机制，可以实现一对多的观察者模式，也可以实现一对一的绑定模式，这一点，在ExtJS的开发中是很重要的
+
