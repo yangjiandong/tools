@@ -74,6 +74,8 @@
    http://sphinx.pocoo.org/index.html
 
    不错。手工安装
+
+   example:https://github.com/gotgit/gotgithub ,介绍github 的文章
   
 
 5. web
