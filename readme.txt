@@ -69,6 +69,12 @@
 
    g. textile wiki
 
+   h. python Sphinx + cygwin
+   
+   http://sphinx.pocoo.org/index.html
+
+   不错。手工安装
+  
 
 5. web
 
