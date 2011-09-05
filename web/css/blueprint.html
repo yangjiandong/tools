@@ -1,0 +1,151 @@
+<!-- 正文开始 -->
+		<div id="sina_keyword_ad_area2" class="articalContent  ">
+			<p>来源：<a HREF="http://www.zuomoban.cn/article/96/157.html">http://www.zuomoban.cn/article/96/157.html</A></P>
+<p>&nbsp;<wbr></P>
+<p>官方网站： <a HREF="/hbcms/php/r.php?url=http://blueprintcss.org/"><font COLOR="#191919">http://blueprintcss.org/</FONT></A><br />
+<br />
+Blueprint CSS <strong>框架将 html 标签设定为如下情况：</STRONG></P>
+<ul>
+<li>统一重置了 43 个 html 标签（<a HREF="/hbcms/php/r.php?url=http://www.w3.org/TR/html4/index/elements.html"><font COLOR="#191919">html
+4.0 标签一共 91 个</FONT></A>）的属性，（html, body, div, span, object,
+iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr,
+acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul,
+li, fieldset, form, label, legend, table, caption, tbody, tfoot,
+thead, tr, th, td）。重置 html
+标签的默认样式为：内外填充边框都为零，字体粗细、字体科族和字体样式继承，字体大小百分之百（在中文情况下使用这个还是改固定象素的好），高度以基线对齐；</LI>
+<li>设定 body 内的行高为 1.5 倍；字体大小百分之七十五（在中文情况下使用这个还是改固定象素的好）；字体颜色为
+#222222 （接近于黑色）</LI>
+<li>设定 table
+的边界间距为有间距、间距为零。（用有间距而间距为零的方式，估计只有这样才能将表格的边界间距设的看不到）；下外填充 1.4em ，宽度
+100%；</LI>
+<li>设定 caption, th, td 内的元素居左，字体粗细为普通；caption 的背景色为 #EEEEEE
+（特浅的灰），th 背景为 #C3D9FF （浅蓝色）内的字体为粗体，th, td 的内填充为 上4px 右10px 下4px
+左5px；</LI>
+<li>设定 table, td, th 内的元素高度居中；</LI>
+<li>设表格如果需要隔行换色的效果或者某行需要不一样的颜色，那么已经给定了 tr.even td 类，背景颜色为 #E5ECF9
+（浅浅的蓝）</LI>
+<li>设定 tfood 为斜体字</LI>
+<li>设定 blockquote, q 元素之前和之后的填充内容为空，引用符号也为空；blockquote 的外填充为 1.5em
+字体颜色 #666666 （深灰色），斜体字（中文斜体表现并不好，这个改了斜体不要而用背景色或者字体小一号来表示应该会好点）</LI>
+<li>设定链接下的图片的 border 为零；</LI>
+<li>设定 h1 至 h6 不同的字体大小粗细外填充，颜色为 #111111 （更接近于黑）</LI>
+<li>设定 h1 至 h6 下的图片的外填充为零</LI>
+<li>设定行内图片元素默认左漂浮，同时给出了一个 p img.right
+的类，以备你需要图片右漂浮的时候来用（不过很多时候我们需要的是图片不漂浮，这个需要改或者单独建立一个类了）；</LI>
+<li>设定链接的颜色为 #000099 （深蓝色）带下划线，鼠标滑过和焦点状态颜色为黑色；</LI>
+<li>设定 abbr 和 acronym 下边缘为一象素点线的边框；</LI>
+<li>设定 del 删除字的颜色为 #666666 （中等灰度的灰）；</LI>
+<li>设定 pre 和 code 内地文字显示为 white-space:pre
+（就是不换行啦，现在&lt;nobr&gt;&lt;wbr&gt;&lt;xmp&gt;都不建议用了）；</LI>
+<li>定义了 ul 和 ol 列表前的标识为实心小圆点和阿拉伯数字。</LI>
+</UL>
+<p>还有一些各个标签的上右下左的填充、行高、字号大小的设定不细说了。</P>
+<p><strong>单独给定了几个可以根据实际需要单独调用的类：</STRONG></P>
+<ul>
+<li>.small 小号字；</LI>
+<li>.large 大号字；</LI>
+<li>.hide 不显示；</LI>
+<li>.quiet 字色为 #666666 （深灰色）；</LI>
+<li>.loud 字色为 #000000 （黑色）；</LI>
+<li>.highlight 背景色为 #FFFF00 （黄色）；</LI>
+<li>.added 背景色为 #006600 （绿色）字色为 #FFFFFF （白色）；</LI>
+<li>.removed 背景色为 #990000 （红色）字色为 #FFFFFF （白色）；</LI>
+<li>.first 左边的内外填充都为零；</LI>
+<li>.last 右边的内外填充都为零；</LI>
+<li>.top 上面的内外填充都为零；</LI>
+<li>.bottom 下面的内外填充都为零。</LI>
+</UL>
+<p><strong>布局部分 CSS 说明：</STRONG></P>
+<ul>
+<li>.container 宽度 950 象素，整体居中模式。这个类应该是主要用于页面 body
+元素内的整体页面控制的，好像也没其他用了；</LI>
+<li>.showgrid 无用的类，这个是用来演示这个框架的一个辅助，可以将这个类删除；</LI>
+<li>body 元素设定为上下外填充 1.5em，左右外填充为零。</LI>
+</UL>
+<p><strong>布局的列宽给出了 24 个不同宽度设定的数值：</STRONG></P>
+<ul>
+<li>div.span-1 至 div.span-24 全部设定为左漂浮，右外填充 10 象素；</LI>
+<li>div.last 设定右外填充为零象素；</LI>
+<li>.span-1 至 .span-24 从宽度 30 象素开始，每 40 象素为一单元增加；</LI>
+<li>.span-24 和 div.span-24 右外填充覆盖上面的设置，设置为零。</LI>
+</UL>
+<p><strong>以上四项综合理解可以理解为：</STRONG></P>
+<ul>
+<li>.span-1 至 .span-23 如果用于 div 元素，那么这个 div 具有的属性是左漂浮，右外填充 10
+象素，宽度各自；</LI>
+<li>.span-1 至 .span-23 如果如果用于其他元素，那么就只具有宽度属性而不具有漂浮属性也没有右外填充；</LI>
+<li>.span-24 是个特殊一点的样式，如果用于 div 元素，那么宽度为 950 象素，左漂浮，右外填充为零；</LI>
+<li>.span-24 是个特殊一点的样式，如果用于其他元素，那么宽度为 950 象素，无漂浮，右外填充为零；</LI>
+<li>div.last 这个类在 CSS 文件中的位置在 div.span-1 至 div.span-24 的后面，所以如果
+.last 类应用于 div 元素，那么这个 div 元素的右外填充将覆盖成为零。</LI>
+</UL>
+<p><strong>内填充数值：</STRONG></P>
+<ul>
+<li>.append-1 至 .append-23 设置内右填充，从 40 像素开始，每 40
+像素为一单元增加，.append-23 内右填充数值为 920 像素；</LI>
+<li>.prepend-1 至 .prepend-23 设置内左填充，从 40 像素开始，每 40
+像素为一单元增加，.prepend-23 内左填充数值为 920 像素。</LI>
+</UL>
+<p><strong>给定两个右边线样式：</STRONG></P>
+<ul>
+<li>div.border 设定右内填充 4px ，右外填充 5px ，右边线 1px 灰色（#EEEEEE）实线；</LI>
+<li>div.colborder设定右内填充 24px ，右外填充 25px ，右边线 1px
+灰色（#EEEEEE）实线。</LI>
+</UL>
+<p><strong>外填充样式：</STRONG></P>
+<ul>
+<li>.pull-1 至 .pull-24 设定左外填充，从负 40 象素开始到负 960 象素，每 40
+象素为一个单元数值变化，同时具有左漂浮和相对定位属性；</LI>
+<li>.push-1 至 .push-24 设定上填充为零，下填充为 1.5 em ；左外填充，从 40 象素开始到 960
+象素，每 40 象素为一个单元数值变化，右外填充，从负 40 象素开始到负 960 象素，每 40
+象素为一个单元数值变化，同时具有右漂浮和相对定位属性。</LI>
+</UL>
+<p>以上两项应该是这个 CSS 框架中最难理解的部分了，在这里不详细说明了，等到写实际应用的时候弄个列子一说就明白作用了；</P>
+<p><strong>给定一些其他样式：</STRONG></P>
+<ul>
+<li>.box 顾名思义就是一个盒子了，哈，设定内填充 1.5em ，外下填充 1.5em ，背景颜色 #E5ECF9
+(浅浅的蓝)</LI>
+<li>hr 设定 html 的 &lt;hr /&gt; 横线样式为：背景色
+#DDDDDD (灰色)，字色 #DDDDDD (灰色)，两侧不允许有漂浮元素，无漂浮，宽度百分之百，高度 0.1em
+，外填充上左右为零，下外填充为 1.5em ，没有边框。具体表现出来基本就是一根横的一象素灰色线了；</LI>
+<li>hr.space 这个样式是用在 &lt;hr /&gt;
+标签内的，设定了背景色和字色都为白色。因为是用在 &lt;hr /&gt;
+标签内，所以它同时具有 &lt;hr /&gt;
+的设定样式，只是将背景色和字色从灰色覆盖为白色，所以表现起来其实就是一根横的一象素白色线。</LI>
+</UL>
+<p><strong>给定清除浮动样式：</STRONG></P>
+<ul>
+<li>.clearfix:after 和 .container:after 设定 .clearfix 和 .container
+之后的表现为：内容是“.”(一个小点)，显示为块元素，高度为零，两侧不允许有漂浮元素，可见度属性(visibility)为隐藏
+(注：可见度 visibility 隐藏属性和 display 隐藏属性有占位区别，visibility 隐藏属性占据空间位置而
+display 隐藏属性不占据空间位置)；</LI>
+<li>.clearfix 和 .container 设定显示样式为行内块(IE 不完全支持此属性，目前只是用这个来让 IE 获得
+hasLayout )；</LI>
+<li>* html .clearfix 和 * html .container 设定在“通配符下的 html 下的.clearfix
+和 .container 两个样式”属性高度为 1% (高度为 1% 作用和 zoom:1 的作用是一样的，IE 在
+inline-block 加上 1% 或 zoom:1 获得类似 table-cell 的属性，只 IE6 以下识别)；</LI>
+<li>.clearfix 和 .container 设定显示样式为块模式(覆盖前面指定的行内块模式为块模式，但 IE 不会让
+hasLayout 消失，目的由此达到)；</LI>
+<li>.clear 设定为两侧不允许有漂浮元素。</LI>
+</UL>
+<p>
+清除浮动的这三个类中的前两个比较复杂，除了清除浮动外还有一些其他的能力，基本上这几个样式的内容和先后顺序和代码层级设定完后就能在所有的浏览器下清除浮动了(如果某个浏览器不支持的话，那么估计也很难支持这个框架中的大部分
+CSS
+属性，那么这个框架对这个浏览器来说也没太大的意义了)，具体研究起来就太深了，我是搞不定，不过对我们用的人来说，只要知道你需要清除浮动的时候就用这两个类就可以了。顾名思义，.clearfix
+类一般用在你不介意多加一个或者某些情况下你只能多加一个 div 或其他的 html
+标签元素而本身内部不包含内容的元素身上来清除浮动，.container
+类用在你的一个本身内部包含内容的元素身上来清除浮动。.clear 这个类嘛，没啥可说的了，就是不允许两侧有浮动元素。</P>
+<p><strong>表单元素部分：</STRONG></P>
+<p>
+这部分其实没有太多需要仔细研究的，大部分指定的是表单元素的一些字体、字号、字色和元素的边框、边距、宽、高等。这些就不详说了，说说可以稍微需要知道一下的。</P>
+<ul>
+<li>给定了元素的获得焦点的样式(一象浅黑边)，可惜 IE 不支持，所以这个作用不是那么大，毕竟 IE
+现在还是占据市场份额的巨头；</LI>
+<li>给定了三个类，可以用来标识有特殊意义的块区：.error, .notice, .success
+，都具有不同的背景色和边框色；</LI>
+<li>.error 顾名思义标识“错误”</LI>
+<li>.notice 顾名思义标识“提示”</LI>
+<li>.success 顾名思义标识“成功”</LI>
+</UL>							
+		</div>
+						<!-- 正文结束 -->

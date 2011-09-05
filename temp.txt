@@ -10,6 +10,8 @@ done
 ipv6
 ------
 
+save/ip6.txt
+
 windows xp安装IPv6方法
 在命令行下运行ipv6 install即可（cmd→ipv6 install）
 
