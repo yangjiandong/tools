@@ -1,3 +1,10 @@
+win7 有用特性
+----------------
+
+http://www.iteye.com/news/5112-secret-windows-7-of-the-30-new-features
+
+psr.txt -- 不错的记录用户操作过程的工具,记录为html文件
+
 shell 下替换文件
 ----------------
 # rename *.txt to *.html
