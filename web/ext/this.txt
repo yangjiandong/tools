@@ -1,0 +1,213 @@
+前言 本文通过许多实际例子来描述作用域，闭包和this的关系，以及如何正确的使用他们
+。 
+
+--煎蛋 
+
+特别鸣谢 4FM 提供全文校对 
+
+当你有其他编程语言的背景时，往往会不正确地理解javascript的实际运行机制，因为这
+个以及其他原因，js往往被人误解。这不完全是我们的错误, javascript被设计成像
+scheme一样工作，但他看起来却像C. 这篇文章将解释词法作用域(lexical scope) 和变量
+"this"，以及如何玩js而不是, 被js玩. 
+
+/*====豆瓣javascript小组===分割线====豆瓣javascript小组====*/ 
+
+关于“我在哪里"的一切 
+
+在所有编程语言中，都有现在所处的作用域以及现在所处的上下文(context)这个概念, 在
+javascript中我们也有"词法作用域"和"this"这个上下文。在javascript中，所有新建作
+用域都是由函数(function)完成的。但是与其他c类语言不同，在javascript中，这是生成
+新作用域的唯一方法。FOR循环，IF ELSE，{}花括号这些都不会创建新的作用域。我们来
+看一些解释作用域的例子 
+
+这是一个全局(global)作用域的例子 
+
+// 定义几个全局变量 
+var name ="Tim"; var age =27; 
+// 从全局作用域中调用其中的一个 
+puts(name); 
+
+
+这是一个局部(local)作用域的例子 
+
+// 在一个function内创建几个局部变量 
+function newScope(){ var name ="tim"; var age =27; } 
+// 尝试从全局作用域里调用局部变量 这会产生一个错误 
+puts(name); 
+
+
+/*===========分割线=====豆瓣javascript组======*/ 
+
+词法作用域(lexical scope) 
+
+词法作用域是闭包运行的关键，呃，你问闭包是什么？我们找找wiki： "...在一些语言中
+，在函数中定义另一个函数时，如果内部的函数引用了外部的函数的变量，则可能产生闭
+包。运行时，一旦外部的函数被执行，一个闭包就形成了，闭包中包含了内部函数的代码
+，以及所需外部函数中的变量的引用。..." 
+
+这些话到底什么意思，来看个例子如何： var name = "outer"; function one() { var
+name = "middle"; var other "findme"; function two() { var name = "inner" 
+// 在这儿 name = "inner" 且 other = "findme" 
+} 
+// 在这儿 name = "middle" 且 other = "findme" 
+} 
+// 在这儿 name = "outer" 且 other 是 undefined 
+
+这里我们可以看到局部变量在一个内部作用域里可以遮蔽外部作用域里的同名变量。但是
+在外部作用域里，内部作用域里的变量是不存在的。 
+
+好，现在我们研究下词法作用域为什么叫词法? 因为这类作用域完全基于变量在代码中的
+书写位置，与你调用变量所处的这个函数的路径(函数调用栈)毫无关系，这是闭包使内部
+变量遮蔽外部变量的原理。 
+
+// 使一个函数返回一个闭包函数 
+function myModule() { var name = "tim", age = 27; return function greet() {
+puts("Hello " + name + ". Wow, you're " + age + " years old."); } } 
+// 调用 `myModule` 取出闭包 
+var greeter = myModule(); 
+// 调用这个闭包 
+greeter(); 
+
+变量name和age对于函数myModule是局部的，但是当我们从全局作用域调用greeter的时候
+并没有出现错误。这是因为函数greeter在他的词法作用域里有name和age。所以尽管他们
+是局部变量却依然可以被读取。基本上查找变量是根据变量名一层一层向上层作用域查找
+的。 
+
+/*===========分割线=====javasript小组======*/ 
+“this”的作用范围 
+
+在词法作用域的基础上，javascript通过关键字this展现了"局部"的另一个层面。除了不
+可修改，这个关键字看起来用起来都和其他javascript变量没什么区别。他用起来像是对
+上下文对象的引用。他本身作为一个对象，你可以通过普通的点"."和中括号"[]"来读取他
+的属性。"this"的魔法在于他的值根据你执行时的上下文而不断变换。举个例子： 
+
+var Person = { name: "Tim", age: 27, greeting: function () { return "Hello " +
+this.name + ". Wow, you're " + this.age + " years old."; } }; 
+
+puts(Person.greeting()); //可以读出tim的数据 
+
+//我可以从Person.greeting里读取 Person.name 和 Person.age 
+
+/*===========分割线==========豆瓣javascri pt小 组=*/ 
+"this"会在哪里打败你 
+
+之前的代码看起来很像其他语言里的“对象”。这里正是你栽跟头的地方. 作为Person模
+块的作者，你不能确保“this”一定就是"Person"。如果我把greeting函数放到别处会怎
+样： 
+
+var greeting = Person.greeting; puts(greeting()); // `this.name` 和 `this.age`
+会变成undefined 
+
+问题出在greeting函数里的"this"现在指向全局对象而不指向Person对象了。为了搞笑再
+来个例子如何： 
+
+var Dog = { name: "Alfred", age: 110 greeting: Person.greeting } 
+
+puts(Dog.greeting()); // 能运行并显示狗的数据 
+
+Dog里的greeting函数和Person里的那个是同一个函数。他们在内存中都指向同样的对象。
+但是取决于在哪里被调用，"this"的值会发生变化。基本上"this"是调用时点"."之前的对
+象。这就是为什么Dog.greeting用Dog, Person.greeting()用Person当"this"。如果在函
+数调用时它前面什么都没有(这里指没有".")那么"this"会指向全局对象。 
+
+/*========豆瓣 j a v a script 小组===分割线===========*/ 
+驯服"this" 
+
+在Function.prototype里有两个无厘头的函数叫call和apply。他们的运作方式基本一样，
+只是对待参数的方式不同而已。 继续前面的例子，创建一个新的对象，它没有greeting函
+数，但是仍然可以用到它(greeting)。 var Alien = { name: "Zygoff", age: 5432 } 
+
+puts(Person.greeting.call(Alien)); 
+
+我们在这里做的是“call”Person.greeting函数，但是把Alien对象作为"this"的值。我
+们可以用"apply"干同样的活只不过这次我们用不上额外的参数。 
+
+function makeOlder(years, newname) { this.age += years; if (newname) {
+this.name = newname; } } 
+
+这个函数向任何"this"对象 加 “years”，并可能会替换掉name。这里演示如何用call和
+apply使用这个函数： 
+
+makeOlder.call(Person, 2, "Old Tim"); makeOlder.apply(Dog, [1, "Shaggy"]); 
+
+call可以传入1-N个参数，其中第2-n个参数都是要传入的参数。 而apply只能传两个参数
+，其中第二参数必须是一个数组 
+
+/*===========分割线=======豆瓣 javascri pt小组====*/ 
+
+绑定"this" 
+
+很多时候我们都喜欢自己的代码是完美的面向对象编程风格，于是我们强迫JS那么做。我
+们不喜欢"this"经常根据我们如何调用而改变。最经常击倒我的地方是在基于事件的系统
+里，当我们需要使用回调作为参数时。这里有个JQUERY的例子： 
+
+Cart = { items: [1,4,2], onClick: function () { 
+// 对 this.items 做些工作 
+} } $("#mybutton").click(Cart.onClick); 
+
+看起来很正常，实际上是场灾难。尽管我们有Cart.onClick,但此时我们还没有调用
+onClick。发生click时， JQUERY代码会把onClick当成某个参数传来传去，而这时就无法
+知道这个onClick是来自Cart对象的了。你的"this"不会像你预期的那样正常工作。 
+
+现在我们组合关于闭包和词法作用域的知识让"this"像大多数面向对象编程语言里一样工
+作： 
+
+$("#mybutton").click(function(){ Cart.onClick()}); 
+
+我们在调用Cart.onClick()时先创建了一个小的闭包。(除了看起来很长很丑的问题)有个
+问题是我们没有传递任何函数的参数或返回值，我们可以修正这个: 
+
+$("#mybutton").click(function(){return Cart.onClick.apply(Cart,arguments)}); 
+
+可以工作了。但如果你不知道“arguments”是一个特殊关键字(数组对象) 包含了所有将
+传入最内层函数的参数，这段代码就很不好读也不好理解。 如果Cart是一个全局单件对象
+，我们大可以直接使用Cart替代this。但实际工作中往往并非如此。 能不能简单的改造
+Cart.onClick，让里头的"this"一直指向Cart？ 
+
+function bind(fn, scope) { return function () { return fn.apply(scope,
+arguments); } } Cart.onClick = bind(Cart.onClick, Cart);
+$("#mybutton").click(Cart.onClick); 
+
+有很多方法可以解决这个问题，而上面的并非最好的解决方案。但如果你非要让js像X语言
+那样工作，这就是一个很好的小工具。可以从这里起步，最好还是深入学习一下 js的语义
+(semantics)//煎蛋：不解语义是什么 这里我们创建了一个嵌入了作用域的闭包。 然后我
+们将Cart.onClick替换成这个闭包。 并使用了apply去自动传递参数和返回值。 
+
+/*======豆瓣javascript小组=====分割线===========*/ 
+
+Var声明 Var这个关键字可以用于确定当前变量属于哪个作用域。实际上你如果你从来不使
+用var，那么所有你的变量都会是全局的并将相互覆盖。 global_var = true;//全局
+function () { another_global = 42;//全局 var local_var = 5;//局部 } 
+
+在循环中会特别危险： 
+
+function sum(start, end) { var n = 0; for (i = start; i < end; i++) { n += i; }
+return n; } 
+
+function nested_sum(array) { var n = 0; for (i in array) { n += sum(0,
+array[i]); } return n; } 
+
+nested_sum([1,2,3]); 
+
+"i"变量在两个循环中是同一个变量。所以sum里的循环会中断nested_sum里的循环然后给
+出一个错误的结果。同样的，如果我没有用var 来生明两个“n”变量，他们也会互相覆盖
+产生错误的结果。 
+
+
+。。。由于与全文关系不大，这里省略一段关于var的使用建议。大意是在function内部，
+var声明应尽量放在头部位置。。。 
+
+
+/*===========分割线=====豆瓣javascript小组======*/ 
+总结 这里有一些规则用于理解js的作用域： 1创建新作用域的唯一方法是用function关键
+字 2var可以声明一个变量, 对于当前作用域来说是局部的。这些局部变量可以遮蔽任何外
+部作用域里已经存在的同名变量。 3除了"this"和“arguments”，所有的变量都具有词法
+作用域。他们的含义在代码的物理位置上定义。 4变量"this"和参数会在每个作用域里发
+生变化。如果你想在一个闭包里储存他们，你需要通过其他具有自己作用域的变量创建引
+用以指向他们（"this"和参数）的值。 5"this"的值由function如何被调用来决定，你可
+以通过apply和call来控制"this"。 
+
+*这里有一些特例，例如eval和with 关键字。即时如此你也可以继续遵循这些规则。 eval
+是将function移植到新的作用域里。 "with"则用于让诸如"this.name"里的"name"看起来
+像局部变量但实际还是像"this"的属性一样工作。 
+
