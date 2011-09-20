@@ -128,3 +128,23 @@ else {
 
 通过Ext的自定义事件的机制，可以实现一对多的观察者模式，也可以实现一对一的绑定模式，这一点，在ExtJS的开发中是很重要的
 
+4. createDelegate 
+
+example: this.hide.createDelegate(this, []) ;
+
+Ext.onReady(function(){
+Ext.QuickTips.init()
+var myclass=new Object();
+//myclass并没有alert方法,我们也不打算为它写一个alert方法
+//我们希望它和window.alert有一样的行为,所以我们委托window来做
+myclass.alert=window.alert.createDelegate(window);
+//我们还希望他有个更漂亮的show方法和Ext.MessageBox的show功能一样
+//所以我们又得委托给Ext.MessageBox来做这事了
+myclass.show=Ext.MessageBox.show.createDelegate(Ext.MessageBox);
+//我们的myclass也有alert和show方法了
+myclass.alert('alert1');
+myclass.show({title:'title',msg:'message'});
+});
+
+其实最大的作用是指定function作用域
+
