@@ -1,0 +1,63 @@
+出了一套Javascript的笔试题
+1、请判断下列表达式的值：（1） false  （2） false   （3） true   （4） false    
+  （1）null  instanceof  Object      （2）null  ===   undefined   
+  （3）null  ==  undefined          （4）NaN  ==  NaN     
+
+2、请判断下列语句是否正确：（1）  错  （2）  对    
+（2）var i=999; 
+setTimeout(alert(i),1000); 
+（2）var i={name:'Ketty'}; 
+eval("alert(i.name)"); 
+
+
+3、请填写下列程序中的输出结果：（1） 001234  （2） 22    
+（1）var array = [1,2,3,4,5]; 
+var k = 0; 
+for ( var i in array) { 
+k += i; 
+} 
+alert ( k ); 
+（2）var a = ”aa”; 
+if ( typeof a ) { 
+var a = 22; 
+} 
+alert( a ); 
+
+
+4、请填写下列程序中的输出结果：（1） Ketty  （2） Jeff    
+（1）var p={name:"Ketty"}; 
+function talk(name){ 
+   this.name=name; 
+    this.say=function(){ 
+         alert(this.name); 
+    } 
+} 
+var t=new talk("Ruth"); 
+t.say.call(p,"Jeff"); 
+
+
+
+（2）var p={ 
+    name:"Ketty", 
+    say:function(){ 
+        alert(this.name); 
+    } 
+}; 
+Object.prototype.person=p; 
+var b={}; 
+Object.prototype.person.name="Ruth"; 
+p.name="Jeff"; 
+alert(b.person.name); 
+
+5、一个DOM对象d，调用d的什么方法给其自身添加监听事件，IE：attachEvent   ，FF：addEventListener   
+
+6、函数的  arguments  内置对象能获取实际传递给函数的所有参数 
+
+7、一个DIV标签的CSS样式是{ width:200px; height:100;padding:0 20px; border:5px; margin:10px 5px 5px; }，则该标签的实际宽度为 230px  ，实际高度为 120px  
+
+8、简单描述javascript中的this关键字和prototype属性。 
+
+9、请设计一个异步加载js文件的方案，描述设计思路即可。 
+
+10、请谈一谈您对javascript面向对象的理解。 
+

@@ -148,3 +148,8 @@ myclass.show({title:'title',msg:'message'});
 
 其实最大的作用是指定function作用域
 
+5. javascript
+
+   javascript.new.txt
+
+
