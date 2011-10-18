@@ -1,4 +1,72 @@
+你见过这道NB的js题吗
+====================
+http://zhangyaochun.iteye.com/blog/1197850
+
+(function(){
+
+     return new Function(String.fromCharCode.apply(this,arguments))();
+
+})(97,108,101,114,116,40,49,41);
+
+先看知识点一：
+ 
+1. String.fromCharCode 
+ 注意String是大写S哦,作用是从一串数字中返回一个字符串
+ --以上信息为 alert(1)
+
+2. 简单说一下keycode的记忆方式
+A-Z     是65 -90
+a-z     是97-122
+1-9     是a-z
+
+3. call和apply
+这边不细说了 可以看看我写的http://zhangyaochun.iteye.com/blog/1096278
+（1）作为函数调用模式的的4种之一的apply调用模式：
+   apply(thisArg,argArray);
+    ------有两个参数：第一个是将被绑定给this的值；第二个是一个参数数组
+    ------如果argArray不是一个有效的数组或不是arguments对象，会导致一个TypeError;如果没有提供argArray和thisArg任何一个参数，那么global对象将被用作thisArg,并无法被传递任何参数。
+Js代码  
+var array = [3,5];  
+Js代码  
+var sum = add.apply(null,array); //sum 8  
+
+ (2)call(thisArgs,[arg1,arg2…] ]);
+   ------参数1：将被用作当前对象的对象。参数2：将被传递方法参数序列。
+   ------如果没有thisArgs参数，那么Global对象被用作thisArgs
+Js代码  
+function add(a,b){  
+   alert(a+b);  
+}  
+function sub(a,b){  
+   alert(a-b);  
+}  
+add.call(sub,2,1);  
+ 其实的意思就是add来替换sub--------------add.call(sub,2,1);和add(2,1)
+
+4. new Function
+这个可能就涉及到我们定义函数的方式,简单说明一下，有兴趣的同学可以自己baidu一下。还是觉得以后自己写一个吧
+调用function关键字
+Js代码  
+function test(name){  
+    this.name = name;  
+}  
+ 
+new Function的方式
+Js代码  
+var test =new Function("x","return x*x");  
+  
+//简单地讲  
+//Function()可以接受任意多个字符串参数  
+//最后一个参数是函数的主体，可以是任意javascript的执行语句，之间用分号分隔  
+//其他的参数是函数定义的形参  
+//这样定义的函数是”匿名函数“  
+//允许我们动态地创建和编译函数  
+//负作用我们每一次调用，多要对其进行编译  
+
+
 出了一套Javascript的笔试题
+==========================
+
 1、请判断下列表达式的值：（1） false  （2） false   （3） true   （4） false    
   （1）null  instanceof  Object      （2）null  ===   undefined   
   （3）null  ==  undefined          （4）NaN  ==  NaN     

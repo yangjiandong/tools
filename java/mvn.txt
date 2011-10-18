@@ -1,6 +1,36 @@
 maven
 ========
 
+2011.09.24
+----------
+
+   1. 建立web项目
+   mvn archetype:create -DgroupId=com.mycompany.app -DartifactId=my-webapp -DarchetypeArtifactId=maven-archetype-webapp
+
+   cd my-webapp
+   mvn eclipse:eclipse
+
+   1. 创建Maven项目: mvn archetype:create
+   2. 编译源代码: mvn compile
+   3. 编译测试代码: mvn test-compile
+   4. 运行测试: mvn test
+   5. 产生site: mvn site
+   6. 打包: mvn package
+   7. 在本地Repository中安装jar: mvn install
+   8. 清除产生的项目: mvn clean
+
+   2. 查看jar 依赖关系
+
+   mvn dependency:tree -Dincludes=[groupId]:[artifactId]:[type]:[version]
+
+   example:
+
+   mvn dependency:tree -Dincludes=com.google.collections:google-collections
+
+   --查看出org.seleniumhq.selenium 依赖它,
+   --项目用了google guava,但由于google-collections 的存在,引起程序出错.
+
+
 2011.03.05
 -----------
 
