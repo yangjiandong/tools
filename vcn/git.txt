@@ -202,6 +202,8 @@ w-common gitflow-shFlags /usr/local/bin
 
   注意,最后需将usr/local/bin 下生成的文件考到cygwin/binary
 
+--cygwin 需安装util-linux 
+
 2. use git flow
 
 安装完git-flow后，你可以在当前目录下创建一个全新的仓库或把一个现有的仓库转换成新的分支结构：

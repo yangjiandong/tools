@@ -1,3 +1,15 @@
+2011.10.12
+----------
+
+1. 删除重复记录
+
+delete t_test where id not in(
+select max(id) from t_test group by name)
+
+--没有主键
+delete t_test where rowid not in(
+select max(rowid) from t_test group by name)
+
 2010.03.05
 ----------
 
