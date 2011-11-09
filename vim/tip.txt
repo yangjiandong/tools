@@ -25,6 +25,27 @@ map fl <esc>:FufLine<cr>
 https://github.com/sophacles/vim-bundle-python
 zo,zc 可以折叠,打开代码
 
+5. 加密文件
+
+编辑文件后，按ESC键，返回到命令模式，输入“:X” 
+提示你确定一个密码，用于为文件加密和解密: 
+
+要解除密码，步骤如下: 
+vim file
+Enter encryption key: 输入密码
+:set key=  
+:w!
+在vim中实现批量加密 
+#!/bin/bash
+# Encrypt file with vim
+
+if (test $# -lt 2) then
+　 echo Usage: decrypt password filename
+else
+vim -e -s -c ":set key=$1" -c ':wq' $2
+echo "$2 encrypted."
+fi
+
 --END
 
 
