@@ -1,6 +1,13 @@
 python
 ========
 
+2011.11.25
+----------
+
+1. new python developer
+Python面试题集合: http://www.douban.com/group/topic/21206826/
+other/new.txt
+
 2011.08.24
 ----------
 

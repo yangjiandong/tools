@@ -1,0 +1,110 @@
+new python 
+===========
+
+1. 2011-07-20 17:31:23 来自: 高天蒲(改变不了世界？)
+----------------------------------------------------
+
+Python是如何进行内存管理的？
+http://developer.51cto.com/art/201007/213585.htm
+(没看懂)
+
+什么是lambda函数？它有什么好处?
+http://www.kuqin.com/diveinto_python_document/apihelper_lambda.html
+
+解释一下python的 and-or 语法
+http://www.kuqin.com/diveinto_python_document/apihelper_andor.html
+
+how do I iterate over a sequence in reverse order
+
+Python是如何进行类型转换的？
+http://canofy.iteye.com/blog/298263
+
+Python里面如何实现tuple和list的转换？
+
+请写出一段Python代码实现删除一个list里面的重复元素
+
+Python如何实现单例模式？其他23种设计模式python如何实现？
+
+Python里面如何拷贝一个对象？
+http://blog.csdn.net/sharkw/article/details/1934090
+
+介绍一下except的用法和作用？
+http://hi.baidu.com/whaway/blog/item/7f7a3d9b0b2facb3c9eaf40d.html
+
+Python中pass语句的作用是什么？
+
+如何知道一个python对象的类型？
+
+介绍一下Python下range()函数的用法？
+http://docs.python.org/library/functions.html#range
+
+如何用Python来进行查询和替换一个文本字符串？
+
+Python里面search()和match()的区别？
+
+用Python匹配HTML tag的时候，<.*>和<.*?>有什么区别？
+
+Python里面如何生成随机数？
+
+如何用Python来发送邮件？
+
+有两个序列a,b，大小都为n,序列元素的值任意整形数，无序；
+要求：通过交换a,b中的元素，使[序列a元素的和]与[序列b元素的和]之间的差最小。
+1. 将两序列合并为一个序列，并排序，为序列Source
+2. 拿出最大元素Big，次大的元素Small
+3. 在余下的序列S[:-2]进行平分，得到序列max，min
+4. 将Small加到max序列，将Big加大min序列，重新计算新序列和，和大的为max，小的为min。
+
+Python如何定义一个函数?
+
+有没有一个工具可以帮助查找python的bug和进行静态的代码分析？
+
+如何在一个function里面设置一个全局的变量？
+
+-------------------------------------
+从网上搜罗来的，不定期更新，或者你有好的面试题，欢迎推荐～
+
+
+2.python 试题（基于 python 2.3 或更高版本）
+-------------------------------------------
+
+一、文化
+－－－－
+
+1，听过 the zen of python 吗？尽可能地默写它，中英文皆可，大意也可。如果没有听过，谈谈你对 pythonic 的看法，或者你认为什么样的 python 代码才是好代码。
+
+二、数据结构与算法
+－－－－－－－－－
+
+2，现在有一个 dict 对象 adict，里面包含了一百万个元素，查找其中的某个元素的平均需要多少次比较？一千万个元素呢？
+
+3，现在有一个 list 对象 alist，里面的所有元素都是字符串，编写一个函数对它实现一个大小写无关的排序。
+
+4，python 里关于“堆”这种数据结构的模块是哪个？“堆”有什么优点和缺点？举一个游戏开发中可能会用到堆的问题（不限是于 python 的堆，可以是其它语言的相关实现）。
+
+5，set 是在哪个版本成为 build-in types 的？举一个你在以往项目中用到这种数据结构的问题（不限是于 python 的 set ，可以是其它语言的相关实现），并说明为什么当时选择了 set 这种数据结构。
+
+6，有一个排好序地 list 对象 alist，查找其中是否有某元素 a（尽可能地使用标准库函数）。
+
+三、库应用
+－－－－－
+
+7，说说 dict 的 items() 方法与 iteritems() 方法的不同。
+
+8，写一段程序逐行读入一个文本文件，并在屏幕上打印出来。
+
+9，默写尽可能多的 str 对象的方法。
+
+10，打乱一个排好序的 list 对象 alist。
+
+11，有二维的 list 对象（即它的每一个元素都是一个 list 对象）alist，假定其中的所有元素都具有相同的长度（把 alist 想象成一个表格），写一段程序根据元素的第二个元素排序（即对表格的第二列字段排序）。
+
+四、设计
+－－－－
+
+12，实现一个 stack。
+
+13，编写一个简单的 ini 文件解释器。
+
+14，现有 N 个纯文本格式的英文文件，实现一种检索方案，即做一个小搜索引擎。
+
