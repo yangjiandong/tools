@@ -1,6 +1,13 @@
 python
 ========
 
+2011.12.07
+----------
+
+1. 华为面试题
+http://meiowei.iteye.com/blog/438945
+other/new2.txt
+
 2011.11.25
 ----------
 
