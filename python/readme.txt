@@ -8,6 +8,9 @@ python
 
 other/example.txt
 
+2. vim filter pyc
+let NERDTreeIgnore = ['\.pyc$']
+
 2011.12.07
 ----------
 
