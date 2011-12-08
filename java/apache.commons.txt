@@ -1,0 +1,202 @@
+apache commons
+==============
+
+2011.12.06
+-----------
+
+   1. Array
+
+	public void testArrayUtils() {
+		/** add:给数组添加元素，无需考虑长度限制 */
+		//		Object[] array = new Integer[2];
+		//		array[0] = 1;
+		//		array[1] = 2;
+		//(数组，元素)在数组最后添加新的元素
+		//		array = ArrayUtils.add(array, 5);
+		//(数组，索引，元素)在指定索引添加新的元素
+		//		array = ArrayUtils.add(array, 1, 5);
+		/** addAll:将第二个数组合并到前一个数组 */
+		//		Object[] array = new Integer[2];
+		//		array[0] = 1;
+		//		array[1] = 2;
+		//		Object[] array2 = new Integer[2];
+		//		array2[0] = 6;
+		//		array2[1] = 7;
+		//(数组1，数组2)在数组后拼接第二个数组
+		//		array = ArrayUtils.addAll(array, array2);
+		/** clone:浅克隆数组 */
+		//		Object[] array = new Bean[2];
+		//		array[0] = new Bean("bean1");
+		//		array[1] = new Bean("bean2");
+		//(源数组)浅克隆数组，返回一个新的数组对象，元素对象与源数组为同一对象
+		//		Object[] array3 = ArrayUtils.clone(array);
+		//		System.err.println(array + "--" + array3);
+		//		System.err.println(Arrays.asList(array) + "--" + Arrays.asList(array3));
+		/** constains:数组是否包含元素 */
+		//		Object[] array = new Integer[2];
+		//		array[0] = 1;
+		//		array[1] = 2;
+		//(数组，元素)是否包含相同元素，基础元素匹配值，
+		//封装对象调用对象的equals方法匹配
+		//		boolean b = ArrayUtils.contains(array, 1);
+		//		System.err.println(b);
+		/** getLength:获取数组的长度 */
+		//		Object[] array = new Integer[2];
+		//		array[0] = 1;
+		//		array[1] = 2;
+		//(数组)获取长度，若数组元素为填满数组，
+		//返回创建数组指定长度，若超出则返回实际长度
+		//		int len = ArrayUtils.getLength(array);
+		//		System.err.println(len);
+		/** hashCode:返回数组的哈希码并转化为整数 */
+		//		Object[] array = new Integer[2];
+		//		array[0] = 1;
+		//		array[1] = 2;
+		//		int hc = ArrayUtils.hashCode(array);
+		//		System.err.println(hc);
+		/** indexOf:返回指定元素在数组中得索引 */
+		//		Object[] array = new Integer[2];
+		//		array[0] = 1;
+		//		array[1] = 2;
+		//(数组，元素)指定元素所在数组索引，没有则返回-1；
+		//基础元素匹配值，封装对象调用对象的equals方法匹配
+		//		int index = ArrayUtils.indexOf(array, 1);
+		//(数组，元素，起始查找索引)从起始索引查找指定元素所在数组索引，
+		//没有则返回-1；基础元素匹配值，封装对象调用对象的equals方法匹配
+		//		int index = ArrayUtils.indexOf(array, 1, 1);
+		//		double[] array4 = new double[] { 1.12, 2.213333 };
+		//(double数组，double元素，double容差)
+		//在double数组中查找给定的double值，
+		//被查找的值与给定的值之间的差小于给定的容差
+		//		int index = ArrayUtils.indexOf(array4, 2.1, 0.2);
+		//(double数组，double元素，起始索引，double容差)
+		//在double数组中从起始索引开始查找给定的double值，
+		//被查找的值与给定的值之间的差小于给定的容差
+		//		int index = ArrayUtils.indexOf(array4, 1.2, 1, 0.2);
+		//		System.err.println(index);
+		/** isEmpty:验证数组是否为空 */
+		//		Object[] array = new Integer[2];
+		//		array[0] = 1;
+		//		array[1] = 2;
+		//(数组)当且仅当数组未指定长度或数组指定长度为0且未添加元素时返回true
+		//		boolean b = ArrayUtils.isEmpty(array);
+		//		System.err.println(b);
+		/** isEquals:验证两个数组所有元素是否相同且一一对应 */
+		//		Object[] array = new Bean[2];
+		//		array[0] = new Bean("bean1");
+		//		array[1] = new Bean("bean2");
+		//		Object[] array2 = new Bean[2];
+		//		array2[0] = new Bean("bean1");
+		//		array2[1] = new Bean("bean2");
+		//(数组1，数组2)验证两个数组元素是否一一对应，基础元素匹配值，
+		//封装对象调用对象的equals方法匹配
+		//		boolean b = ArrayUtils.isEquals(array, array2);
+		//		System.err.println(b);
+		/** isSameLength:验证两个数组是否长度相同 */
+		//		Object[] array = new Integer[2];
+		//		array[0] = 1;
+		//		array[1] = 2;
+		//		Object[] array2 = new Integer[2];
+		//		array2[0] = 6;
+		//		array2[1] = 7;
+		//(数组1，数组2)分别调用getLength()方法获取两个数组的长度后匹配，
+		//验证长度规则等同getLength()方法
+		//		boolean b = ArrayUtils.isSameLength(array, array2);
+		//		System.err.println(b);
+		/** isSameType:验证两个数组是否为相同类型 */
+		//		Object[] array = new Bean[2];
+		//		array[0] = new Bean("bean1");
+		//		array[1] = new Bean("bean2");
+		//		Object[] array2 = new Bean[2];
+		//		array2[0] = new Bean2("bean1");
+		//		array2[1] = new Bean2("bean2");
+		//(数组1，数组2)验证两个数组是否为相同类型对象，
+		//若数组的创建及使用为多态，按父对象类型匹配
+		//		boolean b = ArrayUtils.isSameType(array, array2);
+		//		System.err.println(b);
+		/** lastIndexOf:查找数组中最后一个匹配给定元素的索引 */
+		//		Object[] array = new Integer[3];
+		//		array[0] = 1;
+		//		array[1] = 2;
+		//		array[2] = 1;
+		//(数组，元素)指定元素所在数组的最后一个索引，没有则返回-1；
+		//基础元素匹配值，封装对象调用对象的equals方法匹配
+		//		int index = ArrayUtils.lastIndexOf(array, 3);
+		//		//重载及调用规则参照indexOf()
+		//		System.err.println(index);
+		/** remove:根据索引移除指定元素 */
+		//		Object[] array = new Integer[2];
+		//		array[0] = 1;
+		//		array[1] = 2;
+		//		array = ArrayUtils.add(array, 3);
+		//		System.err.println(Arrays.asList(array));
+		//(数组，索引)返回新的数组对象，由源数组移除指定索引元素后后面的元素向前补位构造的数组，
+		//当给定的索引超出数组的长度时抛出java.lang.IndexOutOfBoundsException
+		//		Object[] array2 = ArrayUtils.remove(array, 2);
+		//		System.err.println(array + "--" + array2);
+		//		System.err.println(Arrays.asList(array) + "--" + Arrays.asList(array2));
+		/** removeElement:根据元素移除元素 */
+		//		Object[] array = new Integer[2];
+		//		array[0] = 1;
+		//		array[1] = 2;
+		//(数组，元素)返回新的数组对象，有源数组移除指定元素后后面的元素向前补位构造的数组，
+		//基础元素匹配值，封装对象调用对象的equals方法匹配
+		//		Object[] array2 = ArrayUtils.removeElement(array, 3);
+		//		Object[] array = new Bean[2];
+		//		array[0] = new Bean("bean1");
+		//		array[1] = new Bean("bean2");
+		//		Object[] array2 = ArrayUtils.removeElement(array, new Bean("bean1"));
+		//		System.err.println(array + "--" + array2);
+		//		System.err.println(Arrays.asList(array) + "--" + Arrays.asList(array2));
+		/** reverse:将数组按索引倒序排列 */
+		//		Object[] array = new Integer[2];
+		//		array[0] = 1;
+		//		array[1] = 2;
+		//		System.err.println(array);
+		//		System.err.println(Arrays.asList(array));
+		//(数组)返回数组本身，将数组元素按索引倒序排列
+		//		ArrayUtils.reverse(array);
+		//		System.err.println(array);
+		//		System.err.println(Arrays.asList(array));
+		/** subarray:从数组中按指定索引截取一个新的数组 */
+		//		Object[] array = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+		//(数组，起始索引，结束索引)返回一个新的数组，其元素按索引区间从源数组截取，
+		//若起始索引小于0则从0开始截取，若结束索引大于源数组长度则截取到源数组最后一个元素，
+		//若索引区间不在源数组中，则返回一个空的数组
+		//		Object[] array2 = ArrayUtils.subarray(array, 12, 15);
+		//		System.err.println(array + "--" + array2);
+		//		System.err.println(Arrays.asList(array) + "--" + Arrays.asList(array2));
+		/** toMap:将二维数组转化为Map */
+		//		Object[][] array = new Object[2][2];
+		//		array[0] = new Object[] { "key1", "value1", "aaa" };
+		//		array[1] = new Object[] { "key2", "value2" };
+		//(二维数组)取第二维数组元素1当键，取第二维数组元素2当值构成每个Map的元素
+		//		Map map = ArrayUtils.toMap(array);
+		//		System.err.println(map);
+		/** toObject:将基础元素数组装配成高级数据对象数组 */
+		//		int[] array = { 1, 2, 3, 4, 5 };
+		//(基础数据数组)返回一个新的数组对象，其类型为给定基础数据的高级数据对象，
+		//其元素的值对应为为给定数组的基础数据的值
+		//		Integer[] array2 = ArrayUtils.toObject(array);
+		//		System.err.println(array + "--" + array2);
+		//		System.err.println(Arrays.asList(array) + "--" + Arrays.asList(array2));
+		/** toPrimitive:将高级数据对象数组卸载为原始数据数组 */
+		//		Integer[] array = { 1, 2, 3, 4, 5 };
+		//(高级数据对象数组)返回一个新的数组对象，其类型为给定高级数据对象的原始数据，
+		//其元素的值对应为给定数组的高级数据对象的值
+		//		int[] array2 = ArrayUtils.toPrimitive(array);
+		//		System.err.println(array + "--" + array2);
+		//		System.err.println(Arrays.asList(array) + "--" + Arrays.asList(array2));
+		/** toString:将数组对象输出为可读字符串 */
+		//		int[] array = { 1, 2, 3, 4, 5 };
+		//		Object[] array = new Bean[2];
+		//		array[0] = new Bean("bean1");
+		//		array[1] = new Bean("bean2");
+		//(数组)循环数组元素后构造可读字符串返回，基础元素输出值，
+		//封装对象调用toString()方法获取输出
+		//		String string = ArrayUtils.toString(array);
+		////(数组，当数组为null时返回的字符串)若数组为null，则返回第二个参数
+		//		String string = ArrayUtils.toString(array, "__");
+		//		System.err.println(string);
+	}
+

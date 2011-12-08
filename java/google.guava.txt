@@ -1,0 +1,16 @@
+google guava
+============
+
+   1. 文本文件读取
+
+File file = new File(getClass().getResource("/test.txt").getFile());
+List<String> lines = null;
+try {
+lines = Files.readLines(file, Charsets.UTF_8);
+} catch (IOException e) {
+e.printStackTrace();
+}
+
+
+   --END
+

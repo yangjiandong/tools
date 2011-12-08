@@ -1,6 +1,20 @@
 python
 ========
 
+2011.12.08
+----------
+
+1. 跟踪一些python项目
+
+other/example.txt
+
+2011.12.07
+----------
+
+1. 华为面试题
+http://meiowei.iteye.com/blog/438945
+other/new2.txt
+
 2011.11.27
 ----------
 
