@@ -1,3 +1,17 @@
+把任意文件隐藏在图片中
+-----------------------
+by GFW BLOG 功夫网与翻墙
+原文：http://briteming.blogspot.com/2011/12/blog-post_4729.html
+准备：1.一张图片2.一个做试验的txt文件3.WinRAR
+步骤：
+1：准备一张图片，比如winshome.jpg。准备目标文件，比如test.txt。我们要实现把test.txt隐藏在图片里面。
+2：把要隐藏的文件test.txt用WinRAR压缩。生成test.rar压缩包
+3：打开命令行提示符：点击"开始→运行"，输入"cmd"。
+4：我们假设中两个文件都存放在"D:"下。输入命令：
+copy /b D:winshome.jpg + D:test.rar D:winshome.jpg
+5：ok，试试打开生成的图片winshome.jpg，没错吧，的的确确是原来的图片。
+6：怎样打开那个txt文件？打开WinRAR，点击"文件→打开（快捷键Ctrl + O）"，然后选择文件类型为"所有文件"，找到winshome.jpg，选择打开看看，是不是有个txt文件？这种方法适用于所有文件。
+
 防止qq扫描计算机
 ----------------
 
