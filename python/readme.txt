@@ -1,6 +1,15 @@
 python
 ========
 
+2011.12.15
+----------
+
+1. link 方式安装django
+
+git clone https://github.com/django/django.git django.git
+edit python/Lib/site-packages/django.pth
+D:\workspace\python\django.s\django.git   
+
 2011.12.08
 ----------
 
