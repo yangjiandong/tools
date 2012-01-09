@@ -21,7 +21,7 @@
    --irb and vi
    http://vimcasts.org/episodes/running-vim-within-irb/
 
-   --python
+   --vim python
 
    https://github.com/sophacles/vim-bundle-python
 
