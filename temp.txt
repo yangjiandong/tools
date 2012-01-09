@@ -14,7 +14,7 @@ day tips
    芝麻问答
    http://www.zhimaq.com/
    code:https://bitbucket.org/felinx/zhimaq ,use django,tornado?
-   类似 http://www.osqa.net/ 
+   类似 http://www.osqa.net/ ，http://svn.osqa.net/svnroot/osqa/trunk/ 
 
 install packages for osqa
 easy_install django
@@ -47,7 +47,8 @@ from django.utils.safestring import mark_safe
 
    leo
 
-   b. 
+   b. django.core.exceptions.ImproperlyConfigured: App with label attachments could not be found 
+   --没影响
 
    3. vim for python
 
