@@ -1,6 +1,14 @@
 day tips
 ========
 
+2012.01.10
+----------
+
+   1. markdown
+   use eclipse plugin
+
+   2. jmeter
+
 2012.01.09
 -----------
 
