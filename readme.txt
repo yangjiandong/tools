@@ -69,6 +69,8 @@
 
    g. textile wiki
 
+   eclipse,file extensions: *.textile, *.tracwiki, *.mediawiki, *.twiki, *.confluence,
+
    h. python Sphinx + cygwin
    
    http://sphinx.pocoo.org/index.html
