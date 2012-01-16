@@ -1,6 +1,44 @@
 day tips
 ========
 
+2012.01.16
+----------
+
+   1. nosql mongodb
+   MongoDB的客户端工具MongoVue
+   php5:http://code.google.com/p/rock-php/wiki/rock_mongo_zh 
+ 
+   startup: mongod --dbpath d:\noSQL\data --rest --port=27017 --logpath=d:\noSql\logs &
+   http://localhost:28017/
+
+   profile:
+   startup for: -profile=1 or 2 or 3
+   或者在客户端调用db.setProfilingLevel(级别) 命令来实时配置 
+   db.setProfilingLevel(2);
+   0 – 不开启，关闭性能分析，测试环境可以打开，生成环境关闭，对性能有很大影响
+   1 – 记录慢命令 (默认为>100ms), or db.setProfilingLevel( level , slowms ) 
+   2 – 记录所有命令
+   
+   关闭：不能用kill -9，否则会导致MongoDB瘫痪,官方文档说明要使用 kill -15，killall mongod或者在client的shell里，use admin，执行db.shutdownServer()即可！
+
+   修复：首先停止mongod服务，删除 mongodb.log，也可以备份一下,
+   # rm -rf /data/mongodb/mongodb.log
+
+   删除mongodb进程文件
+   # rm -rf /mongodb/mongod.lock
+
+   进行修复
+   # mongod --repair --dbpath /data/mongodb --repairpath /data/mongodb_repair --port=27017
+
+   这时mongodb进程会在/mongodb/repair/ 目录下储存临时的修复数据库文件，文件目录为" $tmp_repairDatabase_0" 所以此目录空间要足够大。
+   生产环境数据库为100G，修复进行了大约3个半小时，在"/mongodb/repair/$tmp_repairDatabase_0" 目录下产生了近30G的数据库临时文件，修复完成后数据库临时文件自动清除。
+   之后开启mongod服务，检查数据库，发现读写正常，mongodb.log没有出现错误。修复OK！
+   
+   db.repairDatabase()
+
+   rockmnogo
+   admin,admin
+
 2012.01.10
 ----------
 
