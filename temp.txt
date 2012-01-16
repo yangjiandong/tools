@@ -39,6 +39,36 @@ day tips
    rockmnogo
    admin,admin
 
+   2. python saop
+   
+   http://stackoverflow.com/questions/206154/whats-the-best-soap-client-library-for-python-and-where-is-the-documentation-f 
+   
+   suds: https://fedorahosted.org/suds
+   example:
+   #url = 'http://localhost:8090/sshapp/services/HzService?wsdl'
+   url = 'http://218.93.119.14:8088/IWisServies.asmx?WSDL'
+   start(url)
+   client = Client(url)
+   print client
+
+   url = 'http://localhost:8090/sshapp/services/HzService?wsdl'
+
+   start(url)
+   client = Client(url)
+   client.set_options(headers={"Content-Type":"text/xml; charset=utf-8"})
+   print client       
+   d = dict(hz=u'我',)
+   hz = client.service.getHz(**d)
+   print hz
+   --注意文件编码需为utf-8
+   
+   rpclib: https://github.com/arskom/rpclib 
+   use lxml in win32: http://www.lfd.uci.edu/~gohlke/pythonlibs/ --cool 
+   
+   python register:http://0x3f.org/?p=1288 
+
+   portable python:http://www.portablepython.com/ 
+
 2012.01.10
 ----------
 
