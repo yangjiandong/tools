@@ -1,6 +1,24 @@
 TODO
 =====
 
+2012.01.19
+----------
+
+   1. nosql mongondb
+
+   2. javascript,nodejs
+
+   3. python django
+
+      zhimaq, osqa
+
+   4. java apache camel,jmeter 多用户测试,
+
+      glassfish
+
+old
+----
+
 1. java 开发中动态指定数据库连接
 
 2. ror  开发中动态指定数据库连接
