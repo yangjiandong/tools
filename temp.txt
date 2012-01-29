@@ -1,6 +1,51 @@
 day tips
 ========
 
+2012.01.29
+----------
+
+   1. install git server
+   http://wendal.net/295.html
+   vcn/save/git.server.txt
+
+   2. python for android
+   http://www.douban.com/group/SL4A/
+   example:
+   http://forums.webosnation.com/webos-development/209028-extract-full-sms-log-text-file-palmdatabase-db3-using-sql.html
+   python/android/export.sms.py
+
+   use SL4A,https://github.com/kashifpk/android_sms_exporter 
+   python/adndroid/sms_exporter.py
+
+   3. Pro Android Python with SL4A 
+   http://download.csdn.net/download/nightcloud/3724987
+
+   4. use qrcode generate img
+   http://zxing.appspot.com/generator/ 
+   扫描二维码!
+   方法如下:
+     1. 打开二维码生成页面:http://zxing.appspot.com/generator/,在Contents后面的下拉列表中选择:Text
+     2. 在Text content 后文本区的第一行输入脚本的名称,比如:HelloWorld.py
+     3. 在他的下方输入脚本的内容.
+     4. 在Barcode size 后的下拉列表中选择:L
+     5. 点击Gernerate 生成二维码
+     6. 将右边生成的二维码保存或者与你的朋友们分享!
+
+   生成的二维码如图所示:
+
+   使用手机扫描生成的二维码,并将其转化为py脚本二维码生成了,如何将它导入手机呢?
+     1.启动SL4A进入脚本列表
+     2.按菜单键(MENU)
+     3.点击Add
+     4.点Scan Barcode
+     5.扫描生成的二维码,脚本便会自动显示在列表中(名称就是第一行的名称)
+     ps:二维码最多容纳的字符为4296个,所以只能用来存放较短的脚本!
+
+   5. A web application to monitor and analyze the performance of your code 
+   use django
+
+   https://github.com/tobami/codespeed
+
 2012.01.24
 ----------
 
