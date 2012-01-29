@@ -1,3 +1,69 @@
+2012.01.29
+----------
+
+http://wendal.net/295.html
+#现在开始是root做的
+ 
+#安装Git
+apt-get install git
+#拷贝你自己的公钥
+cp ~/.ssh/id_rsa.pub /tmp/wendal.pub
+git clone git://github.com/sitaramc/gitolite
+cd gitolite
+src/gl-system-install
+ 
+#添加git用户,并切换到git用户
+adduser git
+su - git
+ 
+#现在开始要变成git用户了
+gl-setup /tmp/wendal.pub
+
+管理:
+#同样需要用git进行管理,任何一台机器,能访问服务器(sshd是必须的啦)就行,并持有wendal.pub对应的私钥
+#首先git clone出管理项目
+git clone git@wendal.net:gitolite-admin
+cd gitolite-admin
+ls -l
+你会看到两个文件夹conf 和keydir
+keydir 是 存放用户的公钥的, 用户名.pub , 可以建子文件夹
+conf下只有一个文件,gitolite.conf,默认内容如下:
+repo	gitolite-admin
+		RW+	 =   wendal
+ 
+repo	testing
+		RW+	 =   @all
+一目了然的吧,你可能问: 如何添加新的库啊? 简单
+往这个文件添加一个库的配置,就会自动帮你建好,例如添加:
+repo	GGG
+		RW+	 =   wendal,zozoh
+就会帮你生成一个名为GGG的库
+
+当然,以上配置,还要push到服务器才行.
+
+下面是简单的git指南
+在我看来就几个命令:
+#克隆一个库,相当于svn的check out
+git clone git@wendal.net:gitolite-admin
+ 
+#设置本地信息,非常重要!!
+git config --global user.name "wendal"
+git config --global user.email "admin@wendal.net"
+git config core.quotepath false
+ 
+#更新本地的库,相当于svn的update
+git pull
+ 
+#上传本地的修改到远程的库,其中origin是默认远程库,也就是你clone的库, master是分支名
+git push origin master
+ 
+#提交修改到本地仓库
+git add XXX/XXX  vabc/afda/Abc.java
+git commit -a #将包含全部修改过的文件,但新增的会忽略
+
+old
+----
+
 小组级git服务器搭建
 by Elton on 2009年11月26日, under Linux
 

@@ -1,6 +1,13 @@
 day tips
 ========
 
+2012.01.29
+----------
+
+   1. install git server
+   http://wendal.net/295.html
+   vcn/save/git.server.txt
+
 2012.01.16
 ----------
 
