@@ -1,6 +1,45 @@
 day tips
 ========
 
+2012.01.24
+----------
+
+   1. pys60 备份手机短信
+   http://snippets.dzone.com/posts/show/3042
+   adaemon.py -- 手机后台任务，电话录音 http://gashero.iteye.com/blog/693020 
+   download pys60: https://garage.maemo.org/frs/?group_id=854 
+
+2012.01.23
+----------
+
+   1. 完美解码,设置系统关机自动清除文档记录。。。
+   打开注册表编辑器，依次展开“HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer”，在右侧窗口中新建一个名为“ClearRecentDocsOnExit”的DWORD值,并将其值设置为1(为1关机自动清除,为0不清除).
+
+2012.01.21
+----------
+
+   1. vim python snippet
+
+   autocmd FileType python setlocal et sta sw=4 sts=4  omnifunc=pysmell#Complete ft=python.django "4个空格替代TAB
+   autocmd FileType html ft=htmldjango.html " For SnipMate
+   
+   "autocmd FileType python set ft=python.django " For SnipMate
+	 "autocmd FileType html set ft=htmldjango.html " For SnipMate
+
+   2. pysmell
+
+   cd python
+   pysmell . -x site-package test -o PYSMELLTAGES.pythonlib;
+   同理生成django，可以到python安装目录下的lib / site-package/django
+   pysmell . -o PYSMELLTAGES.django
+   如果下载了django的安装包/源码包,可以在其bin目录生成
+
+   然后把pysmell生成的文件复制到你项目目录之下
+   更加需要,可以把你项目源码也生成
+   然后你项目目录下编辑py文件时候,
+   就会自动感应补全了
+   ctrl+X/O就可以看到IDE中的代码提示
+   
 2012.01.16
 ----------
 
