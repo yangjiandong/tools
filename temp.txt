@@ -1,6 +1,56 @@
 day tips
 ========
 
+2012.01.31
+----------
+
+   1. vim python use pylint ,E505,file is read-only
+
+   https://github.com/klen/python-mode/issues/28
+
+python.vim 众多Python代码编辑辅助功能的集合；
+]t　移动到当前缩进块的开头
+]e	移动到当前缩进块的结尾
+]v	选中当前缩进块中的所有行
+]<	将当前块的缩进减少一级
+]>	将当前块的缩进增加一级
+]#	给当前选中的行增加一级注释标记
+]u	给当前选中的行减少一级注释标记
+]c	选中当前类的所有行
+]d	选中当前函数的所有行
+]<up>	跳到有当前缩进级别的上一行
+]<down>	跳到有当前缩进级别的下一行
+]j	跳到下一个类的类定义行
+]J	跳到上一个类的类定义行
+]f	跳到下一个函数的定义行
+]F	跳到上一个函数的定义行
+
+Python函数提示 在有ctags支持的情况下直接用omni全能补全即可（顺序按Ctrl+x, Ctrl+o启用），其他补全模式还有：
+整行补全	CTRL-X CTRL-L
+根据当前文件里关键字补全	CTRL-X CTRL-N
+根据字典补全	CTRL-X CTRL-K
+根据同义词字典补全	CTRL-X CTRL-T
+根据头文件内关键字补全	CTRL-X CTRL-I
+根据标签补全	CTRL-X CTRL-]
+补全文件名	CTRL-X CTRL-F
+补全宏定义	CTRL-X CTRL-D
+补全VIM命令	CTRL-X CTRL-V
+用户自定义补全方式	CTRL-X CTRL-U
+拼写建议	CTRL-X CTRL-S
+
+pysmell插件能够扩展omni全能补全对函数提示的处理能力，可以考虑选用。
+
+pyflakes.vim Python的错误检查工具，在保存buffer或者退出编辑模式时都会对代码进行检查并给出错误提示。
+   需要Vim包含Python 2.5以上运行环境支持（MacVim为了兼容Tiger，默认只兼容Python 2.3.5，
+   因此只能自行重新编译MacVim才能使用pyflakes.vim）。
+   （找到的错误显示在quickfix窗口，用:h quickfix来查询用法。）
+
+pylint.vim Python代码风格和常见错误检查工具，检查很仔细，运行速度慢……
+   所以建议用“let g:pylint_onwrite = 0”让它不要在每次保存Python文件的时候都检查，
+   而是用“:Pylint”指令来调用。
+   （此插件的安装说明见pylint.vim文件中的注释）
+   （找到的错误显同样示在quickfix窗口，用:h quickfix来查询用法。）
+
 2012.01.30
 ----------
 
