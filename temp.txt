@@ -1,6 +1,47 @@
 day tips
 ========
 
+2012.02.01
+----------
+
+   1. memory analyze   
+   http://mysuperbaby.iteye.com/blog/1387911 
+
+   Android下获得内存泄露hprof文件的步骤： 
+   在DDMS中选择相应的进程，点击"Dump HPROF file"按钮生成hprof文件。
+   通过AndroidSDK/tools下的hprof-conv工具将步骤1生成的hprof文件转换为标准格式的hprof文件，命令行为：hprof-conv <infile> <outfile>。
+   通过MAT工具打开步骤2生成的hprof文件，然后进行分析。
+
+   2. 修改手机BP(比如烧号)必备的VSP(Virtual Serial Port)虚拟串口软件 
+   HW VSP3 - Virtual Serial Port
+   http://www.hw-group.com/products/hw_vsp/index_en.html
+   VSPM (国产软件哦)
+   http://www.powerip.net/product_VSPM.htm
+
+   3.  Touchdown - 很牛的Android平台上的Exchange ActiveSync客户端
+   官方下载位置：
+   http://www.nitrodesk.com/download.aspx
+   License key: b1111100000
+ 
+   4. sqlite3 client tools
+   http://mysuperbaby.iteye.com/blog/902232 
+
+   freeware: http://www.sqliteexpert.com/download.html
+   http://sqliteadmin.orbmu2k.de/
+
+   5. 通过Web访问Android Market 
+   访问https://market.android.com/会看到下面的界面, 从中可以发现所有在Android Market的应用以及哪些应用你已经安装过. 
+   选择一个应用并点击Install, 会弹出一个窗口, 提示"Loading device compatibility", 然后显示出你配置过Google帐号的所有Android手机的列表, 选择其中的一个进行安装, 稍后你就会发现你的Android手机开始下载该应用.
+
+   6. 在Titanium中使用JSONDB让你的应用加速100倍 
+   http://rensanning.iteye.com/blog/1388410
+   nosql db for your mobile appsi
+   ? 收费  https://marketplace.appcelerator.com/apps/1089 
+
+   7. Titanium
+
+
+
 2012.01.31
 ----------
 
