@@ -40,6 +40,10 @@ day tips
 
    7. Titanium
 
+   8. 无损图片压缩
+   http://encode.ru/threads/1471-iz-New-fast-lossless-RGB-photo-compression
+   https://gitorious.org/imagezero
+   win32: iz.exe
 
 
 2012.01.31
