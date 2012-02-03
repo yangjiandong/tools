@@ -1,6 +1,49 @@
 day tips
 ========
 
+2012.02.03
+----------
+
+   1. android 获取 root 权限
+   superOneClick
+   http://www.androidba.net/android-phone-root-with-superoneclick/ 
+
+   other: 
+   http://www.androidba.net/
+
+   2. 整理以前资料，vim 查询利器 ack
+   http://betterthangrep.com/ ,需perl环境
+
+   http://betterlogic.com/roger/2008/12/how-to-use-ack-in-windows/   
+   create ack.bat
+   @"D:\strawberry-perl-5.12.3.0-portable\perl\bin\perl.exe" D:\gVimPortable\ack.pl %*
+   
+   3. 一个vim配置
+   https://github.com/yaroot/vimrc
+   
+   4. vim, http://blog.chinaunix.net/space.php?uid=22891521&do=blog&id=2109798 
+   relativenumber,相对行号
+
+   5. undo
+
+2012.02.02
+----------
+
+   1. 打电话不要钱：超强悍的手机免费网络电话Viber
+   http://www.viber.com/
+   电话录音
+   https://market.android.com/details?id=com.record.my.call
+
+   2. open dns
+   208.67.222.222 和 208.67.220.220
+
+   3. android app
+   https://github.com/lorensiuswlt/NewQuickAction3D.git
+
+   4. eclipse 下 YaHie.Consolas 字体，
+   感觉没consolas圆滑，但设置后原有consolas 10 号字效果也没有了
+   http://www.itkee.com/developer/detail-150.html
+
 2012.02.01
 ----------
 
