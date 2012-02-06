@@ -1,6 +1,14 @@
 day tips
 ========
 
+2012.02.06
+----------
+
+   1. 另一个类似osaq的项目askbot
+   https://github.com/ASKBOT/askbot-devel.git
+   osqa.git
+   https://github.com/sghael/OSQA.git
+
 2012.02.04
 ----------
 
