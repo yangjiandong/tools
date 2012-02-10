@@ -1,6 +1,127 @@
 day tips
 ========
 
+2012.02.10
+----------
+
+   1. python ide
+   http://stackoverflow.com/questions/81584/what-ide-to-use-for-python 
+
+                                       Rapid Application Development -.
+                                           Integrated DB Support -+   |
+                                                GUI Designer  -+  |   |
+                                             Unit Testing -+   |  |   |
+                                        Code Templates -.  |   |  |   |
+                                       Code Folding -+  |  |   |  |   |
+                           UML Editing / Viewing -+  |  |  |   |  |   |
+                              Line Numbering -+   |  |  |  |   |  |   |
+                         Bracket Matching -+  |   |  |  |  |   |  |   |
+                          Smart Indent -+  |  |   |  |  |  |   |  |   |
+         Source Control Integration -+  |  |  |   |  |  |  |   |  |   |
+                   Error Markup  -+  |  |  |  |   |  |  |  |   |  |   |
+  Integrated Python Debugging -+  |  |  |  |  |   |  |  |  |   |  |   |
+    Multi-Language Support -+  |  |  |  |  |  |   |  |  |  |   |  |   |
+  Auto Code Completion -+   |  |  |  |  |  |  |   |  |  |  |   |  |   |
+ Commercial / Free --+  |   |  |  |  |  |  |  |   |  |  |  |   |  |   |
+ Cross Platform -+   |  |   |  |  |  |  |  |  |   |  |  |  |   |  |   |
+                _|___|__|___|__|__|__|__|__|__|___|__|__|__|___|__|___|_
+                |CP|C/F|AC|MLS|PD|EM|SC|SI|BM|LN|UML|CF|CT|UT|UID|DB|RAD|comments
+                +--+---+--+---+--+--+--+--+--+--+---+--+--+--+---+--+---+
+ BlackAdder     |Y | C |  |   |  |  |  |Y |  |  |   |Y |  |  |   |  |   |
+ BlueFish       |L |   |  |   |  |  |  |  |  |  |   |  |  |  |   |  |   |
+ Boa Constructor|Y | F |Y |   |Y |Y |  |Y |Y |Y | Y |Y |Y |  |   |  |   |
+ ConTEXT        |W | C |  |   |  |  |  |  |  |  |   |  |  |  |   |  |   |
+ DABO           |Y |   |  |   |  |  |  |  |  |  |   |  |  |  |   |  |   |
+ DreamPie       |  | F |  |   |  |  |  |  |  |  |   |  |  |  |   |  |   |
+ Dr.Python      |  | F |  |   |  |Y |  |  |  |  |   |  |  |  |   |  |   |
+ Editra         |Y | F |Y | Y |  |  |Y |Y |Y |Y |   |Y |  |  |   |  |   |
+ Emacs          |Y | F |Y | Y |Y |Y |Y |Y |Y |Y | Y |Y |Y |Y |   |  |   |
+ Eric Ide       |Y | F |Y |   |Y |Y |  |Y |  |Y |   |Y |  |Y |   |  |   |
+ E-Texteditor   |W |   |  |   |  |  |  |  |  |  |   |  |  |  |   |  |   |
+ Geany          |Y | F |Y*| Y |  |  |  |Y |Y |Y |   |Y |  |  |   |  |   |* very limited
+ Gedit          |Y | F |Y¹| Y |  |  |  |Y |Y |Y |   |  |Y²|  |   |  |   |¹ with plugin ² sort of
+ Idle           |Y | F |Y |   |  |  |  |  |  |  |   |  |  |  |   |  |   |
+ JEdit          |Y | F |  | Y |  |  |  |  |Y |Y |   |Y |  |  |   |  |   |
+ KDevelop       |Y | F |  | Y |  |  |Y |Y |Y |Y |   |Y |  |  |   |  |   |
+ Komodo         |Y |C/F|Y | Y |Y |Y |Y |Y |Y |Y |   |Y |Y |Y |   |Y |   |
+ NetBeans       |Y | F |Y | Y |Y |  |Y |Y |Y |Y | Y |Y |Y |Y |   |  | Y |
+ NotePad++      |W | F |  | Y |  |  |  |  |  |Y |   |  |  |  |   |  |   |
+ Pfaide         |W | C |Y | Y |  |  |  |Y |Y |Y |   |Y |Y |  |   |  |   |
+ PIDA           |LW| F |Y | Y |  |  |  |Y |Y |Y |   |Y |  |  |   |  |   |VIM based
+ PTVS           |W | F |Y | Y |Y |Y |Y |Y |Y |Y |   |Y |  |  |Y* |  | Y |*WPF bsed
+ PyCharm        |Y | C |Y | Y*|Y |  |Y |Y |Y |Y |   |Y |  |Y |   |  |   |* javascript
+ PyDev(Eclipse) |Y | F |Y | Y |Y |Y |Y |Y |Y |Y | Y |Y |Y |Y |   |  |   |
+ Pyscripter     |W | F |Y |   |Y |Y |  |Y |  |Y |   |  |Y |Y |   |  |   |
+ PythonWin      |W | F |Y |   |Y |  |  |Y |Y |  |   |Y |  |  |   |  |   |
+ SciTE          |Y | F |  | Y |  |Y |  |  |Y |Y |   |Y |Y |  |   |  |   |
+ ScriptDev      |W | C |Y | Y |Y |Y |  |Y |Y |Y |   |Y |Y |  |   |  |   |
+ SPE            |  | F |Y |   |  |  |  |  |  |  | Y |  |  |  |   |  |   |
+ Spyder         |Y | F |Y |   |Y |Y |  |Y |Y |Y |   |  |  |  |   |  |   |
+ Sublime Text   |Y | C |Y | Y |  |  |  |Y |Y |Y |   |  |Y |  |   |  |   |extensible w/python
+ TextMate       |M |   |  | Y |  |  |  |Y |Y |Y |   |Y |Y |  |   |  |   |
+ UliPad         |Y | F |Y | Y |Y |  |  |Y |Y |  |   |  |Y |Y |   |  |   |
+ Vim            |Y | F |Y | Y |Y |Y |Y |Y |Y |Y |   |Y |Y |Y |   |  |   |
+ WingIde        |Y | C |Y | Y*|Y |Y |Y |Y |Y |Y |   |Y |Y |Y |   |  |   |* support for C
+ Zeus           |W | C |  |   |  |  |Y |Y |Y |Y |   |Y |Y |  |   |  |   |
+                +--+---+--+---+--+--+--+--+--+--+---+--+--+--+---+--+---+
+                |CP|C/F|AC|MLS|PD|EM|SC|SI|BM|LN|UML|CF|CT|UT|UID|DB|RAD|
+                |__|___|__|___|__|__|__|__|__|__|___|__|__|__|___|__|___|
+   
+2012.02.09
+----------
+
+   1. Psyco speeds up the execution of most Python programs with a single extension module
+
+   http://www.insomnihack.com/?p=412
+
+2012.02.07
+----------
+
+   1. python export oracle to txt
+   http://weizi888.appspot.com/?p=107001 
+   osqa/src/utils/ora_exp.py
+
+   2. vim
+   * highlight all occurrence of a selected word
+   :nohlsearch remvoe
+   
+   dbext : access db server
+   http://blog.sina.com.cn/s/blog_498a6eeb0100a1pt.html 
+
+   3. cx_oracle
+   下载安装cx_Oracle 
+   http://sourceforge.net/projects/cx-oracle/ 
+   复制C:\XEClient\bin目录下的oci.dll、oraocixe10.dll、oraocci10.dll到python库目录下 
+   E:\Program Files\Python26\Lib\site-packages 
+
+   4. in eclipse use vim
+   http://www.viplugin.com/viplugin/
+   --收费?
+
+2012.02.06
+----------
+
+   1. 另一个类似osqa的项目askbot,是osqa的安装版本，但也优化过
+   https://github.com/ASKBOT/askbot-devel.git
+   osqa.git
+   https://github.com/sghael/OSQA.git
+   开发方式安装: python setup.py develop
+
+   same project: http://www.mkyong.com/featured/top-5-open-source-qa-systems/
+
+2012.02.04
+----------
+
+   1. 这称得上是一个 Vim 的杀手级 Tip，利用该 Tip，你可以快速处理 '、"、()、[]、{}、<> 等配对标点符号中的文本内容，包括更改、删除、复制等。
+
+ci'、ci"、ci(、ci[、ci{、ci< - 分别更改这些配对标点符号中的文本内容
+di'、di"、di(、di[、di{、di< - 分别删除这些配对标点符号中的文本内容
+yi'、yi"、yi(、yi[、yi{、yi< - 分别复制这些配对标点符号中的文本内容
+vi'、vi"、vi(、vi[、vi{、vi< - 分别选中这些配对标点符号中的文本内容
+对于经常用 Vim 写代码的朋友来说，善用此 Tip 将极大的提高编码效率。
+
+注:把 i 改成 a 的话，会连配对标点一起操作
+
 2012.02.03
 ----------
 
