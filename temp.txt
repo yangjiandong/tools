@@ -108,6 +108,9 @@ gpg --verify hello-new.txt #验证
 
    -- WARNING: using insecure memory! 
 
+   3. djangobook
+   https://github.com/RaD/djbookru
+
 2012.02.09
 ----------
 
