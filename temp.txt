@@ -67,6 +67,47 @@ day tips
                 |CP|C/F|AC|MLS|PD|EM|SC|SI|BM|LN|UML|CF|CT|UT|UID|DB|RAD|
                 |__|___|__|___|__|__|__|__|__|__|___|__|__|__|___|__|___|
    
+
+   2. pgp cygwin,gnupg
+   save/gpg.txt
+
+   use:
+   --创建自己的密钥
+   gpg --gen-key
+   ...
+   (yangjiandong,qaz123456789)
+   key会保存在～/.gnupg/目录下，其中公钥文件为 pubring.gpg,私钥文件为secring.gpg。
+   
+   --密钥的管理
+   
+gpg -K #列出当前机器上的密钥
+ 
+gpg -a -o lily.key --export lily.yu #导出lily 的公钥到lily.key 。
+gpg -a -o lily-secret.key --export-secret-keys 2lily.yu #导出lily 的私钥
+ 
+gpg --delete-keys lily.yu #从公钥钥匙环里删除密钥
+gpg --delete-secret-keys lily.yu #从私钥钥匙环里删除密钥
+gpg --delete-secret-and-public-key lily.yu #同时删除公钥私钥
+ 
+gpg --import filenamepubkey  #导入一个密钥
+
+   --用GnuPG 加解密文件
+
+gpg -ea -r "lily.yu" hello.txt #使用lily.yu 这个密钥加密hello.txt，你会得到一个加密后的文件hello.txt.asc。-a 表示已ASCII 输出.
+gpg -o new.txt -d hello.txt.asc #解密hello.txt.asc 文件并输出到 new.txt 文件。
+   
+   --用GnuPG 为文件做数字签名
+
+gpg -s hello.txt #为hello.txt 加签名，不加 -o 参数会产生一个hello.txt.gpg 文件
+gpg --verify hello.txt.gpg #验证该文件的签名
+ 
+gpg -o hello-new.txt --clearsign hello.txt #将数字签名直接附加在文件中
+gpg --verify hello-new.txt #验证
+
+   --http://javatgo.iteye.com/blog/1049485
+
+   -- WARNING: using insecure memory! 
+
 2012.02.09
 ----------
 

@@ -1,0 +1,82 @@
+GPG 数字签名
+============
+
+2010.07.09
+-----------
+
+1. download
+
+   http://www.gnupg.org/download/index.en.html
+   save/gnupg-w32cli-1.4.10b.exe
+
+2. use
+
+   参考 http://blog.chinaunix.net/u1/41699/showart_472258.html
+
+2.1) 产生密匙
+
+   gpg --gen-key
+   --选择默认
+   --长度4096
+
+   产生文件位置：C:\Users\Administrator\AppData\Roaming\gnupg
+   --注意,UID需采用全部信息，如"yangjiandong (000973) <young.jiandong@gmail.com>"
+
+2.2) 查看私钥
+
+   gpg -K
+
+2.3) 导出公钥
+
+   gpg --export>yangjiandong.asc
+
+   or
+
+   gpg --armor --export C6993117 >backup.key
+   --xxx为数字，可通过gpg -vk查看，如4096R/C6993117中的C6993117
+
+2.4) 加密一个文件
+
+   gpg -e -r 'Your Name' foo.txt
+   --注意Your Name为UID即如"yangjiandong (000973) <young.jiandong@gmail.com>"
+
+2.5) 解密这个文件. 这里不加--output选项的话,解密的内容将被送到屏幕上
+
+   gpg --output foo.txt --decrypt foo.txt.gpg
+   --注意，你需要相应的私匙
+
+2.6) 为别人加密一个文件.
+
+   这里首先要import别人的公钥，然后加密。注意这里变化的只是--recipient选项
+
+   #gpg --import otherkey.asc
+   #gpg --list-keys
+   #gpg --encrypt --recipient 'myfriend@his.isp.net' foo.txt
+
+2.7) 解密一个从别人那里发来的文件. 这个和本机加密的文件解密没什么区别.
+
+   #gpg --output foo.txt --decrypt foo.txt.gpg
+
+
+简单操作
+--------
+
+http://wells.osall.com/blog/index.php?m=content&p=1423&uid=1#article_content.php%3Fid%3D1423%26uid%3D1%26dt%3DY:pane:N;
+
+   --生成部分相同
+   --导出公匙
+   gpg --armor --export xxx >backup.key
+   --xxx为数字，可通过gpg -vk查看，如4096R/CED3EB55中的CED3EB55
+   --导入
+   gpg --import backup.key
+   --编辑密钥状态，使之成为trust
+   gpg --edit-key
+   Command> trust
+   --加密
+   gpg -ea -r 41532C13 sylvan.sql
+   --解密
+   gpg -o sylvan.sql -d sylvan.sql.asc
+
+   --以上操作只能在本机上进行，因为需要公私匙
+
+   --END
