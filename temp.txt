@@ -1,6 +1,13 @@
 day tips
 ========
 
+2012.02.11
+----------
+
+   1. djangobook in russian
+   git://github.com/RaD/djbookru.git
+   --but no run
+
 2012.02.10
 ----------
 
