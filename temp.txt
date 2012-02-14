@@ -1,6 +1,12 @@
 day tips
 ========
 
+2012.02.14
+----------
+
+   1. intellij highlight all occurrence var
+   Settings - Editor - Highlight usages of element at caret
+
 2012.02.11
 ----------
 
