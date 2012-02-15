@@ -1,12 +1,46 @@
 day tips
 ========
 
+2012.02.15
+----------
+
+   1. intellij 块选择
+   ctrl+w,注意它是按单词来扩展选择的,-- 还没找到更好的方法，没eclipse下双击方便
+
+   让光标不随意定位：Settings->Editor中去掉Allow placement of caret after end of line 
+
+   http://cowboy-bebop.iteye.com/blog/1035550 
+   java/intellij.txt
+
+   intellij python : pycharm
+   http://www.jetbrains.com/pycharm/ 
+
+   2. nginx
+
+   3. java ide netbeans,intellij 字体设置
+   推荐 YaHei.Consolas.1.12.zip 
+
+   4. python 版本 virtualenv
+   http://www.intellij.org.cn/blog/?p=1208
+2012.02.14
+----------
+
+   1. intellij highlight all occurrence var
+   Settings - Editor - Highlight usages of element at caret
+
 2012.02.13
 ----------
 
    1. ropevim, rope in vim
    Ropevim is a plugin for performing python refactorings in vim. It uses rope library.
-   
+
+2012.02.11
+----------
+
+   1. djangobook in russian
+   git://github.com/RaD/djbookru.git
+   --but no run
+
 2012.02.10
 ----------
 
