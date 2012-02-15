@@ -1,6 +1,12 @@
 day tips
 ========
 
+2012.02.13
+----------
+
+   1. ropevim, rope in vim
+   Ropevim is a plugin for performing python refactorings in vim. It uses rope library.
+   
 2012.02.10
 ----------
 
