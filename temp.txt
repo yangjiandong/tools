@@ -1,6 +1,21 @@
 day tips
 ========
 
+2012.02.16
+----------
+
+   1. Ubuntu各版本开发代号一览 
+   http://www.cnblogs.com/sinojelly/archive/2011/11/06/2238286.html
+
+   2. python 学习资源
+   http://www.cnblogs.com/sinojelly/archive/2012/01/29/2331503.html
+
+   3. django 项目
+   https://github.com/vicalloy/LBForum.git
+   注意，\scripts\create_lbforum_env.py初始化lbforum的python虚拟环境 
+   
+   https://github.com/vicalloy 
+
 2012.02.15
 ----------
 
