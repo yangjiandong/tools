@@ -1,6 +1,33 @@
 day tips
 ========
 
+2012.02.17
+----------
+
+   1. python关于中文分词有什么成熟的库？
+   http://www.zhimaq.com/questions/1896/python
+
+   smallseg -- 开源的，基于DFA的轻量级的中文分词工具包,特点：可自定义词典、切割后返回登录词列表和未登录词列表、有一定的新词识别能力。
+   http://code.google.com/p/smallseg/
+
+   coreseek，使用sphinx和mmseg 支持万能的python数据源
+   
+   https://github.com/pluskid/pymmseg-cpp/ 这个挺不错的，基于MMSEG中文分词算法，以前是ruby实现，现在有pytho
+
+   2. pypi mirror download
+   
+   http://pypi.zepheira.com/simple/
+   
+   pip
+   If you’re using a recent pip (0.8.1 or later) use the —use-mirrors flag:
+   pip install --use-mirrors $PACKAGE
+
+   use automation:
+   [global]
+   index-url = http://d.pypi.python.org/simple
+   Into ~/.pip/pip.conf.
+
+
 2012.02.16
 ----------
 
@@ -37,6 +64,7 @@ day tips
 
    4. python 版本 virtualenv
    http://www.intellij.org.cn/blog/?p=1208
+
 2012.02.14
 ----------
 
