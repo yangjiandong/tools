@@ -1,6 +1,22 @@
 day tips
 ========
 
+2012.02.19
+----------
+
+   1. java 高性能并发库
+   jactor
+   https://github.com/laforge49/JActor
+
+   2. django mongodb
+   http://simple-is-better.com/news/821
+
+   3. django solr
+   
+   solr-tomcat6,
+   pip install pysolr,django-haystack
+   http://dmyz.org/archives/354
+
 2012.02.17
 ----------
 
@@ -27,6 +43,24 @@ day tips
    index-url = http://d.pypi.python.org/simple
    Into ~/.pip/pip.conf.
 
+   3. 转移用户目录到d盘
+   到用户目录： %AppData%
+   
+   假设你想把用户文件夹设置在D盘，
+   robocopy "C:＼Users" "D:＼Users" /E /COPYALL /XJ 
+   rmdir "C:＼Users" /S /Q 
+   mklink /J "C:＼Users" "D:＼Users" 
+   想要移动已安装好的Windows7中的用户文件夹 ，
+   0. 关闭所有应用程序； 
+ 　1. 按一下“Windows”键，输入“计算机管理”之后按“Enter”，呼出“计算机管理器”； 
+ 　2. 鼠标点击“Administrator”，选择属性，而后在随后的对话框中去掉“帐户已禁用”之前的勾，而后关闭“计算机管理器”； 
+ 　3. 注销当前用户（注意，不是“切换用户”），而后以“Administrator”登录 
+ 　4. 打开命令行窗口，输入以下命令：robocopy "C:＼Users" "D:＼Users" /E /COPYALL /XJ /XD "C:＼Users＼Administrator" 
+ 　5. 注销Administrator，重新用你的用户名登录Windows7，而后到“计算机管理器”里禁用Administrator； 
+ 　6. 以管理员身份打开一个DOS窗口，输入以下命令： 
+ 　rmdir "C:＼Users" /S /Q 
+ 　mklink /J "C:＼Users" "D:＼Users" 
+ 　搞定。 
 
 2012.02.16
 ----------
