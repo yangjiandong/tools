@@ -1,6 +1,27 @@
 python
 ========
 
+2012.02.21
+----------
+
+   1. win7,python,django
+   
+   django-admin.py startproject mysite
+   碰到的几个问题：
+   1、无法找到django-admin.py文件？
+   解决：django在安装完后，正常会将C:\Python25\Lib\site-packages\django\bin路径添加到path环境变量中，因而可以直接运行django-admin.py。
+   但是，我正常安装完后并没有自动添加到环境变量，因此需要手动添加进去。
+
+   2、django-admin.py startproject mysite命令没有创建mysite?
+   
+   解决：这个命令在XP下正常（我没试过），我用的win7，无法创建。这属于django的一个bug。
+   方法是：修改注册表中 HKEY_CLASSES_ROOT\Applications\python.exe\shell\open\command项为：
+   "C:\Python25\python.exe" "%1" %* （缺省情况下，没有后面的%*）
+   (save/python.reg)
+
+   弹出txt文件问题解决
+   1.对一个.py文件右键-》打开方式-》选择python并勾住始终是用选择的程序打开这种文件。
+
 2012.02.10
 ----------
 
