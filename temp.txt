@@ -7,6 +7,19 @@ day tips
    1. 程序员的世界
    save/programer.xps,programming-language.jpg
 
+   2. quora
+   
+   被外界评价为：Twitter 之后最让人兴奋的产品
+   需邀请码注册
+   
+   http://www.quora.com/
+   
+   https://github.com/renxing/quora-python
+   Quora clone write in Python + Tornado + MongoDB 
+   
+   https://github.com/huacnlee/quora
+   Quora clone by Ruby on Rails
+
 2012.02.20
 ----------
 
