@@ -1,6 +1,14 @@
 day tips
 ========
 
+2012.02.20
+----------
+
+   1. django sql 占位符 %s
+
+   2. django Using Stored Procedure 
+   http://djangosnippets.org/snippets/118/
+
 2012.02.19
 ----------
 
