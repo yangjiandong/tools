@@ -1,6 +1,18 @@
 day tips
 ========
 
+2012.02.23
+----------
+
+   1. 取消pydev editor -- code analysis
+
+   2. django 打包
+   http://misunderstandings.wordpress.com/2008/06/26/django-desktop-app/
+   http://blog.robotercoding.com/?p=124
+
+   3. django use cherrypy 
+   http://www.defuze.org/archives/262-hosting-a-django-application-on-a-cherrypy-server.html
+
 2012.02.22
 ----------
 
