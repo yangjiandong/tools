@@ -1,6 +1,17 @@
 day tips
 ========
 
+2012.02.26
+----------
+
+   1. A Chinese translation of Zed Shaw's Learning Python The Hard Way. 
+   https://bitbucket.org/gastlygem/lpthw/src
+   hg clone ssh://hg@bitbucket.org/gastlygem/lpthw 
+
+   2. pydoc
+   edit pydoc.bat in path
+   @python D:\PortablePython_1.1_py2.6.1\App\lib\pydoc.py %*
+
 2012.02.25
 ----------
 
