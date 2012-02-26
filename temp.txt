@@ -1,6 +1,31 @@
 day tips
 ========
 
+2012.02.25
+----------
+
+   1. ipython 0.12
+   http://ipython.org/download.html
+   
+   AttributeError: 'module' object has no attribute 'get_current_history_length'
+   
+   use: 1.7.1 pyreadline
+   http://pypi.python.org/pypi/pyreadline
+   
+   ipython editor
+   set editor=g.bat
+
+   >ed -x main.py
+
+   2. ipdb
+   pdb 调试
+   
+   代码中启用ipdb:import ipdb;ipdb.set_trace()
+   
+   cmd: python -m ipdb main.py
+   
+   ipython: pdb
+
 2012.02.23
 ----------
 
