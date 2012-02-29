@@ -1,6 +1,51 @@
 day tips
 ========
 
+2012.02.29
+----------
+
+   1. sublime plugin
+   https://github.com/JulianEberius/SublimeRope
+   
+   after install,use:
+   ctrl+shift+p call command "Rope:New Project"
+   edit /.ropeproject/config.py
+   prefs.add('python_path', 'D:/PortablePython_1.1_py2.6.1/App/Lib/site-packages/')
+   
+   for django
+   https://github.com/squ1b3r/Djaneiro
+
+   bracker Highlighter
+
+   https://github.com/akira-cn/sublime-gbk
+   
+   2. sublime theme
+   package install: soda
+
+   user set:
+   "theme": "Soda Dark.sublime-theme"
+
+2012.02.27
+----------
+
+   1. count lines of code
+   a. eclispe:
+   http://nexnet.wordpress.com/2011/03/30/count-lines-of-code-and-number-of-classes-in-eclipse-projects/
+
+   Search - File
+   Search for the regular expression '\n' in all '*.java' files of the selected resource
+
+   b. SourceCounter
+
+   c. SLOCCount
+   http://www.dwheeler.com/sloccount/
+
+   d. sonar
+   http://www.sonarsource.org/
+   java/mvn.txt
+   
+   maven + sonar: mvn sonar:sonar 
+
 2012.02.26
 ----------
 
