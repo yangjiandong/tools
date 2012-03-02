@@ -1,6 +1,36 @@
 day tips
 ========
 
+2012.03.02
+----------
+
+   1. cygwin git 升级到1.7.9
+
+   2. cygin gitk fail 
+   http://cygwin.com/ml/cygwin/2011-08/msg00478.html
+
+> Application initialization failed: no display name and no $DISPLAY environment v
+> ariable
+> Error in startup script: no display name and no $DISPLAY environment variable
+>     while executing
+> "load /usr/lib/tk8.5/../../bin/libtk8.5.dll Tk"
+>     ("package ifneeded Tk 8.5.9" script)
+>     invoked from within
+> "package require Tk"
+>     (file "C:\cygwin\bin\gitk" line 11)
+   
+   install xinit package
+   --没解决问题
+
+   --继续
+   http://cygwin.com/ml/cygwin/2012-02/msg00115.html
+
+2012.03.01
+----------
+
+   1. 高并发测试工具 siege
+   http://superuser.com/questions/144990/how-to-install-siege-on-cygwin 
+
 2012.02.29
 ----------
 
