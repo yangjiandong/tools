@@ -1,6 +1,38 @@
 day tips
 ========
 
+2012.03.03
+----------
+
+   1. 替代cygwin的轻量级工具gow
+   https://github.com/bmatzelle/gow/downloads
+
+   2. remove ^M 有效方法
+   http://www.oualline.com/vim-cook.html
+   :1,$s/^M//
+   :1,$s/{Ctrl+V}{Ctrl+M}//{Enter}
+   
+2012.03.03
+----------
+
+   1. springside git
+   https://github.com/springside/springside4
+
+   2. git client
+   http://www.syntevo.com/smartgit/index.html
+
+   3. jquery input text
+   <input type="text" placeholder="搜索问题, 话题 或 会员" />
+   输入框提示,
+   chrome下input[type=text]的placeholder不垂直居中的问题解决 
+   css:
+   line-height: normal; /* for non-ie */
+   line-height: 22px\9; /* for ie */
+
+   4. htc android
+   http://www.htcdev.com/devcenter/opensense-sdk/download-instructions
+   user:yangjiandong,123456789,youngjiandong@sina.cn
+
 2012.03.02
 ----------
 
@@ -24,6 +56,65 @@ day tips
 
    --继续
    http://cygwin.com/ml/cygwin/2012-02/msg00115.html
+
+   3. Wget将网站下载到本地
+
+   使用wget可以将在线的网站下载到本地。
+   如下实例下载在线的电子书http://web2py.com/books/default/chapter/29到本地目录C:\D\web2pybooken。
+   1） wget下载网站  
+set LOCAL-DIR=C:\D\web2pybooken
+set WEBSITE-URL=http://web2py.com/books/default/chapter/29
+wget --mirror --page-requisites --convert-links --no-host-directories  --html-extension -P %LOCAL-DIR% %WEBSITE-URL%
+
+   wget帮助:
+wget -h.
+-m,  --mirror             shortcut for -N -r -l inf --no-remove-listing. 
+-r,  --recursive          specify recursive download.
+-l,  --level=NUMBER       maximum recursion depth (inf or 0 for infinite).
+-N,  --timestamping            don't re-retrieve files unless newer than local. 
+--no-remove-listing     don't remove `.listing' files. 
+-p,  --page-requisites    get all images, etc. needed to display HTML page. 
+-P,  --directory-prefix=PREFIX  save files to PREFIX/...
+-k,  --convert-links      make links in downloaded HTML point to local files.
+-E,  --html-extension        save HTML documents with `.html' extension.
+-nH, --no-host-directories      don't create host directories. 
+
+   2）将下载的网站放到httpserver上
+   如下为在本地通过python2.7启动httpserver，当然你也可以使用其他的httpserver。 
+   cd %LOCAL-DIR%
+   python -m SimpleHTTPServer 8080
+   
+   3) 在ie中打开本地的网站
+   http://your-local-machine-ip:8080/*****
+   完！ 
+
+   4. 用ffmpeg给视频添加水印
+
+完整命令行如下，ffmpeg -y -i input.flv -acodec copy -b 300k -vfilters “movie=0:png:watermark.png [wm];[in][wm] overlay=5:5:1 [out]” output.flv
+-y 表示有同名的output.flv存在时不提示，直接覆盖
+-i input.flv 表示要进行水印添加处理的视频
+-acodec copy 表示保持音频不变
+-b 300k 表示处理视频的比特率，用-vcodec copy时报错，使用其他工具获取到原始视频比特率后加到这里，保持比特率基本不变，不然默认为200k，视频有损。
+output.flv 处理后的视频
+-vfilters “…” 中间便是水印处理参数，重要的是overlay=后面的部分，
+第一个参数表示水印距离视频左边的距离，
+第二个参数表示水印距离视频上边的距离，
+第三个参数 为1，表示支持透明水印。使用透明的png图片进行视频编码后，成功获得带透明水印的视频，并且画质也比较好。
+
+有一篇-vfilters参数使用的文章可供参考，其中还例举了如何同时加入2个水印到画面不同位置，
+http://www.techenigma.com/2010/05/ffmpeg-watermark-video-without- vhook-solution/。
+ffmpeg -y -i sample.avi -vfilters “movie=0:png:watermark.png [wm];[in][wm] overlay=10:mainH-overlayH-10:1 [out]” -b 100k -ar 44100 -ab 24k -f flv -s 320×240 -acodec libmp3lame -ac 1 samplewithwater.flv
+Which converted from AVI to FLV and added watermark. i‘ve included a couple of examples below for just adding the watermark.
+Example 1 – insert transparent PNG watermark in bottom left corner of the video:
+-vfilters “movie=0:png:logo.png [wm];[in][wm] overlay=10:mainH-overlayH-10:1 [out]”
+Notice the last parameter to overlay “:1″ – this enables alpha blending.
+Example 2 – insert 2 different transparent PNG watermarks (second watermark on bottom right corner):
+-vfilters “movie=0:png:logo.png [wm];movie=0:png:logo2.png [awm];[in][wm] overlay=10:mainH-overlayH-10:1 [int];[int][awm] overlay=mainW-overlayW-10:mainH-overlayH-10:1 [out]”
+You could chain and add more overlays this way but the efficiency of such approach is yet to be tested.
+待解问题：
+H264/x264编码的flv经过上述ffmpeg加水印处理后变成了H263编码，即普通的flv编码，可能处理参数加的不对或是不全，
+或者就应该对普通flv和H264/x264编码的视频分别处理，后续再进一步测试想办法解决。
+refer to：http://tuzwu.iteye.com/blog/1025337
 
 2012.03.01
 ----------

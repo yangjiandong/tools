@@ -1,3 +1,21 @@
+2012.03.04
+----------
+
+   1. this
+
+   this 表示当前上下文,即调用者的引用
+   example:
+   var jack = {name : "jack", age : 26};
+   var abruzzi = {name : "abruzzi", age : 24};
+   function printName(){return this.name;};
+
+   //
+   print(printName.call(jack));
+   print(printName.call(abruzzi));
+
+old
+====
+
 前言 本文通过许多实际例子来描述作用域，闭包和this的关系，以及如何正确的使用他们
 。 
 
