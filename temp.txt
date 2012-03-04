@@ -11,7 +11,19 @@ day tips
    http://www.oualline.com/vim-cook.html
    :1,$s/^M//
    :1,$s/{Ctrl+V}{Ctrl+M}//{Enter}
-   
+
+   3. 借助于GitStats，我们能很好地统计自己的每个项目的工作量，从而看到工作进展。
+
+用法如下，
+
+#复制GitStats项目到本地
+cd ~/dev
+git clone git://github.com/trybeee/GitStats.git
+python ~/dev/gitstats/git-stats /youproject public 
+  
+   4. 监测github 项目
+   https://github.com/DAddYE/githubwatcher 
+
 2012.03.03
 ----------
 
