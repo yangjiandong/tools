@@ -24,6 +24,18 @@ python ~/dev/gitstats/git-stats /youproject public
    4. 监测github 项目
    https://github.com/DAddYE/githubwatcher 
 
+   5. HTTPie is a CLI, cURL-like tool for humans 
+   https://github.com/jkbr/httpie
+   usage:
+   http PATCH api.example.com/person/1 X-API-Token:123 name=John email=john@example.org
+   http -a user:password GET https://api.github.com
+
+   6. vimrc
+   https://github.com/jeffbuttars/Viming-With-Buttars
+   
+   Vimdown - Create great looking READMEs from your .vimrc using Markdown:
+   https://github.com/jeffbuttars/Vimdown
+
 2012.03.03
 ----------
 
