@@ -19,6 +19,10 @@ day tips
    textMate theme
    http://textmatetheme.com/
 
+   3. ipython save session
+   --save 1-20 line to my.py
+   %save my.py 1-20
+
 2012.03.04
 ----------
 
