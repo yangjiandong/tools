@@ -1,7 +1,25 @@
 day tips
 ========
 
-2012.03.03
+2012.03.05
+----------
+
+   1. 隐藏数据在数码文件
+   use ruby
+   http://qaa.ath.cx/PiggyPack.html
+
+   2. sublimetext2 theme
+   https://github.com/originell/DarkTango
+   
+   ide theme
+   https://github.com/ChrisKempson/Tomorrow-Theme
+   git submodule init
+   git submodule update
+
+   textMate theme
+   http://textmatetheme.com/
+
+2012.03.04
 ----------
 
    1. 替代cygwin的轻量级工具gow
