@@ -1,6 +1,34 @@
 day tips
 ========
 
+2012.03.06
+----------
+
+   1. python for win
+   http://css.dzone.com/articles/python-101-setting-windows?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+zones%2Fpython+%28Python+Zone%29
+   
+   winsys
+   git clone  https://github.com/tjguk/winsys.git 
+
+   winshell
+   http://timgolden.me.uk/python/winshell.html
+
+   2. django search
+   Django and Haystack: Lattitude and Longitude Radius Search with Solr
+   http://css.dzone.com/articles/django-and-haystack-lattitude?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+zones%2Fpython+%28Python+Zone%29
+
+   Haystack:   http://haystacksearch.org/
+started
+
+Install the package:
+Latest stable (1.2.6) off PyPI: pip install django-haystack
+Latest dev (2.0.0-beta) off GitHub: pip install -e git+https://github.com/toastdriven/django-haystack.git@master#egg=django-haystack
+Add haystack to your INSTALLED_APPS.
+Create search_indexes.py files for your models.
+Setup the main SearchIndex via autodiscover.
+Include haystack.urls to your URLconf.
+Search!
+
 2012.03.05
 ----------
 
