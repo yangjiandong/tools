@@ -1,6 +1,26 @@
 day tips
 ========
 
+2012.03.09
+----------
+
+   1. del cvs dir
+@echo off
+echo Deleting CVS folders and files under: %1
+REM Open Folder specified by parameter.
+cd %1
+REM Recursive delete command
+for /f "tokens=*" %%i in ('dir /b/a/s CVS*') do @rmdir /q /s "%%i"
+echo Done!
+
+   2. trac
+   http://blog.csdn.net/lanphaday/article/details/5374066
+   python/other/trac.txt   
+
+   3. 怎样删除大于200条的数据删除
+
+   delete from test where  id in ((select t.id from (select rownum rn,t.* from test t) t where rn >=200));   
+  
 2012.03.06
 ----------
 
@@ -233,6 +253,7 @@ refer to：http://tuzwu.iteye.com/blog/1025337
    b. SourceCounter
 
    c. SLOCCount
+   linux tool
    http://www.dwheeler.com/sloccount/
 
    d. sonar
@@ -241,6 +262,29 @@ refer to：http://tuzwu.iteye.com/blog/1025337
    
    maven + sonar: mvn sonar:sonar 
 
+   e. cloc
+   http://cloc.sourceforge.net/
+   
+   简单用法:
+   cloc .
+   
+   use sqlite3
+   cloc . --sql 1 | sqlite3 code.db
+Which is the longest file over all projects?
+>  sqlite3 code.db 'select project,file,nBlank+nComment+nCode as nL from t where nL = (select max(nBlank+nComment+nCode) from t)'
+Which is the longest file in each project?
+> sqlite3 code.db 'select project,file,max(nBlank+nComment+nCode) as nL from t group by project order by nL;' | sqlite_formatter
+
+Project    File                                          nL     
+__________ _____________________________________________ ______ 
+perl       perl-5.10.0/t/op/mkdir.t                       22658 
+python     Python-2.6.4/Lib/email/quoprimime.py           28091 
+postgresql postgresql-8.4.2/contrib/pgcrypto/pgp-pgsql.c  40041 
+mysql      mysql-5.1.42/netware/mysqldump.def             51841 
+sqlite     sqlite-3.6.22/config.sub                      110860 
+
+
+   
 2012.02.26
 ----------
 

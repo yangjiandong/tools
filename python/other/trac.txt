@@ -1,0 +1,65 @@
+trac
+====
+
+2012.03.09
+----------
+
+在 windows 下安装和简单配置 trac 0.12分类： 
+Trac 2010-03-12 14:49 4358人阅读 评
+论(17) 
+收藏 举报
+赖勇浩（http://laiyonghao.com）
+Trac是一个基于Web的，轻量级的项目管理工具，它使用python语言编写，
+官网：http://trac.edgewall.org/。它集成了增强的Wiki功能和版本控制功能，
+并可通过插件扩展其功能。由于插件众多、功能全面，甚至
+可以与很多商业的CMS系统媲美，因此应用也日益广泛。它的ticket管理及工作流插件
+(http://trac-hacks.org/) 使得它也可以很方便地进行简单的业务协作及流程控制。
+
+
+0、确保已经安装好 python 和 setuptools。python 的版本至少要 2.4（我使用 2.6.2
+版本），setuptools 至少要 0.6。
+
+1、使用 setuptools 安装 docutils、pygments 和 pytz，就是进入命令行执行
+easy_install xxx 即可，嗯，确定要先连通互联网。
+
+2、从 svn 安装 Genshi、Babel 和 Trac，通过 easy_install 安装的版本太低，会挂掉
+。我统一把它们安装到 D:/edgewall 。
+
+svn co http://svn.edgewall.org/repos/babel/trunk babel 
+svn co http://svn.edgewall.org/repos/genshi/trunk genshi 
+svn co http://svn.edgewall.org/repos/trac/trunk trac 
+svn co http://www.unicode.org/repos/cldr/tags/release-1-7-2/common/ cldr 
+svn co 之后，
+进入 genshi 目录，执行 python setup.py install 安装好。然后进入 babel 目录，执
+行一下 python ./scripts/import_cldr.py ../cldr，把 cldr 的导入，这是正确安装多
+语言版本必经的一步。一定要注意。cldr 导入完成后再执行 python setup.py install，
+这是必须的。接下来进入 trac 目录，需要注意一下是我们要使用中文翻译，所以要进入
+trac 的目录执行一下 python setup.py compile_catalog -f，把语言包编译成本地的版
+本。再执行 python setup.py install 就行了。先简单验证一下安装有没有成功，在任意
+目录执行一下 tracd，
+如果出现 tracd 的 usage 就对了：
+Usage: tracd-script.py [options] [projenv] ...
+
+3、创建项目环境。在任意目录执行：trac-admin D:/trac_prj initenv 就可以在
+D:/trac_prj 建立新的项目环境。
+
+在建议环境的过程中，它会问你项目名字，这个随喜了，我就输入了一下 test，也会问你
+数据库设定，我使用了默认的 sqlite，所以随手甩了个回车就搞定了，然后就看到命令行
+吐出一堆字符，不理，最后一行是 Congratulations! 就表示项目环境建立成功了。不过
+我也没有见过不成功是怎么样的，囧。
+
+4、然后测试一下，在命令行执行：tracd -p 8080 D:/trac_prj，然后打开浏览器，输入
+http://127.0.0.1:8000/trac_prj 就可以看到 Trac 页面了。好，接下来就是用户验证。
+
+5、tracd 有个 auth 参数，可以指定验证规则，不过 tracd 是使用 Apache 的
+.htpasswd 文件来保存的，在 linux 下还可以方便地用 htpasswd
+/path/to/env/.htpasswd username 来增加，在 windows 下就没有那么容易了。幸好
+trac 提供了一个 python 脚本（见
+http://trac.edgewall.org/demo-0.12/wiki/TracStandalone#GeneratingPasswordsWithoutApache
+）可以很方便地生成账户和密码文件。把这个脚本保存下来，命令行执行一下 python
+trac-digest.py -u username -p password >> c:/digest.txt，就可以把新用户加入
+c:/digest.txt 中了。然后在启动 tracd 时使用如下命令：
+
+tracd --port 8000 --auth=proj_name,c:/digest.txt,trac c:/path/to/proj_name这时
+即可登录 trac 系统。
+
