@@ -1,6 +1,42 @@
 day tips
 ========
 
+2012.03.13
+----------
+
+   1. node.js ide cloud9
+Via git (or downloaded tarball):
+$ git clone git://github.com/ajaxorg/cloud9.git
+Try to run Cloud9 (bin/cloud9.sh). If this throws an error update submodules after cloning:
+$ git submodule update --init --recursive
+
+Via npm:
+$ npm install cloud9
+
+   2. node.js eclipse
+   http://code.abnoctus.com/publish/binaries/node-launcher/
+   https://portawiki.abnoctus.com/view/NodeIDE.html
+
+   use chrome development tools
+   https://github.com/joyent/node/wiki/using-eclipse-as-node-applications-debugger
+   plugin:
+   http://chromedevtools.googlecode.com/svn/update/dev/
+
+   3. python 短连接
+   https://github.com/lyxint/shurl
+
+2012.03.12
+----------
+
+   1. mac 美化win字体
+   http://getmactype.com/
+
+2012.03.10
+----------
+
+   1. node.js 中文社区
+   https://github.com/muyuan/nodeclub.git
+
 2012.03.09
 ----------
 
