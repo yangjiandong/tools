@@ -1,6 +1,27 @@
 day tips
 ========
 
+2012.03.26
+----------
+
+   1. node.js hot reload
+
+   npm install -g node-dev 
+   node-dev main.js
+
+2012.03.23
+----------
+
+   1. camel 学习例子，Open eHealth Integration Platform (IPF) ipf
+   https://github.com/krasserm/ipf.git
+
+2012.03.15
+----------
+
+   1. twitter bootstrap and backbone application
+   use php as webapp,
+   https://github.com/ccoenraets/backbone-directory
+
 2012.03.14
 ----------
 
