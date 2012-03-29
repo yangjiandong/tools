@@ -1,0 +1,561 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0029)http://gitblit.com/setup.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Gitblit</title>
+		<link rel="stylesheet" href="http://gitblit.com/bootstrap/css/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="./Gitblit.setup_files/gitblit.css">
+		<link rel="shortcut icon" type="image/png" href="http://gitblit.com/gitblt-favicon.png">
+		<meta name="ROBOTS" content="INDEX">
+		<meta http-equiv="imagetoolbar" content="no">
+		
+		<meta name="keywords" content="java git server">
+
+		<script type="text/javascript" async="" src="./Gitblit.setup_files/ga.js"></script><script src="./Gitblit.setup_files/cb=gapi.loaded0" async=""></script><script type="text/javascript" src="./Gitblit.setup_files/jquery.js"></script>
+		<script type="text/javascript" src="./Gitblit.setup_files/bootstrap.js"></script>
+		
+		<script type="text/javascript" src="./Gitblit.setup_files/query.mousewheel-3.0.4.pack.js"></script><link type="text/css" rel="stylesheet" href="data:text/css,">
+		<script type="text/javascript" src="./Gitblit.setup_files/jquery.fancybox-1.3.4.pack.js"></script>
+		<link rel="stylesheet" type="text/css" href="./Gitblit.setup_files/jquery.fancybox-1.3.4.css" media="screen">
+		
+		<script type="text/javascript" src="./Gitblit.setup_files/screenshots.js"></script>		
+		
+		<script type="text/javascript" src="./Gitblit.setup_files/prettify.js"></script>
+		<link href="./Gitblit.setup_files/prettify.css" type="text/css" rel="stylesheet">
+		
+		<!-- Place this tag in your head or just before your close body tag -->
+		<link rel="canonical" href="http://gitblit.com/">
+		<link rel="publisher" href="https://plus.google.com/114464678392593421684">
+		<script type="text/javascript" src="./Gitblit.setup_files/plusone.js" gapi_processed="true"></script>
+		
+		<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-24377072-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+	</head>
+	<body onload="prettyPrint()">
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="brand" href="http://gitblit.com/" title="gitblit homepage">
+						<img src="./Gitblit.setup_files/gitblt_25_white.png" width="79" height="25" alt="gitblit" class="logo">
+					</a>
+					
+					<ul class="nav">
+						<li><a href="http://gitblit.com/index.html">overview</a></li><li><a href="http://gitblit.com/features.html">features</a></li><li><a href="http://gitblit.com/screenshots.html">screenshots</a></li><li class="active"><a href="./Gitblit.setup_files/Gitblit.setup.htm">setup</a></li><li><a href="http://gitblit.com/federation.html">federation</a></li><li><a href="http://gitblit.com/rpc.html">rpc</a></li><li><a href="http://gitblit.com/faq.html">faq</a></li><li><a href="http://gitblit.com/properties.html">settings</a></li><li><a href="http://gitblit.com/design.html">design</a></li><li><a href="http://gitblit.com/releases.html">releases</a></li><li><a href="http://gitblit.com/roadmap.html">roadmap</a><!--		
+						<!-- Google Plus Badge ---->
+						</li><li><a href="https://plus.google.com/114464678392593421684?prsrc=3" style="margin-top:3px;text-decoration: none;"><img src="./Gitblit.setup_files/gplus-16.png" width="16" height="16" style="border: 0;"></a></li>
+						<!-- Google Plus One -->
+						<li><div style="margin-top:14px;"><div id="___plusone_0" style="height: 15px; width: 70px; display: inline-block; text-indent: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; background-position: initial initial; background-repeat: initial initial; "><iframe allowtransparency="true" frameborder="0" hspace="0" id="I1_1333006504038" marginheight="0" marginwidth="0" name="I1_1333006504038" scrolling="no" src="./Gitblit.setup_files/fastbutton.htm" style="width: 70px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; height: 15px; position: static; left: 0px; top: 0px; visibility: visible; " tabindex="0" vspace="0" width="100%" title="+1"></iframe></div></div></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="markdown">
+<h2> Gitblit WAR Setup</h2>
+
+<ol>
+<li>Download <a href="http://code.google.com/p/gitblit/downloads/detail?name=gitblit-0.9.1.war">Gitblit WAR 0.9.1</a> to the webapps folder of your servlet container.</li>
+<li>You may have to manually extract the WAR (zip file) to a folder within your webapps folder.</li>
+<li>Copy the <code>WEB-INF/users.conf</code> file to a location outside the webapps folder that is accessible by your servlet container.<br>
+Optionally copy the example hook scripts in <code>WEB-INF/groovy</code> to a location outside the webapps folder that is accesible by your servlet container.</li>
+<li>The Gitblit webapp is configured through its <code>web.xml</code> file.<br>
+Open <code>web.xml</code> in your favorite text editor and make sure to review and set:<ul>
+<li>&lt;context-parameter&gt; <em>git.repositoryFolder</em> (set the full path to your repositories folder)</li>
+<li>&lt;context-parameter&gt; <em>groovy.scriptsFolder</em> (set the full path to your Groovy hook scripts folder)</li>
+<li>&lt;context-parameter&gt; <em>realm.userService</em> (set the full path to <code>users.conf</code>)</li>
+</ul>
+</li>
+<li>You may have to restart your servlet container. </li>
+<li>Open your browser to <a href="http://localhost/gitblit">http://localhost/gitblit</a> or whatever the url should be.</li>
+<li>Enter the default administrator credentials: <strong>admin / admin</strong> and click the <em>Login</em> button<br>
+<strong>NOTE:</strong> Make sure to change the administrator username and/or password!! </li>
+</ol>
+
+<h2> Gitblit GO Setup</h2>
+
+<ol>
+<li>Download and unzip <a href="http://code.google.com/p/gitblit/downloads/detail?name=gitblit-0.9.1.zip">Gitblit GO 0.9.1</a>.<br>
+<em>Its best to eliminate spaces in the path name.</em> </li>
+<li>The server itself is configured through a simple text file.<br>
+Open <code>gitblit.properties</code> in your favorite text editor and make sure to review and set:<ul>
+<li><em>git.repositoryFolder</em> (path may be relative or absolute)</li>
+<li><em>groovy.scriptsFolder</em> (path may be relative or absolute)</li>
+<li><em>server.tempFolder</em> (path may be relative or absolute)</li>
+<li><em>server.httpPort</em> and <em>server.httpsPort</em></li>
+<li><em>server.httpBindInterface</em> and <em>server.httpsBindInterface</em><br>
+<strong>https</strong> is strongly recommended because passwords are insecurely transmitted form your browser/git client using Basic authentication!</li>
+</ul>
+</li>
+<li>Execute <code>gitblit.cmd</code> or <code>java -jar gitblit.jar</code> from a command-line</li>
+<li>Wait a minute or two while all dependencies are downloaded and your self-signed <em>localhost</em> certificate is generated.<br>
+Please see the section titled <strong>Creating your own Self-Signed Certificate</strong> to generate a certificate for <em>your hostname</em>.</li>
+<li>Open your browser to <a href="http://localhost:8080/">http://localhost:8080</a> or <a href="https://localhost:8443/">https://localhost:8443</a> depending on your chosen configuration.</li>
+<li>Enter the default administrator credentials: <strong>admin / admin</strong> and click the <em>Login</em> button  <br>
+<strong>NOTE:</strong> Make sure to change the administrator username and/or password!! </li>
+</ol>
+
+<h3> Creating your own Self-Signed Certificate</h3>
+
+<p>Gitblit GO automatically generates an ssl certificate for you that is bound to <em>localhost</em>.</p>
+
+<p>Remote Eclipse/EGit/JGit clients (&lt;= 1.1.0) will fail to communicate using this certificate because JGit always verifies the hostname of the certificate, regardless of the <em>http.sslVerify=false</em> client-side setting.</p>
+
+<p>The EGit failure message is something like:</p>
+
+<pre><code>Cannot get remote repository refs.
+Reason: https:/myserver.com/git/myrepo.git: cannot open git-upload-pack
+</code></pre>
+
+<p>If you want to serve your repositories to another machine over https then you will want to generate your own certificate.</p>
+
+<ol>
+<li>Review the contents of <code>makekeystore.cmd</code> or <code>makekeystore_jdk.cmd</code></li>
+<li>Set <em>your hostname</em> into the <em>HOSTNAME</em> variable.</li>
+<li>Execute the script.<br>This will generate a new certificate and keystore for <em>your hostname</em> protected by <em>server.storePassword</em>.</li>
+</ol>
+
+<p><strong>NOTE:</strong><br>
+If you use <code>makekeystore_jdk.cmd</code>, the certificate password AND the keystore password must match and must be set as <em>server.storePassword</em> or specified with the <em>storePassword</em> command-line parameter!</p>
+
+<p>Additionally, if you want to change the value of <em>server.storePassword</em> (recommended) you will have to generate a new certificate afterwards.</p>
+
+<h3> Running as a Windows Service</h3>
+
+<p>Gitblit uses <a href="http://commons.apache.org/daemon">Apache Commons Daemon</a> to install and configure its Windows service.</p>
+
+<ol>
+<li>Review the contents of the <code>installService.cmd</code></li>
+<li>Set the <em>ARCH</em> value as appropriate for your installed Java Virtual Machine.</li>
+<li>Add any necessary <em>--StartParams</em> as enumerated below in <strong>Command-Line Parameters</strong>.</li>
+<li>Execute the script.</li>
+</ol>
+
+<p>After service installation you can use the <code>gitblitw.exe</code> utility to control and modify the runtime settings of the service.<br>
+Additional service definition options and runtime capabilities of <code>gitblitw.exe</code> (prunmgr.exe) are documented <a href="http://commons.apache.org/daemon/procrun.html">here</a>.</p>
+
+<p><strong>NOTE:</strong><br>
+If you change the name of the service from <em>gitblit</em> you must also change the name of <code>gitblitw.exe</code> to match the new service name otherwise the connection between the service and the utility is lost, at least to double-click execution. </p>
+
+<h4> VM Considerations</h4>
+
+<p>By default, the service installation script configures your Windows service to use your default JVM.  This setup usually defaults to a client VM.<br>
+If you have installed a JDK, you might consider using the <code>gitblitw.exe</code> utility to manually specify the <em>server</em> VM.</p>
+
+<ol>
+<li>Execute <code>gitblitw.exe</code></li>
+<li>On the <em>Java</em> tab uncheck <em>Use default</em>.</li>
+<li>Manually navigate your filesystem and specify the server VM with the <code>...</code> button<br><pre>Java Virtual Machine:
+C:\Program Files\Java\jre6\bin\server\jvm.dll</pre></li>
+</ol>
+
+<h4> Command-Line Parameters</h4>
+
+<p>Command-Line parameters override the values in <code>gitblit.properties</code> at runtime.</p>
+
+<pre><code>--repositoriesFolder   Git Repositories Folder
+--userService          Authentication and Authorization Service (filename or fully qualified classname)
+--useNio               Use NIO Connector else use Socket Connector.
+--httpPort             HTTP port for to serve. (port &lt;= 0 will disable this connector)
+--httpsPort            HTTPS port to serve.  (port &lt;= 0 will disable this connector)
+--ajpPort              AJP port to serve.  (port &lt;= 0 will disable this connector)
+--storePassword        Password for SSL (https) keystore.
+--shutdownPort         Port for Shutdown Monitor to listen on. (port &lt;= 0 will disable this monitor)
+--tempFolder           Folder for server to extract built-in webapp
+</code></pre>
+
+<p><strong>Example</strong></p>
+
+<pre><code>java -jar gitblit.jar --userService c:\myrealm.config --storePassword something
+</code></pre>
+
+<h4> Overriding Gitblit GO's Log4j Configuration</h4>
+
+<p>You can override Gitblit GO's default Log4j configuration with a command-line parameter to the JVM.</p>
+
+<pre><code>java -Dlog4j.configuration=file:///home/james/log4j.properties -jar gitblit.jar &lt;optional_gitblit_args&gt;
+</code></pre>
+
+<p>For reference, here is <a href="https://github.com/gitblit/gitblit/blob/master/src/log4j.properties">Gitblit's default Log4j configuration</a>.  It includes some file appenders that are disabled by default. </p>
+
+<h2> Running Gitblit behind Apache</h2>
+
+<p>Gitblit runs fine behind Apache.  You may use either <em>mod_proxy</em> (GO or WAR) or <em>mod_proxy_ajp</em> (GO).</p>
+
+<p>Each Linux distribution may vary on the exact configuration of Apache 2.2.<br>
+Here is a sample configuration that works on Debian 7.0 (Wheezy), your distribution may be different.</p>
+
+<ol>
+<li>First we need to make sure we have Apache's proxy modules available.<br>
+<pre>sudo su
+cd /etc/apache2/mods-enabled
+ln -s ../mods-available/proxy.load proxy.load
+ln -s ../mods-available/proxy_balancer.load proxy_balancer.load
+ln -s ../mods-available/proxy_http.load proxy_http.load
+ln -s ../mods-available/proxy_ajp.load proxy_ajp.load
+</pre></li>
+<li>Then we need to make sure we are configuring Apache to use the proxy modules and to setup the proxied connection from Apache to Gitblit GO or from Apache to your chosen servlet container.  The following snippet is stored as <code>/etc/apache2/conf.d/gitblit</code>.<br>
+<pre class="prettyprint lang-java"><span class="pun">#</span><span class="pln"> </span><span class="typ">Turn</span><span class="pln"> off support </span><span class="kwd">for</span><span class="pln"> </span><span class="kwd">true</span><span class="pln"> </span><span class="typ">Proxy</span><span class="pln"> behaviour as we are acting as <br></span><span class="pun">#</span><span class="pln"> a transparent proxy<br></span><span class="typ">ProxyRequests</span><span class="pln"> </span><span class="typ">Off</span><span class="pln"><br><br></span><span class="pun">#</span><span class="pln"> </span><span class="typ">Turn</span><span class="pln"> off VIA header as we know where the requests are proxied<br></span><span class="typ">ProxyVia</span><span class="pln"> </span><span class="typ">Off</span><span class="pln"><br>&nbsp;<br></span><span class="pun">#</span><span class="pln"> </span><span class="typ">Turn</span><span class="pln"> on </span><span class="typ">Host</span><span class="pln"> header preservation so that the servlet container<br></span><span class="pun">#</span><span class="pln"> can write links with the correct host and rewriting can be avoided</span><span class="pun">.</span><span class="pln"><br></span><span class="pun">#</span><span class="pln"><br></span><span class="pun">#</span><span class="pln"> </span><span class="typ">This</span><span class="pln"> is important </span><span class="kwd">for</span><span class="pln"> all git push</span><span class="pun">/</span><span class="pln">pull</span><span class="pun">/</span><span class="pln">clone operations</span><span class="pun">.</span><span class="pln"><br></span><span class="typ">ProxyPreserveHost</span><span class="pln"> </span><span class="typ">On</span><span class="pln"><br>&nbsp;<br></span><span class="pun">#</span><span class="pln"> </span><span class="typ">Set</span><span class="pln"> the permissions </span><span class="kwd">for</span><span class="pln"> the proxy<br></span><span class="pun">&lt;</span><span class="typ">Proxy</span><span class="pln"> </span><span class="pun">*&gt;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">AddDefaultCharset</span><span class="pln"> off<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Order</span><span class="pln"> deny</span><span class="pun">,</span><span class="pln">allow<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Allow</span><span class="pln"> from all<br></span><span class="pun">&lt;/</span><span class="typ">Proxy</span><span class="pun">&gt;</span><span class="pln"><br>&nbsp;<br></span><span class="pun">#</span><span class="pln"> </span><span class="typ">The</span><span class="pln"> proxy context path must match the </span><span class="typ">Gitblit</span><span class="pln"> context path</span><span class="pun">.</span><span class="pln"><br></span><span class="pun">#</span><span class="pln"> </span><span class="typ">For</span><span class="pln"> </span><span class="typ">Gitblit</span><span class="pln"> GO</span><span class="pun">,</span><span class="pln"> see server</span><span class="pun">.</span><span class="pln">contextPath in gitblit</span><span class="pun">.</span><span class="pln">properties</span><span class="pun">.</span><span class="pln"><br><br></span><span class="pun">#</span><span class="typ">ProxyPass</span><span class="pln"> </span><span class="pun">/</span><span class="pln">gitblit http</span><span class="pun">:</span><span class="com">//localhost:8080/gitblit</span><span class="pln"><br></span><span class="pun">#</span><span class="typ">ProxyPassreverse</span><span class="pln"> </span><span class="pun">/</span><span class="pln">gitblit http</span><span class="pun">:</span><span class="com">//localhost:8080/gitblit</span><span class="pln"><br><br></span><span class="pun">#</span><span class="pln"> </span><span class="typ">If</span><span class="pln"> your httpd frontend is https but you are proxying http </span><span class="typ">Gitblit</span><span class="pln"> WAR or GO<br></span><span class="pun">#</span><span class="typ">Header</span><span class="pln"> edit </span><span class="typ">Location</span><span class="pln"> </span><span class="pun">^</span><span class="pln">http</span><span class="pun">:</span><span class="com">//([^⁄]+)/gitblit/ https://$1/gitblit/</span><span class="pln"><br><br></span><span class="pun">#</span><span class="typ">ProxyPass</span><span class="pln"> </span><span class="pun">/</span><span class="pln">gitblit ajp</span><span class="pun">:</span><span class="com">//localhost:8009/gitblit</span></pre><br>
+<strong>Please</strong> make sure to:<ol>
+<li>Review the security of these settings as appropriate for your deployment</li>
+<li>Uncomment the <em>ProxyPass</em> setting for whichever connection you prefer (http/ajp)</li>
+<li>Correctly set the ports and context paths both in the <em>ProxyPass</em> definition and your Gitblit installation<br>
+If you are using Gitblit GO you can easily configure the AJP connector by specifying a non-zero AJP port.<br>
+Please remember that on Linux/UNIX, ports &lt; 1024 require root permissions to open.</li>
+<li>Set <em>web.mountParameters=false</em> in <code>gitblit.properties</code> or <code>web.xml</code> this will use parameterized URLs.<br>
+Alternatively, you can respecify <em>web.forwardSlashCharacter</em>.</li>
+</ol>
+</li>
+</ol>
+
+<h2> Upgrading Gitblit</h2>
+
+<p>Generally, upgrading is easy.</p>
+
+<p>Since Gitblit does not use a database the only files you have to worry about are your configuration file (<code>gitblit.properties</code> or <code>web.xml</code>) and possibly your <code>users.conf</code> or <code>users.properties</code> file.</p>
+
+<p>Any important changes to the setting keys or default values will always be mentioned in the <a href="http://gitblit.com/releases.html">release log</a>.</p>
+
+<p>Gitblit v0.8.0 introduced a new default user service implementation which serializes and deserializes user objects into <code>users.conf</code>.  A <code>users.conf</code> file will be automatically created from an existing <code>users.properties</code> file on the first launch after an upgrade.  To use the <code>users.conf</code> service, <em>realm.userService=users.conf</em> must be set.  This revised user service allows for more sophisticated Gitblit user objects and will facilitate the development of more advanced features without adding the complexity of an embedded SQL database.</p>
+
+<p><code>users.properties</code> and its user service implementation are deprecated as of v0.8.0.</p>
+
+<h3> Upgrading Gitblit WAR</h3>
+
+<ol>
+<li>Backup your <code>web.xml</code> file<br>
+Backup your <code>web.properties</code> file (if you have one, these are the setting overrides from using the RPC administration service)</li>
+<li>Delete currently deployed gitblit WAR</li>
+<li>Deploy new WAR and overwrite the <code>web.xml</code> file with your backup</li>
+<li>Review and optionally apply any new settings as indicated in the <a href="http://gitblit.com/releases.html">release log</a>. </li>
+</ol>
+
+<h3> Upgrading Gitblit GO</h3>
+
+<ol>
+<li>Backup your <code>gitblit.properties</code> file</li>
+<li>Backup your <code>users.properties</code> file <em>(if it is located in the Gitblit GO folder)</em><br>
+OR<br>
+Backup your <code>users.conf</code> file <em>(if it is located in the Gitblit GO folder)</em></li>
+<li>Backup your Groovy hook scripts</li>
+<li>Unzip Gitblit GO to a new folder</li>
+<li>Overwrite the <code>gitblit.properties</code> file with your backup</li>
+<li>Overwrite the <code>users.properties</code> file with your backup <em>(if it was located in the Gitblit GO folder)</em><br>
+OR<br>
+Overwrite the <code>users.conf</code> file with your backup <em>(if it was located in the Gitblit GO folder)</em></li>
+<li>Review and optionally apply any new settings as indicated in the <a href="http://gitblit.com/releases.html">release log</a>.</li>
+</ol>
+
+<h4> Upgrading Windows Service</h4>
+
+<p>You may need to delete your old service definition and install a new one depending on what has changed in the release.</p>
+
+<h2> Gitblit Configuration</h2>
+
+<h3> Administering Repositories</h3>
+
+<p>Repositories can be created, edited, renamed, and deleted through the web UI.  They may also be created, edited, and deleted from the command-line using real <a href="http://git-scm.com/">Git</a> or your favorite file manager and text editor.</p>
+
+<p>All repository settings are stored within the repository <code>.git/config</code> file under the <em>gitblit</em> section.</p>
+
+<pre><code>[gitblit]
+    description = master repository
+    owner = james
+    useTickets = false
+    useDocs = true
+    showRemoteBranches = false
+    accessRestriction = clone
+    isFrozen = false
+    showReadme = false
+    federationStrategy = FEDERATE_THIS
+    isFederated = false
+    skipSizeCalculation = false
+    federationSets = 
+</code></pre>
+
+<h4> Repository Names</h4>
+
+<p>Repository names must be unique and are CASE-SENSITIVE ON CASE-SENSITIVE FILESYSTEMS.  The name must be composed of letters, digits, or <code>/ _ - .</code><br>
+Whitespace is illegal.</p>
+
+<p>Repositories can be grouped within subfolders.  e.g. <em>libraries/mycoollib.git</em> and <em>libraries/myotherlib.git</em></p>
+
+<p>All repositories created with Gitblit are <em>bare</em> and will automatically have <em>.git</em> appended to the name at creation time, if not already specified. </p>
+
+<h4> Repository Owner</h4>
+
+<p>The <em>Repository Owner</em> has the special permission of being able to edit a repository through the web UI.  The Repository Owner is not permitted to rename the repository, delete the repository, or reassign ownership to another user.</p>
+
+<h3> Teams</h3>
+
+<p>Since v0.8.0, Gitblit supports <em>teams</em> for the original <code>users.properties</code> user service and the current default user service <code>users.conf</code>.  Teams have assigned users and assigned repositories.  A user can be a member of multiple teams and a repository may belong to multiple teams.  This allows the administrator to quickly add a user to a team without having to keep track of all the appropriate repositories. </p>
+
+<h3> Administering Users (users.conf, Gitblit v0.8.0+)</h3>
+
+<p>All users are stored in the <code>users.conf</code> file or in the file you specified in <code>gitblit.properties</code>. Your file extension must be <em>.conf</em> in order to use this user service.</p>
+
+<p>The <code>users.conf</code> file uses a Git-style configuration format:</p>
+
+<pre><code>[user "admin"]
+    password = admin
+    role = "#admin"
+    role = "#notfederated"
+    repository = repo1.git
+    repository = repo2.git
+
+[user "hannibal"]
+    password = bossman
+
+[user "faceman"]
+    password = vanity
+
+[user "murdock"]
+    password = crazy        
+
+[user "babaracus"]
+    password = grrrr
+
+[team "ateam"]
+    user = hannibal
+    user = faceman
+    user = murdock
+    user = babaracus
+    repository = topsecret.git
+    mailingList = list@ateam.org
+    postReceiveScript = sendmail
+</code></pre>
+
+<p>The <code>users.conf</code> file allows flexibility for adding new fields to a UserModel object that the original <code>users.properties</code> file does not afford without imposing the complexity of relying on an embedded SQL database. </p>
+
+<h3> Administering Users (users.properties, Gitblit v0.5.0 - v0.7.0)</h3>
+
+<p>All users are stored in the <code>users.properties</code> file or in the file you specified in <code>gitblit.properties</code>. Your file extension must be <em>.properties</em> in order to use this user service.</p>
+
+<p>The format of <code>users.properties</code> loosely follows Jetty's convention for HashRealms:</p>
+
+<pre><code>username=password,role1,role2,role3...
+@teamname=&amp;mailinglist,!username1,!username2,!username3,repository1,repository2,repository3...
+</code></pre>
+
+<h4> Usernames</h4>
+
+<p>Usernames must be unique and are case-insensitive.<br>
+Whitespace is illegal.</p>
+
+<h4> Passwords</h4>
+
+<p>User passwords are CASE-SENSITIVE and may be <em>plain</em>, <em>md5</em>, or <em>combined-md5</em> formatted (see <code>gitblit.properties</code> -&gt; <em>realm.passwordStorage</em>).</p>
+
+<h4> User Roles</h4>
+
+<p>There are two actual <em>roles</em> in Gitblit: <em>#admin</em>, which grants administrative powers to that user, and <em>#notfederated</em>, which prevents an account from being pulled by another Gitblit instance.  Administrators automatically have access to all repositories.  All other <em>roles</em> are repository names.  If a repository is access-restricted, the user must have the repository's name within his/her roles to bypass the access restriction.  This is how users are granted access to a restricted repository.</p>
+
+<h2> Authentication and Authorization Customization</h2>
+
+<h3> Customize Authentication Only</h3>
+
+<p>This is the simplest choice where you implement custom authentication and delegate all other standard user and team operations to one of Gitblit's user service implementations.  This choice insulates your customization from changes in User and Team model classes and additional API that may be added to IUserService.</p>
+
+<p>Please subclass <a href="https://github.com/gitblit/gitblit/blob/master/src/com/gitblit/GitblitUserService.java">com.gitblit.GitblitUserService</a> and override the <em>setup()</em> and <em>authenticate()</em> methods.<br>
+Make sure to set the <em>serviceImpl</em> field in your <em>setup()</em> method.</p>
+
+<p>You may use your subclass by specifying its fully qualified classname in the <em>realm.userService</em> setting.</p>
+
+<p>Your subclass must be on Gitblit's classpath and must have a public default constructor.</p>
+
+<h3> Customize Everything</h3>
+
+<p>Instead of maintaining a <code>users.conf</code> or <code>users.properties</code> file, you may want to integrate Gitblit into an existing environment.</p>
+
+<p>You may use your own custom <em>com.gitblit.IUserService</em> implementation by specifying its fully qualified classname in the <em>realm.userService</em> setting.</p>
+
+<p>Your user service class must be on Gitblit's classpath and must have a public default constructor.<br>
+Please see the following interface definition <a href="https://github.com/gitblit/gitblit/blob/master/src/com/gitblit/IUserService.java">com.gitblit.IUserService</a>.</p>
+
+<h2> Groovy Hook Scripts</h2>
+
+<p><em>SINCE 0.8.0</em></p>
+
+<p>Gitblit uses Groovy for its push hook mechanism.  This mechanism only executes when pushing to Gitblit, not when pushing to some other Git tooling in your stack.</p>
+
+<p>The Groovy hook mechanism allows for dynamic extension of Gitblit to execute custom tasks on receiving and processing push events.  The scripts run within the context of your Gitblit instance and therefore have access to Gitblit's internals at runtime.</p>
+
+<h3> Rules, Requirements, &amp; Behaviors</h3>
+
+<ol>
+<li>Your Groovy scripts must be stored in the <em>groovy.scriptsFolder</em> as specified in <code>gitblit.properties</code> or <code>web.xml</code>.</li>
+<li>All script files must have the <em>.groovy</em> extension. Because of this you may omit the extension when specifying the script.</li>
+<li>Script filenames must not have spaces!</li>
+<li>Scripts must be explicitly specified to be executed, no scripts are <em>automatically</em> executed by name or extension.</li>
+<li>A script can be specified to run on <em>all repositories</em> by adding the script file name to <em>groovy.preReceiveScripts</em> or <em>groovy.postReceiveScripts</em> in <code>gitblit.properties</code> or <code>web.xml</code>.</li>
+<li>Scripts can be specified for a team.</li>
+<li>Scripts may also be specified per-repository in the repository's settings.</li>
+<li>Globally-specified scripts and team-specified scripts are excluded from the list of available scripts in a repository's settings </li>
+<li>Globally-specified scripts are executed first, in their listed order; followed by team-specified scripts in their listed order by alphabetical team order; followed by per-repository scripts, in their listed order.</li>
+<li>A script may only be defined once in a pre-receive chain and once in a post-receive chain.<br>
+You may execute the same script on pre-receive and post-receive, just not multiple times within a pre-receive or post-receive event.</li>
+<li>Gitblit does not differentiate between what can be a pre-receive script and what can be a post-receive script.</li>
+<li>If a script <em>returns false</em> then the hook chain is aborted and none of the subsequent scripts will execute.</li>
+</ol>
+
+<p>Some sample scripts are included in the GO and WAR distributions to show you how you can tap into Gitblit with the provided bound variables.  Additional implementation details may be specified in the header comment of these examples.</p>
+
+<p>Hook contributions and improvements are welcome.</p>
+
+<h3> Pre-Receive</h3>
+
+<p>Pre-Receive scripts execute after the pushed objects have all been written to the Git repository but before the refs have been updated to point to these new objects.</p>
+
+<p>This is the appropriate point to block a push and is how many Git tools implement branch-write permissions.</p>
+
+<h3> Post-Receive</h3>
+
+<p>Post-Receive scripts execute after all refs have been updated.</p>
+
+<p>This is the appropriate point to trigger continuous integration builds or send email notifications, etc.</p>
+
+<h2> Push Email Notifications</h2>
+
+<p>Gitblit implements email notifications in <em>sendmail.groovy</em> which uses the Groovy Hook Script mechanism.  This allows for dynamic customization of the notification process at the installation site and serves as an example push script.</p>
+
+<h3> Enabling Push Notifications</h3>
+
+<p>In order to send email notifications on a push to Gitblit, this script must be specified somewhere in the <em>post-receive</em> script chain.<br>
+You may specify <em>sendmail</em> in one of three places:</p>
+
+<ol>
+<li><em>groovy.postReceiveScripts</em> in <code>gitblit.properties</code> or <code>web.xml</code>, globally applied to all repositories</li>
+<li>post-receive scripts of a Team definition</li>
+<li>post-receive scripts of a Repository definition</li>
+</ol>
+
+<h3> Destination Addresses</h3>
+
+<p>Gitblit does not currently support individual subscriptions to repositories; i.e. a <em>user</em> can not subscribe or unsubscribe from push notifications.</p>
+
+<p>However, Repository Managers and Administrators can specify subscribed email addresses in one of three places:</p>
+
+<ol>
+<li><em>mail.mailingLists</em> in <code>gitblit.properties</code> or <code>web.xml</code>, globally applied to all push-notified repositories</li>
+<li>mailing lists in a Team definition, applied to all repositories that are part of the team definition</li>
+<li>mailing lists in a Repository definition</li>
+</ol>
+
+<p>All three sources are checked and merged into a unique list of destination addresses for push notifications.</p>
+
+<p><strong>NOTE:</strong><br>
+Care should be taken when devising your notification scheme as it relates to any VIEW restricted repositories you might have.  Setting a global mailing list and activating push notifications for a VIEW restricted repository may send unwanted emails.</p>
+
+<h2> Lucene Search Integration</h2>
+
+<p><em>SINCE 0.9.0</em></p>
+
+<p>Repositories may optionally be indexed using the Lucene search engine.  The Lucene search offers several advantages over commit-traversal search:</p>
+
+<ol>
+<li>very fast commit and blob searches</li>
+<li>multi-term searches</li>
+<li>term-highlighted and syntax-highlighted fragment matches</li>
+<li>multi-repository searches</li>
+</ol>
+
+<h3> How do I use it?</h3>
+
+<p>First you must ensure that <em>web.allowLuceneIndexing</em> is set <em>true</em> in <code>gitblit.properties</code> or <code>web.xml</code>.  Then you must understand that Lucene indexing is an opt-in feature which means that no repositories are automatically indexed.<br>
+Like anything else, this design has pros and cons.</p>
+
+<h4> Pros</h4>
+
+<ol>
+<li>no wasted cycles indexing repositories you will never search</li>
+<li>you specify exactly what branches are indexed; experimental/dead/personal branches can be ignored</li>
+</ol>
+
+<h4> Cons</h4>
+
+<ol>
+<li>you specify exactly what branches are indexed</li>
+</ol>
+
+<h4> I have 300 repositories and you want me to specify indexed branches on each one??</h4>
+
+<p>Yeah, I agree that is inconvenient.</p>
+
+<p>If you are using Gitblit GO there is a utility script <code>add-indexed-branch.cmd</code> which allows you to specify an indexed branch for many repositories in one step.</p>
+
+<p>If you are using Gitblit WAR then, at present, you are out of luck unless you write your own script to traverse your repositories and use native Git to manipulate each repository config.</p>
+
+<pre><code>git config --add gitblit.indexBranch "default"
+git config --add gitblit.indexBranch "refs/heads/master"
+</code></pre>
+
+<h4> Indexing Branches</h4>
+
+<p>You may specify which branches should be indexed per-repository in the <em>Edit Repository</em> page.  New/empty repositories may only specify the <em>default</em> branch which will resolve to whatever commit HEAD points to or the most recently updated branch if HEAD is unresolvable.</p>
+
+<p>Indexes are built and incrementally updated on a 2 minute cycle so you may have to wait a few minutes before your index is built or before your latest pushes get indexed.</p>
+
+<p><strong>NOTE:</strong><br>
+After specifying branches, only the content from those branches can be searched via Gitblit.  Gitblit will automatically redirect any queries entered on a repository's search box to the Lucene search page. Repositories that do not specify any indexed branches will use the traditional commit-traversal search.</p>
+
+<h4> Adequate Heap</h4>
+
+<p>The initial indexing of an existing repository can potentially exhaust the memory allocated to your Java instance and may throw OutOfMemory exceptions.  Be sure to provide your Gitblit server adequate heap space to index your repositories.  The heap is set using the <em>-Xmx</em> JVM parameter in your Gitblit launch command (e.g. -Xmx1024M).</p>
+
+<h4> Why does Gitblit check every 2 mins for repository/branch changes?</h4>
+
+<p>Gitblit has to balance its design as a complete, integrated Git server and its utility as a repository viewer in an existing Git setup.</p>
+
+<p>Gitblit could build indexes immediately on <em>edit repository</em> or on <em>receiving pushes</em>, but that design would not work if someone is pushing via ssh://, git://, or file:// (i.e. not pushing to Gitblit http(s)://).  For this reason Gitblit has a polling mechanism to check for ref changes every 2 mins.  This design works well for all use cases, aside from adding a little lag in updating the index.</p>
+
+<h2> Client Setup and Configuration</h2>
+
+<h3> Https with Self-Signed Certificates</h3>
+
+<p>You must tell Git/JGit not to verify the self-signed certificate in order to perform any remote Git operations.</p>
+
+<p><strong>NOTE:</strong><br>
+The default self-signed certificate generated by Gitlbit GO is bound to <em>localhost</em>.<br>
+If you are using Eclipse/EGit/JGit clients, you will have to generate your own certificate that specifies the exact hostname used in your clone/push url.<br>
+You must do this because Eclipse/EGit/JGit (&lt;= 1.1.0) always verifies certificate hostnames, regardless of the <em>http.sslVerify=false</em> client-side setting. </p>
+
+<ul>
+<li><strong>Eclipse/EGit/JGit</strong><ol>
+<li>Window-&gt;Preferences-&gt;Team-&gt;Git-&gt;Configuration</li>
+<li>Click the <em>New Entry</em> button</li>
+<li><pre>Key = <em>http.sslVerify</em>
+Value = <em>false</em></pre></li>
+</ol>
+</li>
+<li><strong>Command-line Git</strong> (<a href="http://www.kernel.org/pub/software/scm/git/docs/git-config.html">Git-Config Manual Page</a>)<br>
+<pre>git config --global --bool --add http.sslVerify false</pre></li>
+</ul>
+
+<h3> Cloning an Access Restricted Repository </h3>
+
+<ul>
+<li><strong>Eclipse/EGit/JGit</strong><br>
+Nothing special to configure, EGit figures out everything.
+<pre>https://yourserver/git/your/repository</pre></li>
+<li><strong>Command-line Git</strong><br>
+My testing indicates that your username must be embedded in the url.  YMMV.<br>
+<pre>https://username@yourserver/git/your/repository</pre></li>
+</ul>		</div> <!-- markdown -->
+		<footer>
+			<p class="pull-right">generated 2012-03-27</p>
+		The content of this page is licensed under the <a href="http://creativecommons.org/licenses/by/3.0">Creative Commons Attribution 3.0 License</a>.
+		</footer>			
+	</div> <!-- container -->	
+
+
+<div id="fancybox-tmp"></div><div id="fancybox-loading"><div></div></div><div id="fancybox-overlay"></div><div id="fancybox-wrap"><div id="fancybox-outer"><div class="fancybox-bg" id="fancybox-bg-n"></div><div class="fancybox-bg" id="fancybox-bg-ne"></div><div class="fancybox-bg" id="fancybox-bg-e"></div><div class="fancybox-bg" id="fancybox-bg-se"></div><div class="fancybox-bg" id="fancybox-bg-s"></div><div class="fancybox-bg" id="fancybox-bg-sw"></div><div class="fancybox-bg" id="fancybox-bg-w"></div><div class="fancybox-bg" id="fancybox-bg-nw"></div><div id="fancybox-content"></div><a id="fancybox-close"></a><div id="fancybox-title"></div><a href="javascript:;" id="fancybox-left"><span class="fancy-ico" id="fancybox-left-ico"></span></a><a href="javascript:;" id="fancybox-right"><span class="fancy-ico" id="fancybox-right-ico"></span></a></div></div></body></html>

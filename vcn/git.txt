@@ -46,6 +46,8 @@ http://alone11.iteye.com/blog/1078297
 
 --另一个方案
 http://gitblit.com/
+gitblit 安装
+save/Gitblit.setup.htm
 
 3. git 测试题
 http://www.worldhello.net/2012/03/19/git-quiz.html
