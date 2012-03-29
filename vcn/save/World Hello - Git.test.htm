@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!-- saved from url=(0050)http://www.worldhello.net/2012/03/19/git-quiz.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>World Hello - Git测验（A卷）</title>
+    <link rel="stylesheet" href="./World Hello - Git.test_files/master.css" type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="./World Hello - Git.test_files/syntax.css" type="text/css" media="screen" charset="utf-8">
+    <script src="./World Hello - Git.test_files/jquery.js" type="text/javascript" charset="utf-8"></script><link type="text/css" rel="stylesheet" href="data:text/css,">
+    <script src="./World Hello - Git.test_files/jquery.github.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript" async="" src="./World Hello - Git.test_files/embed.js"></script><script async="" type="text/javascript" src="./World Hello - Git.test_files/count.js"></script><script type="text/javascript" async="" src="./World Hello - Git.test_files/count(1).js"></script><script src="./World Hello - Git.test_files/thread.js" async="" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="./World Hello - Git.test_files/defaults.css"><script src="./World Hello - Git.test_files/disqus.js" async="" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="./World Hello - Git.test_files/theme.css"><script src="./World Hello - Git.test_files/theme.js" async="" charset="UTF-8"></script><script src="./World Hello - Git.test_files/zh.js" async="" charset="UTF-8"></script></head>
+  <body>
+    <div id="wrapper">
+      <div id="header">
+        <h1><a href="http://www.worldhello.net/">World Hello</a></h1>
+        
+        <div id="menu">
+          <ul>
+            <li><a href="http://www.worldhello.net/" id="home-link" title="Home">首页</a></li>
+            <li><a href="http://www.worldhello.net/blog.html" id="blog-link" title="Blog">博客</a></li>
+            <li><a href="http://www.worldhello.net/doc/" id="docs-link" title="Docs">文章</a></li>
+            <li><a href="http://www.worldhello.net/about.html" id="about-link" title="About">关于</a></li>
+            <li><a href="http://github.com/gotgit" target="_blank" title="GitHub" rel="me" id="github-link">GitHub</a></li>
+            <li><a href="http://weibo.com/gotgit" title="微博" target="_blank" id="weibo-link">微博</a></li>
+          </ul>
+        </div>
+      </div>
+      <div id="content">
+        <div class="post">
+  <span class="date">19 Mar 2012</span>
+  <h1><a href="./World Hello - Git.test_files/World Hello - Git.test.htm">Git测验（A卷）</a></h1>
+  <div class="body"><p>在深圳做Git培训和项目管理软件实施，这是一份Git培训的测验题，通过率不高。因为不合格的还要重考，答案就不公布了。</p>
+
+<h3>单项选择题</h3>
+
+<ol>
+<li><p>如果提示提交内容为空、不能提交，则最为合适的处理方式是：_____</p>
+
+<p>a) 执行 <code>git status</code> 查看状态，再执行 <code>git add</code> 命令选择要提交的文件，然后提交。</p>
+
+<p>b) 执行 <code>git commit --allow-empty</code> ，允许空提交。</p>
+
+<p>c) 执行 <code>git commit -a</code> ，提交所有改动。</p>
+
+<p>d) 执行 <code>git commit --amend</code> 进行修补提交。</p></li>
+<li><p>如果把项目中文件 <code>hello.c</code> 的内容破坏了，如何使其还原至原始版本？ _____</p>
+
+<p>a) <code>git reset -- hello.c</code></p>
+
+<p>b) <code>git checkout HEAD -- hello.c</code></p>
+
+<p>c) <code>git revert hello.c</code></p>
+
+<p>d) <code>git update hello.c</code></p></li>
+<li><p>修改的文档 <code>meeting.doc</code> 尚未提交，因为错误地执行了 <code>git reset --hard</code> 导致数据丢失。丢失的数据能找回么？ _____</p>
+
+<p>a) 不能。执行硬重置使工作区文件被覆盖，导致数据丢失无法找回。</p>
+
+<p>b) 能。可以通过 <code>git checkout HEAD@{1} -- meeting.doc</code> 找回。</p>
+
+<p>c) 不确定。如果在重置前执行了 <code>git add</code> 命令将 <code>meeting.doc</code> 加入了暂存区，则可以在对象库中处于悬空状态的文件中找到。</p>
+
+<p>d) 不能。因为未提交所以无法找回。</p></li>
+<li><p>仅将工作区中修改的文件添加到暂存区（新增文件不添加），以备提交，用什么命令标记最快？ _____</p>
+
+<p>a) <code>git add -A</code></p>
+
+<p>b) <code>git add -p</code></p>
+
+<p>c) <code>git add -i</code></p>
+
+<p>d) <code>git add -u</code></p></li>
+<li><p>下面哪一个命令 <strong>不</strong> 会改变提交历史？ _____</p>
+
+<p>a) <code>git reset --hard HEAD~1</code></p>
+
+<p>b) <code>git checkout HEAD^^ .</code></p>
+
+<p>c) <code>git rebase -i HEAD^^</code></p>
+
+<p>d) <code>git commit --amend</code></p></li>
+<li><p>我使用和其他人不一样的IDE软件，总是在目录下生成以 <code>.xx</code> 为后缀的临时文件。如何避免由于自己的误操作导致此类文件被添加到版本库中呢？ _____</p>
+
+<p>a) 执行 <code>git clean -f</code> 删除临时性文件。</p>
+
+<p>b) 向版本库中添加一个 <code>.gitignore</code> 文件，其中包含一条内容为 <code>*.xx</code> 的记录。</p>
+
+<p>c) 在文件 <code>.git/info/exclude</code> 中添加一条内容为 <code>*.xx</code> 的记录。</p>
+
+<p>d) 更换另外一款IDE软件。</p></li>
+<li><p>项目跨平台导致文件中的换行符不一致。其中有 Linux 格式换行符（0A），也有DOS格式换行符（0D 0A）。要如何避免此类情况呢？ _____</p>
+
+<p>a) 修改 <code>/etc/gitattributes</code> 文件，在其中包含一条内容为 <code>* text=auto</code> 的设置。</p>
+
+<p>b) 执行命令 <code>git config --global core.autocrlf true</code> 。</p>
+
+<p>c) 执行命令 <code>git config --global core.autocrlf input</code> 。</p>
+
+<p>d) 向版本库中添加一个 <code>.gitattributes</code> 文件，在其中包含一条内容为 <code>* text=auto</code> 的设置。</p></li>
+<li><p>下列对于版本库授权说法正确的是：_____</p>
+
+<p>a) 可以为分支或路径设置不同的写入权限，但不能设置不同的读取权限。</p>
+
+<p>b) 除管理员外，版本库的创建者都可以为自己创建的版本库授权。</p>
+
+<p>c) 只要通过授权后，便不能限制所推送的提交的署名作者，可以是任何人。</p>
+
+<p>d) 如果没有向版本库的写入权限，就一定没有读取权限。</p></li>
+<li><p>取消服务器版本库中ID为 <code>a2387</code> 的提交，而且不能引起历史提交的变更，用什么操作？ _____</p>
+
+<p>a) <code>git rebase -i a2387^</code></p>
+
+<p>b) <code>git checkout a2387^ -- .</code></p>
+
+<p>c) <code>git revert a2387</code></p>
+
+<p>d) <code>git reset --hard a2387^</code></p></li>
+<li><p>从版本库中的历史提交中彻底移除ID为 <code>a2387</code> 的提交，用什么操作？ _____</p>
+
+<p>a) <code>git reset --hard a2387^</code></p>
+
+<p>b) <code>git checkout a2387^ -- .</code></p>
+
+<p>c) <code>git revert a2387</code></p>
+
+<p>d) <code>git rebase --onto a2387^ a2387 HEAD</code></p></li>
+<li><p>所有改动的文件都已加入暂存区，若希望将其中的 <code>other.py</code> 文件下次再提交，如何操作？ _____</p>
+
+<p>a) <code>git reset -- other.py</code></p>
+
+<p>b) <code>git checkout -- other.py</code></p>
+
+<p>c) <code>git checkout HEAD other.py</code></p>
+
+<p>d) <code>git reset --hard -- other.py</code></p></li>
+<li><p>若产品的版本号显示为 <code>1.7.10.rc0-33-g9678d-dirty</code> ，可以判断出此版本号是如何生成的么？ _____</p>
+
+<p>a) <code>git tag</code></p>
+
+<p>b) <code>git describe --tags --always --dirty</code></p>
+
+<p>c) <code>git name-rev HEAD</code></p>
+
+<p>d) <code>git --version</code></p></li>
+<li><p>关于 <code>git clone</code> 下面说法 <strong>错误</strong> 的是：_____</p>
+
+<p>a) 克隆时所有分支均被克隆，但只有HEAD指向的分支被检出。</p>
+
+<p>b) 可以通过 <code>git clone --single-branch</code> 命令实现只克隆一个分支。</p>
+
+<p>c) 克隆出的工作区中执行 <code>git log</code> 、 <code>git status</code> 、 <code>git checkout</code> 、 <code>git commit</code> 等操作不会去访问远程版本库。</p>
+
+<p>d) 克隆时只有远程版本库HEAD指向的分支被克隆。</p></li>
+<li><p>关于删除分支 <code>XX</code> ，下列说法正确的是： _____</p>
+
+<p>a) 执行 <code>git push origin :XX</code> 来删除远程版本库的 <code>XX</code> 分支。</p>
+
+<p>b) 执行 <code>git branch -D XX</code> 删除分支，总是能成功。</p>
+
+<p>c) 远程版本库删除的分支，在执行 <code>git fetch</code> 时本地分支自动删除。</p>
+
+<p>d) 本地删除的分支，执行 <code>git push</code> 时，远程分支亦自动删除。</p></li>
+<li><p>下面的操作中哪一个不能确认维护分支 <code>maint</code> 上所有的 bugfix 提交均已合并至当前分支 <code>master</code> 中。 _____</p>
+
+<p>a) <code>git rev-list ..maint</code> 的输出为空。</p>
+
+<p>b) 在 <code>maint</code> 分支成功地执行 <code>git merge master</code> 。</p>
+
+<p>c) <code>git log ..maint</code> 的输出为空。</p>
+
+<p>d) 新版本发布，在 <code>maint</code> 分支执行 <code>git merge --ff-only master</code> 成功。</p></li>
+<li><p>一个图片文件 <code>logo.png</code> 冲突了，如何取出他人的版本。 _____</p>
+
+<p>a) <code>git show :1:./logo.png &gt; logo.png-theirs</code></p>
+
+<p>b) <code>git show :2:./logo.png &gt; logo.png-theirs</code></p>
+
+<p>c) <code>git show :3:./logo.png &gt; logo.png-theirs</code></p>
+
+<p>d) <code>git show :0:./logo.png &gt; logo.png-theirs</code></p></li>
+<li><p>工作在特性分支，常常因为执行 <code>git push</code> 默认推送所有本地和远程共有分支，导致非当前分支报告 non-fast-forward 错误。如果设置只推送当前分支可避免此类问题。下面操作正确的是：_____</p>
+
+<p>a) <code>git config --global push.default upstream</code></p>
+
+<p>b) <code>git config --global pull.rebase true</code></p>
+
+<p>c) <code>git config --global receive.denyDeletes true</code></p>
+
+<p>d) <code>git config --global pager.status true</code></p></li>
+<li><p>关于对象库（.git/objects）说法 <strong>错误</strong> 的是：_____</p>
+
+<p>a) 两个内容相同文件名不同的文件，在对象库中仅有一个拷贝。</p>
+
+<p>b) 对象库执行 <code>git gc</code> 操作后，reflog 会被清空导致其中记录的未跟踪提交及指向的文件被丢弃。</p>
+
+<p>c) 删除文件后，再通过添加相同文件找回，不会造成版本库的冗余。</p>
+
+<p>d) 对象库并非一直保持最优存储，而是通过周期性地执行 <code>git gc</code> 优化版本库。</p></li>
+<li><p>关于子模组 <strong>错误</strong> 的说法是：_____</p>
+
+<p>a) 克隆父版本库，默认不会克隆子模组版本库。</p>
+
+<p>b) 子模组可以嵌套。执行 <code>git submodule update --recursive</code> 可对嵌套子模组进行更新。</p>
+
+<p>c) 子模组和父版本库的新提交，要先推送父版本库，后推送子模组。</p>
+
+<p>d) 子模组检出处于分离头指针状态（gitlink的指向），在子模组中工作需要手动切换分支。</p></li>
+<li><p>当一个提交说明显示为 <code>souce code refactor (fix #529)</code> ，下面哪个说法是正确的？ _____</p>
+
+<p>a) 这个提交只是代码重构，并未修复任何东西，因此没有改变版本库的提交历史。</p>
+
+<p>b) 这个提交修正了第529号提交，没有改变版本库的提交历史。</p>
+
+<p>c) 这个提交撤销了第529号提交，改变了版本库的提交历史。</p>
+
+<p>d) 这个提交和项目的缺陷跟踪平台（如Redmine）关联，并会更新相关问题的状态。</p></li>
+</ol>
+
+
+<hr>
+</div>
+</div>
+
+<div class="related">
+  <h3>Related Posts</h3>
+  <table class="post-list">
+    
+      <tbody><tr>
+        <th><a href="http://www.worldhello.net/2012/03/29/topgit-merge-no-edit.html">New hack for topgit: git-merge--no-edit</a></th>
+        <td>29 Mar 2012</td>
+        <td><a href="http://www.worldhello.net/2012/03/29/topgit-merge-no-edit.html#disqus_thread">0 Comments 和 0 Reactions</a></td>
+      </tr>
+    
+      <tr>
+        <th><a href="http://www.worldhello.net/2012/02/28/git-l10n.html">Git中文本地化</a></th>
+        <td>28 Feb 2012</td>
+        <td><a href="http://www.worldhello.net/2012/02/28/git-l10n.html#disqus_thread">2 Comments 和 5 Reactions</a></td>
+      </tr>
+    
+      <tr>
+        <th><a href="http://www.worldhello.net/2011/11/30/05-gitolite-adc.html">Gitolite 管理员自定义命令</a></th>
+        <td>30 Nov 2011</td>
+        <td><a href="http://www.worldhello.net/2011/11/30/05-gitolite-adc.html#disqus_thread">4 Comments 和 0 Reactions</a></td>
+      </tr>
+    
+  </tbody></table>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+  var disqus_url = "http://www.worldhello.net/2012/03/19/git-quiz.html";
+</script>
+<div id="disqus_thread"><div id="dsq-content-stub" style="display: none; "><img width="71" height="17" alt="DISQUS" src="data:image/png;base64,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"><img width="16" height="11" alt="..." src="data:image/gif;base64,R0lGODlhEAALAPQAAP///z2LqeLt8dvp7u7090GNqz2LqV+fuJ/F1IW2ycrf51aatHWswaXJ14i4ys3h6FmctUCMqniuw+vz9eHs8fb5+meku+Tu8vT4+cfd5bbT3tbm7PH2+AAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA" style="margin:0 0 3px 5px"></div><div id="dsq-content" style="display: block; " class="clearfix">      <div id="dsq-global-toolbar" class="dsq-clearfix">        <ul class="dsq-global-toolbar-right dsq-clearfix">                            <li class="dsq-community-box">                <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-toolbar-item dsq-tt" onclick="DISQUS.dtpl.actions.fire(&#39;community.show&#39;); return false" title="更多社区信息"><span class="dsq-toolbar-icon"></span></a>            </li>                            <li class="dsq-global-toolbar-dropdown-container">                    <div id="dsq-toolbar-dropdown">    <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-toolbar-logo dsq-toolbar-item dsq-clearfix"><span class="dsq-toolbar-icon">Disqus</span></a>    <div id="dsq-toolbar-dropdown-wrap" style="display: none">      <ul class="dsq-clearfix">                    <li class="dsq-login-link"><a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" onclick="DISQUS.dtpl.actions.fire(&#39;auth.login&#39;); return false"><span class="dsq-toolbar-icon"></span><span class="dsq-toolbar-label">登录</span></a></li>                    <li class="dsq-about-link"><a href="http://disqus.com/" target="_blank"><span class="dsq-toolbar-icon"></span><span class="dsq-toolbar-label">About Disqus</span></a></li>      </ul>    </div>  </div>            </li>        </ul>                <ul class="dsq-global-toolbar-left dsq-clearfix">            <li class="dsq-like-thread">                <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" id="dsq-like-thread-button" class="dsq-toolbar-item dsq-clearfix  dsq-tt" onclick="DISQUS.dtpl.actions.fire(&#39;thread.vote&#39;, 1); return false;" title="I like this page">                    <span class="dsq-toolbar-icon"></span>                    <span class="dsq-toolbar-label">喜欢</span>                </a>            </li>            <li class="dsq-dislike-thread">                <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" id="dsq-dislike-thread-button" class="dsq-toolbar-item dsq-clearfix  dsq-tt" onclick="DISQUS.dtpl.actions.fire(&#39;thread.vote&#39;, -1); return false" title="I don&#39;t like this page">                    <span class="dsq-toolbar-icon">Dislike</span>                </a>            </li>            <li class="dsq-like-panel">                <ul class="dsq-like-faces dsq-clearfix">                        <li class="dsq-like-activity">    </li>                </ul>            </li>        </ul>            </div>    <div id="dsq-like-tooltip">      <div id="dsq-share-step-1" class="dsq-share-step">        <h3>Glad you liked it. Would you like to share?</h3>        <p class="dsq-tooltip-checkbox"><input type="checkbox" id="dsq-share-thread-facebook" value="Facebook"><label for="dsq-share-thread-facebook"><span class="dsq-facebook">Facebook</span></label></p>        <p class="dsq-tooltip-checkbox"><input type="checkbox" id="dsq-share-thread-twitter" value="Twitter"><label for="dsq-share-thread-twitter"><span class="dsq-twitter">Twitter</span></label></p>        <ul id="dsq-tooltip-actions">                        <li><a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" onclick="DISQUS.dtpl.actions.fire(&#39;thread.share.send&#39;); return false" class="dsq-primary-action">Share</a></li>                    <li><a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" onclick="DISQUS.dtpl.actions.fire(&#39;thread.share.cancel&#39;); return false" class="dsq-secondary-action">No thanks</a></li>        </ul>      </div>      <div id="dsq-share-step-2" class="dsq-share-step" style="display:none !important">        <p>Sharing this page …</p>      </div>      <div id="dsq-share-step-3" class="dsq-share-step" style="display:none !important">        <p>Thanks! <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-tooltip-decline" onclick="DISQUS.dtpl.actions.fire(&#39;thread.share.cancel&#39;); return false">Close</a></p>      </div>    </div>                                <div class="dsq-reply " id="dsq-reply">          <div id="dsq-account-dropdown">                  <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" onclick="DISQUS.dtpl.actions.fire(&#39;auth.login&#39;); return false;">登录</a>              </div>      <h3>添加新的评论</h3>        <div class="dsq-avatar">              <img src="./World Hello - Git.test_files/noavatar32.png">          </div>    <div class="dsq-textarea dsq-textarea-reply">      <div class="dsq-textarea-background">        <div class="dsq-textarea-wrapper" style="height: auto; ">          <!-- filled dynamically -->        <iframe name="easyXDM_DISQUS_net_default2708_provider" id="easyXDM_DISQUS_net_default2708_provider" scrolling="no" frameborder="0" src="./World Hello - Git.test_files/reply.htm" style="height: 58px; "></iframe></div>                  <div id="dsq-media-preview" class="dsq-media-preview" style="display:none">          </div>                <div class="dsq-post-tools">          <ul>            <li class="dsq-post-as">                                <button type="button" class="dsq-button" onclick="DISQUS.dtpl.actions.fire(&#39;comments.validate&#39;, null, this);">                    以什么身份发表 …                  </button>                          </li>                          <li class="dsq-attach-media">                <div class="dsq-attach-media-container">                  <span>Image</span>                  <!-- filled dynamically -->                <iframe name="easyXDM_DISQUS_net_default2709_provider" id="easyXDM_DISQUS_net_default2709_provider" scrolling="no" frameborder="0" src="./World Hello - Git.test_files/upload.htm"></iframe></div>              </li>                        <li class="dsq-share-on dsq-clearfix">                            </li>          </ul>        </div>      </div>    </div>  </div>                              <div id="dsq-sort-by">    <select id="dsq-sort-select" onchange="DISQUS.dtpl.actions.fire(&#39;thread.sort&#39;, this.value);">              <option value="hot" selected="selected">          排序 受欢迎的        </option>              <option value="best">          排序 best rating        </option>              <option value="newest">          排序 后发表在前        </option>              <option value="oldest">          排序 先发表在前        </option>          </select>  </div>      <h3>            显示 <span id="dsq-num-posts">5</span> 评论        </h3>        <ul id="dsq-comments">            <li id="comment-475809553">  </li><li id="dsq-comment-475809553" data-dsq-comment-id="475809553" class="dsq-comment dsq-clearfix        dsq-comment-is-parent                " style="margin-left:0px;">    <div class="dsq-avatar dsq-tt" title="Expand Gengfo&#39;s profile">      <a href="http://disqus.com/guest/5434b3998b76a92c081aebf10c3bb2d4/" onclick="DISQUS.dtpl.actions.fire(&#39;profile.show&#39;, 475809553, null); return false">        <img src="./World Hello - Git.test_files/noavatar32.png" class="" alt="">      </a>    </div>    <div id="dsq-comment-body-475809553" class="dsq-comment-body">      <div class="dsq-comment-header">        <span class="dsq-commenter-name">Gengfo</span>                <span class="dsq-collapsed-count">                      3 comments collapsed                  </span>                <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-collapse-toggle dsq-collapse" title="Collapse thread" onclick="DISQUS.dtpl.actions.fire(&#39;comments.collapse&#39;, 475809553); return false;"><span>Collapse</span></a>        <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-collapse-toggle dsq-expand" title="Expand thread" onclick="DISQUS.dtpl.actions.fire(&#39;comments.expand&#39;, 475809553); return false;"><span>Expand</span></a>      </div>        <div class="dsq-comment-message" id="dsq-comment-message-475809553">                <div class="dsq-comment-text" id="dsq-comment-text-475809553">        <p>能公布答案吗？学习一下...</p>      </div>                        </div>            <!-- edit box dynamically inserted here -->      <div id="dsq-append-edit-475809553"></div>        <div class="dsq-comment-footer">    <ul class="dsq-comment-actions">              <li id="dsq-like-475809553">          <span class="dsq-like-thumb dsq-font">A</span>          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" onclick="DISQUS.dtpl.actions.fire(&#39;comments.like&#39;, this,475809553); return false">喜欢</a>        </li>                          <li>          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-comment-reply" onclick="DISQUS.dtpl.actions.fire(&#39;comments.reply&#39;,475809553, this); return false">回复</a>        </li>         </ul>    <ul class="dsq-comment-meta">      <li>  <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#comment-475809553" onclick="DISQUS.dtpl.actions.fire(&#39;comments.permalink&#39;, 475809553);" title="Link to comment by Gengfo">          3 天前      </a></li>            <li style="display:none">          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" id="dsq-comment-like-count-475809553" class="dsq-comment-like-count" onclick="return DISQUS.dtpl.actions.fire(&#39;comments.showUserVotes&#39;, 475809553); return false">0          喜欢      </a>      </li>              <li class="dsq-comment-flag" style="visibility: hidden">          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-comment-flag dsq-font" onclick="return DISQUS.dtpl.actions.fire(&#39;comments.report&#39;, 475809553, false);">F</a>        </li>          </ul>  </div>      <!-- reply box dynamically inserted here -->      <div id="dsq-append-reply-475809553"></div>    </div>  </li>  <!-- new replies dynamically inserted here -->  <li id="dsq-append-post-475809553"></li>            <li id="comment-476185764">  </li><li id="dsq-comment-476185764" data-dsq-comment-id="476185764" class="dsq-comment dsq-clearfix        dsq-comment-is-parent        dsq-moderator        dsq-founder" style="margin-left:46px;">    <div class="dsq-avatar dsq-tt" title="Expand jiangxin&#39;s profile">      <a href="http://disqus.com/jiangxin/" onclick="DISQUS.dtpl.actions.fire(&#39;profile.show&#39;, 476185764, null); return false">        <img src="./World Hello - Git.test_files/avatar32.jpg" class="" alt="">      </a>    </div>    <div id="dsq-comment-body-476185764" class="dsq-comment-body">      <div class="dsq-comment-header">        <span class="dsq-commenter-name">jiangxin</span>                <span class="dsq-collapsed-count">                      2 comments collapsed                  </span>                <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-collapse-toggle dsq-collapse" title="Collapse thread" onclick="DISQUS.dtpl.actions.fire(&#39;comments.collapse&#39;, 476185764); return false;"><span>Collapse</span></a>        <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-collapse-toggle dsq-expand" title="Expand thread" onclick="DISQUS.dtpl.actions.fire(&#39;comments.expand&#39;, 476185764); return false;"><span>Expand</span></a>      </div>        <div class="dsq-comment-message" id="dsq-comment-message-476185764">                <div class="dsq-comment-text" id="dsq-comment-text-476185764">        <p>看看之前的回复。正确答案相当地有规律，abcd平均分配，相邻问题答案不同。</p>      </div>                        </div>            <!-- edit box dynamically inserted here -->      <div id="dsq-append-edit-476185764"></div>        <div class="dsq-comment-footer">    <ul class="dsq-comment-actions">              <li id="dsq-like-476185764">          <span class="dsq-like-thumb dsq-font">A</span>          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" onclick="DISQUS.dtpl.actions.fire(&#39;comments.like&#39;, this,476185764); return false">喜欢</a>        </li>                          <li>          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-comment-reply" onclick="DISQUS.dtpl.actions.fire(&#39;comments.reply&#39;,476185764, this); return false">回复</a>        </li>         </ul>    <ul class="dsq-comment-meta">      <li>  <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#comment-476185764" onclick="DISQUS.dtpl.actions.fire(&#39;comments.permalink&#39;, 476185764);" title="Link to comment by jiangxin">          3 天前      </a></li>              <li>          <a onclick="DISQUS.dtpl.actions.fire(&#39;comments.showParent&#39;, 475809553); return false" href="http://www.worldhello.net/2012/03/19/git-quiz.html#comment-475809553" title="Jump to comment">            in reply to Gengfo          </a>        </li>            <li style="display:none">          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" id="dsq-comment-like-count-476185764" class="dsq-comment-like-count" onclick="return DISQUS.dtpl.actions.fire(&#39;comments.showUserVotes&#39;, 476185764); return false">0          喜欢      </a>      </li>              <li class="dsq-comment-flag" style="visibility: hidden">          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-comment-flag dsq-font" onclick="return DISQUS.dtpl.actions.fire(&#39;comments.report&#39;, 476185764, false);">F</a>        </li>          </ul>  </div>      <!-- reply box dynamically inserted here -->      <div id="dsq-append-reply-476185764"></div>    </div>  </li>  <!-- new replies dynamically inserted here -->  <li id="dsq-append-post-476185764"></li>            <li id="comment-476426197">  </li><li id="dsq-comment-476426197" data-dsq-comment-id="476426197" class="dsq-comment dsq-clearfix                        " style="margin-left:92px;">    <div class="dsq-avatar dsq-tt" title="Expand Gengfo&#39;s profile">      <a href="http://disqus.com/guest/5434b3998b76a92c081aebf10c3bb2d4/" onclick="DISQUS.dtpl.actions.fire(&#39;profile.show&#39;, 476426197, null); return false">        <img src="./World Hello - Git.test_files/noavatar32.png" class="" alt="">      </a>    </div>    <div id="dsq-comment-body-476426197" class="dsq-comment-body">      <div class="dsq-comment-header">        <span class="dsq-commenter-name">Gengfo</span>                <span class="dsq-collapsed-count">                      1 comment collapsed                  </span>                <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-collapse-toggle dsq-collapse" title="Collapse thread" onclick="DISQUS.dtpl.actions.fire(&#39;comments.collapse&#39;, 476426197); return false;"><span>Collapse</span></a>        <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-collapse-toggle dsq-expand" title="Expand thread" onclick="DISQUS.dtpl.actions.fire(&#39;comments.expand&#39;, 476426197); return false;"><span>Expand</span></a>      </div>        <div class="dsq-comment-message" id="dsq-comment-message-476426197">                <div class="dsq-comment-text" id="dsq-comment-text-476426197">        <p>谢谢了。</p>      </div>                        </div>            <!-- edit box dynamically inserted here -->      <div id="dsq-append-edit-476426197"></div>        <div class="dsq-comment-footer">    <ul class="dsq-comment-actions">              <li id="dsq-like-476426197">          <span class="dsq-like-thumb dsq-font">A</span>          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" onclick="DISQUS.dtpl.actions.fire(&#39;comments.like&#39;, this,476426197); return false">喜欢</a>        </li>                          <li>          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-comment-reply" onclick="DISQUS.dtpl.actions.fire(&#39;comments.reply&#39;,476426197, this); return false">回复</a>        </li>         </ul>    <ul class="dsq-comment-meta">      <li>  <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#comment-476426197" onclick="DISQUS.dtpl.actions.fire(&#39;comments.permalink&#39;, 476426197);" title="Link to comment by Gengfo">          2 天前      </a></li>              <li>          <a onclick="DISQUS.dtpl.actions.fire(&#39;comments.showParent&#39;, 476185764); return false" href="http://www.worldhello.net/2012/03/19/git-quiz.html#comment-476185764" title="Jump to comment">            in reply to jiangxin          </a>        </li>            <li style="display:none">          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" id="dsq-comment-like-count-476426197" class="dsq-comment-like-count" onclick="return DISQUS.dtpl.actions.fire(&#39;comments.showUserVotes&#39;, 476426197); return false">0          喜欢      </a>      </li>              <li class="dsq-comment-flag" style="visibility: hidden">          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-comment-flag dsq-font" onclick="return DISQUS.dtpl.actions.fire(&#39;comments.report&#39;, 476426197, false);">F</a>        </li>          </ul>  </div>      <!-- reply box dynamically inserted here -->      <div id="dsq-append-reply-476426197"></div>    </div>  </li>  <!-- new replies dynamically inserted here -->  <li id="dsq-append-post-476426197"></li>            <li id="comment-474229926">  </li><li id="dsq-comment-474229926" data-dsq-comment-id="474229926" class="dsq-comment dsq-clearfix        dsq-comment-is-parent                " style="margin-left:0px;">    <div class="dsq-avatar dsq-tt" title="Expand Gota GJ&#39;s profile">      <a href="http://disqus.com/google-b4495a74fd4464ffb75f5c36c8ca999e/" onclick="DISQUS.dtpl.actions.fire(&#39;profile.show&#39;, 474229926, null); return false">        <img src="./World Hello - Git.test_files/noavatar32.png" class="" alt="">      </a>    </div>    <div id="dsq-comment-body-474229926" class="dsq-comment-body">      <div class="dsq-comment-header">        <span class="dsq-commenter-name">Gota GJ</span>                <span class="dsq-collapsed-count">                      2 comments collapsed                  </span>                <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-collapse-toggle dsq-collapse" title="Collapse thread" onclick="DISQUS.dtpl.actions.fire(&#39;comments.collapse&#39;, 474229926); return false;"><span>Collapse</span></a>        <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-collapse-toggle dsq-expand" title="Expand thread" onclick="DISQUS.dtpl.actions.fire(&#39;comments.expand&#39;, 474229926); return false;"><span>Expand</span></a>      </div>        <div class="dsq-comment-message" id="dsq-comment-message-474229926">                <div class="dsq-comment-text" id="dsq-comment-text-474229926">        <p>1-5) a b d d(蒙的) b<br>6-10)b b(蒙的)  b c a<br>11-15) c b d d d(蒙的) <br>16-20)d(蒙的)   b(蒙的)  d(蒙的)   a(蒙的)  a(蒙的) <br>在校学生，老师给打个分，没有查资料，用时15分钟。Git底层基础命令和仓库管理内容没有概念。谢谢！</p>      </div>                        </div>            <!-- edit box dynamically inserted here -->      <div id="dsq-append-edit-474229926"></div>        <div class="dsq-comment-footer">    <ul class="dsq-comment-actions">              <li id="dsq-like-474229926">          <span class="dsq-like-thumb dsq-font">A</span>          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" onclick="DISQUS.dtpl.actions.fire(&#39;comments.like&#39;, this,474229926); return false">喜欢</a>        </li>                          <li>          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-comment-reply" onclick="DISQUS.dtpl.actions.fire(&#39;comments.reply&#39;,474229926, this); return false">回复</a>        </li>         </ul>    <ul class="dsq-comment-meta">      <li>  <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#comment-474229926" onclick="DISQUS.dtpl.actions.fire(&#39;comments.permalink&#39;, 474229926);" title="Link to comment by Gota GJ">          6 天前      </a></li>            <li style="display:none">          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" id="dsq-comment-like-count-474229926" class="dsq-comment-like-count" onclick="return DISQUS.dtpl.actions.fire(&#39;comments.showUserVotes&#39;, 474229926); return false">0          喜欢      </a>      </li>              <li class="dsq-comment-flag" style="visibility: hidden">          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-comment-flag dsq-font" onclick="return DISQUS.dtpl.actions.fire(&#39;comments.report&#39;, 474229926, false);">F</a>        </li>          </ul>  </div>      <!-- reply box dynamically inserted here -->      <div id="dsq-append-reply-474229926"></div>    </div>  </li>  <!-- new replies dynamically inserted here -->  <li id="dsq-append-post-474229926"></li>            <li id="comment-476184825">  </li><li id="dsq-comment-476184825" data-dsq-comment-id="476184825" class="dsq-comment dsq-clearfix                dsq-moderator        dsq-founder" style="margin-left:46px;">    <div class="dsq-avatar dsq-tt" title="Expand jiangxin&#39;s profile">      <a href="http://disqus.com/jiangxin/" onclick="DISQUS.dtpl.actions.fire(&#39;profile.show&#39;, 476184825, null); return false">        <img src="./World Hello - Git.test_files/avatar32.jpg" class="" alt="">      </a>    </div>    <div id="dsq-comment-body-476184825" class="dsq-comment-body">      <div class="dsq-comment-header">        <span class="dsq-commenter-name">jiangxin</span>                <span class="dsq-collapsed-count">                      1 comment collapsed                  </span>                <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-collapse-toggle dsq-collapse" title="Collapse thread" onclick="DISQUS.dtpl.actions.fire(&#39;comments.collapse&#39;, 476184825); return false;"><span>Collapse</span></a>        <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-collapse-toggle dsq-expand" title="Expand thread" onclick="DISQUS.dtpl.actions.fire(&#39;comments.expand&#39;, 476184825); return false;"><span>Expand</span></a>      </div>        <div class="dsq-comment-message" id="dsq-comment-message-476184825">                <div class="dsq-comment-text" id="dsq-comment-text-476184825">        <p>对了七个。【3】就是想让大家对Git操作心里有底，知道什么时候数据还能挽回。可以把 git add 当做是草稿保存。【6】要选择本地忽略。【7】要在项目级设置就不能通过本地属性完成，在书中有答案。【8】就是不想让人打满分而已。【10】错了不应该。【11】你的选择会破坏加入暂存的修改。【14】试试就知道是错的，还有不能删除本地当前工作分支。【15】SVN最弱的就是难以确定分支哪些提交尚未合并。可能是题目本身包含歧义，听过课的会知道b是错的。【16】制造个冲突，用 git ls-files -s 看看。【17】乱花渐欲迷人眼。三个编造的蜜罐生效了。【18】和【19】莫非审题时马虎了？题目中有加粗啊。【20】客户要一个Redmine的题，我好不容易凑齐了四个答案。</p>      </div>                        </div>            <!-- edit box dynamically inserted here -->      <div id="dsq-append-edit-476184825"></div>        <div class="dsq-comment-footer">    <ul class="dsq-comment-actions">              <li id="dsq-like-476184825">          <span class="dsq-like-thumb dsq-font">A</span>          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" onclick="DISQUS.dtpl.actions.fire(&#39;comments.like&#39;, this,476184825); return false">喜欢</a>        </li>                          <li>          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-comment-reply" onclick="DISQUS.dtpl.actions.fire(&#39;comments.reply&#39;,476184825, this); return false">回复</a>        </li>         </ul>    <ul class="dsq-comment-meta">      <li>  <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#comment-476184825" onclick="DISQUS.dtpl.actions.fire(&#39;comments.permalink&#39;, 476184825);" title="Link to comment by jiangxin">          3 天前      </a></li>              <li>          <a onclick="DISQUS.dtpl.actions.fire(&#39;comments.showParent&#39;, 474229926); return false" href="http://www.worldhello.net/2012/03/19/git-quiz.html#comment-474229926" title="Jump to comment">            in reply to Gota GJ          </a>        </li>            <li style="display:none">          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" id="dsq-comment-like-count-476184825" class="dsq-comment-like-count" onclick="return DISQUS.dtpl.actions.fire(&#39;comments.showUserVotes&#39;, 476184825); return false">0          喜欢      </a>      </li>              <li class="dsq-comment-flag" style="visibility: hidden">          <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-comment-flag dsq-font" onclick="return DISQUS.dtpl.actions.fire(&#39;comments.report&#39;, 476184825, false);">F</a>        </li>          </ul>  </div>      <!-- reply box dynamically inserted here -->      <div id="dsq-append-reply-476184825"></div>    </div>  </li>  <!-- new replies dynamically inserted here -->  <li id="dsq-append-post-476184825"></li>      </ul>        <div id="dsq-pagination">      <ul id="dsq-footer" class="dsq-clearfix">        <div id="dsq-subscribe">            <li>      <a href="http://www.worldhello.net/2012/03/19/git-quiz.html#" class="dsq-subscribe-email" onclick="return DISQUS.dtpl.actions.fire(&#39;thread.subscribe&#39;);">        <span class="dsq-font">M</span> <em>通过邮件订阅</em>      </a>    </li>    <li>    <a href="http://worldhello.disqus.com/world_hello_gita/latest.rss" class="dsq-subscribe-rss">      <span class="dsq-font">S</span> <em>RSS</em>    </a>  </li>    </div>  </ul>    </div>          <h3 class="dsq-h3-reactions">Reactions</h3>    <ul id="dsq-reactions" class="dsq-reactions dsq-clearfix">                <li id="dsq-reaction-97244096">    <div class="dsq-reaction-avatar dsq-avatar dsq-tt" data-dsq-content-id="dsq-reaction-tooltip-97244096">                    <a target="_blank" href="http://twitter.com/tigertooth4/status/182480781472567297">                    <img src="./World Hello - Git.test_files/bear-square_normal.jpg">                    </a>          </div>    <div id="dsq-reaction-tooltip-97244096" class="dsq-reaction-tooltip" style="display:none">      <div class="dsq-reaction-tooltip-container">        <div class="dsq-reaction-body">呵呵，有B卷吗？我们通常的规矩是 B卷 比 A卷 难！RT @woshisanhu: Git测验（A卷） http://t.co/sGQlXc1g</div>        <div class="dsq-reaction-date">1 星期前</div>        <div class="dsq-reaction-user">@tigertooth4</div>      </div>    </div>  </li>                <li id="dsq-reaction-97244097">    <div class="dsq-reaction-avatar dsq-avatar dsq-tt" data-dsq-content-id="dsq-reaction-tooltip-97244097">                    <a target="_blank" href="http://twitter.com/woshisanhu/status/182344470099001344">                    <img src="./World Hello - Git.test_files/4503572fg751a875bca78_690_normal.jpg">                    </a>          </div>    <div id="dsq-reaction-tooltip-97244097" class="dsq-reaction-tooltip" style="display:none">      <div class="dsq-reaction-tooltip-container">        <div class="dsq-reaction-body">Git测验（A卷） http://t.co/17z2Hkr8</div>        <div class="dsq-reaction-date">1 星期前</div>        <div class="dsq-reaction-user">@woshisanhu</div>      </div>    </div>  </li>          </ul>                  <div class="dsq-trackback-url">      引用通告网址      <input onclick="this.select()" readonly="true" value="http://disqus.com/forums/worldhello/world_hello_gita/trackback/">    </div>      </div><div>  </div></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'worldhello'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the &lt;a href="http://disqus.com/?ref_noscript"&gt;comments powered by Disqus.&lt;/a&gt;</noscript>
+<a href="http://disqus.com/" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div id="footer">
+      Copyright © 2011 Jiang Xin. Hosted by <a href="http://github.com/gotgit/gotgit.github.com/" target="_blank">GitHub</a> and powered by <a href="http://github.com/mojombo/jekyll">Jekyll</a>. Templates from <a href="http://github.com/mbleigh/mbleigh.github.com/" target="_blank">Michael Bleigh</a>.
+    </div>
+
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'worldhello'; // required: replace example with your forum shortname
+    
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+
+  
+
+<iframe name="easyXDM_DISQUS_net_default2707_provider" id="easyXDM_DISQUS_net_default2707_provider" style="position: absolute; top: -2000px; left: 0px; " frameborder="0" src="./World Hello - Git.test_files/def.htm"></iframe></body></html>

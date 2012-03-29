@@ -1,6 +1,18 @@
 day tips
 ========
 
+2012.03.29
+----------
+
+   1. html compressor
+   http://code.google.com/p/htmlcompressor/
+
+   2. node.js code reload
+   https://github.com/kuchumovn/node-js-development-mode
+
+   3. 一个社区网站，没看懂，俄文？
+   https://github.com/kuchumovn/sociopathy
+
 2012.03.26
 ----------
 
@@ -8,6 +20,9 @@ day tips
 
    npm install -g node-dev 
    node-dev main.js
+   
+   ? windows7 下没成功，
+   ? use growl
 
 2012.03.23
 ----------
