@@ -1,6 +1,23 @@
 day tips
 ========
 
+2012.03.31
+----------
+
+   1. git more remote
+   http://f2e.us/wiki/git-remote.html#!/
+
+   nodeclub,
+   git branch yang
+   git co yang
+   --github create repo
+   git remote add yang git@github.com:yangjiandong/nodeclub.git
+   git push -u yang yang
+   
+   git remote rename yang yh
+   --远程更新
+   git pull yh
+
 2012.03.29
 ----------
 
@@ -12,6 +29,40 @@ day tips
 
    3. 一个社区网站，没看懂，俄文？
    https://github.com/kuchumovn/sociopathy
+
+   4. node.js debug
+   
+   a. npm install node-inspector
+   b. 启动 node-inspector
+    ~/$ node-inspector 
+    info  - socket.io started
+    visit http://0.0.0.0:8080/debug?port=5858 to start debugging
+    
+   c. 启动debug
+    ~/node-project$ node --debug-brk app.js //表示从第一行代码开始调试
+    debugger listening on port 5858Error 0
+     
+   5. install redis in cygwin
+$ wget http://redis.googlecode.com/files/redis-2.4.9.tar.gz
+$ tar xzf redis-2.4.9.tar.gz
+$ cd redis-2.4.9
+$ make
+   
+   update src/redis.c 
+   #include <sys/time.h> 
+   #include <sys/resource.h> 
+   #ifndef SA_ONSTACK 
+   #define SA_ONSTACK 0 
+   #endif
+
+The binaries that are now compiled are available in the src directory. Run Redis with:
+$ src/redis-server
+You can interact with Redis using the built-in client:
+$ src/redis-cli
+redis> set foo bar
+OK
+redis> get foo
+"bar"
 
 2012.03.26
 ----------

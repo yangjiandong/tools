@@ -1,6 +1,79 @@
 git
 ====
 
+2012.03.31
+----------
+
+1. git remote
+
+git是一个分布式代码管理工具，所以可以支持多个仓库，在git里，服务器上的仓库在本地称之为remote。
+
+直接clone一个仓库：
+
+$: git clone git@search.ued.taobao.net:projects/search.git
+另外一种clone方式：
+
+# 创建目录初始化本地仓库
+$: mkdir search && cd search
+$: git init
+# 添加远程仓库路径
+$: git remote add github git@github.com:yyfrankyy/search.git
+# 实际上，pull 就是 fetch + merge
+$: git pull github --all --tags
+把工作目录迁移到github上面：
+
+$: git remote add github git@github.com:yyfrankyy/search.git
+$: git push github --all --tags
+显示所有的远程仓库
+
+$: git remote -v
+origin	git@search.ued.taobao.net:projects/search.git (fetch)
+origin	git@search.ued.taobao.net:projects/search.git (push)
+github	git@github.com:yyfrankyy/search.git (fetch)
+github	git@github.com:yyfrankyy/search.git (push)
+重命名远程仓库
+
+$: git remote rename github gh
+$: git remote
+origin
+gh
+删除远程仓库
+
+$: git remote rm github
+$: git remote
+origin
+从远程仓库抓取数据，更新本地仓库：
+
+$: git fetch origin
+remote: Counting objects: 58, done.
+remote: Compressing objects: 100% (41/41), done.
+remote: Total 44 (delta 24), reused 1 (delta 0)
+Unpacking objects: 100% (44/44), done.
+From git://search.ued.taobao.net:projects/search.git
+ * [new branch]      product     -> origin/product
+查看远程仓库信息，可用于跟踪别人的push：
+
+$: git remote show origin
+* remote origin
+  Fetch URL: git@search.ued.taobao.net:projects/search.git
+  Push  URL: git@search.ued.taobao.net:projects/search.git
+  HEAD branch: master
+  Remote branches:
+    master  tracked
+    p4popt  tracked
+    prepub  tracked
+    product tracked
+  Local branches configured for 'git pull':
+    master  merges with remote master
+    p4popt  merges with remote p4popt
+    prepub  merges with remote prepub
+    product merges with remote product
+  Local refs configured for 'git push':
+    master  pushes to master  (up to date)
+    p4popt  pushes to p4popt  (up to date)
+    prepub  pushes to prepub  (up to date)
+    product pushes to product (up to date)
+
 2012.03.29
 ----------
 
