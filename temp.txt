@@ -18,6 +18,17 @@ day tips
    --远程更新
    git pull yh
 
+   2. vim jsbeautify
+   http://blog.longwin.com.tw/2009/11/vim-javascript-indent-formatter-plugin-2009/
+   .vim/plugin/jsbeautify.vim
+   
+   vim .vimrc # 設定 <leader> 鍵值 (若已經有設好 <leader> 鍵, 此步驟請跳過)
+   let mapleader=","
+
+   use format: 
+   ,fo
+
+   
 2012.03.29
 ----------
 
