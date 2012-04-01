@@ -1,6 +1,17 @@
 day tips
 ========
 
+2012.04.01
+----------
+
+   1. eclipse markdown plugin
+   http://winterstein.me.uk/projects/tt-update-site/
+   
+   2. markdown 等各种文档转换
+   http://johnmacfarlane.net/pandoc/
+
+   Pandoc can convert documents in markdown, reStructuredText, textile, HTML, or LaTeX
+
 2012.03.31
 ----------
 
@@ -28,6 +39,13 @@ day tips
    use format: 
    ,fo
 
+   vim 已设置tab为2个space,jsbeautify后强制为2 space
+   vim/plugin/jsbeautify.vim
+
+    "let s:opt_indent_size = 1
+    "let s:opt_indent_char = "\t"
+    let s:opt_indent_size = 2
+    let s:opt_indent_char = " "
    
 2012.03.29
 ----------
