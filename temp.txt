@@ -1,6 +1,19 @@
 day tips
 ========
 
+2012.04.17
+----------
+
+   1. github blog,直接在github上建blog
+   http://jekyllbootstrap.com/
+   http://octopress.org/docs/
+
+2012.04.06
+----------
+
+   1. javascript kissy 编程规范
+   web/ext/javascript.kissy.style.txt
+
 2012.04.01
 ----------
 

@@ -1,6 +1,12 @@
 python
 ========
 
+2012.04.19
+----------
+
+   1. Django 托管在 Github 上的实践
+   other/django.github.conf.txt
+
 2012.02.21
 ----------
 

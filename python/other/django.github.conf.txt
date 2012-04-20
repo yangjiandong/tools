@@ -1,0 +1,89 @@
+Django 托管在 Github 上的实践
+
+发布时间：2012-04-18 22:58:59， 关注：+378， 评论：+1， 赞美：+2， 不爽：+0
+本文标签： github django
+原始出处： 动漫驿站
+Django1.4上个月发布了，有些模块换了名字，加密方式也变了，最明显的变动是目录的组织方式，manager.py和其他配置文件分开存放。这些改动导致之前的目录组织方案将不再适用。所以整理一下1.3之前在Github上的实践，今后开发的新项目再转到1.4。
+
+requirements.txt, local_settings.py
+
+把Django项目托管到Github上，README是给不熟悉项目的人看的，未必得能给自己省多少力气。但写requirements.txt绝对是双赢。Django项目肯定会用到一些模块(至少得装Django…)，用一个txt文件列出所有会用到的模块，以换行分割：
+
+Django==1.3.1
+django-notification
+PIL
+simplejson
+
+在部署的时候，直接使用pip -r install requirements.txt 就可以把需要的模块都安装上了。
+
+local_settings.py主要是两种用途，一是用来存储一些个人设置，比如开发环境和生产环境中不同的static文件夹设置；二是存放一些不适合公开放在github上的信息，比如数据库密码。编辑settings.py，加入下面这段代码到文件底部，在加载settings.py时会检查是否存在local_settings.py，如果存在则载入：
+
+try:
+    execfile(os.path.join(PROJECT_ROOT, 'local_settings.py'))
+except IOError:
+    pass
+
+Branch
+
+git的分支功能很强大，所以也很容易导致混乱。在github能看到的中心版本库origin，默认能看到主分支master。其他分支被收在下拉列表里。
+
+通用的原则是：branch用来区分feature，tag用来区分版本。所以如果每个开发者在github和本地都建一个以自己的名字命名的branch，就违背了这个原则，而且开发者超过5个branch列表就会变得很难看，merge也麻烦大。
+
+目前尝试较好的方案是：Github上是两个branch——master和dev，开发者统一使用dev分支进行开发，代码也都提交到dev分支。需要部署的时候把代码merge到master，用master分支进行部署。本地至少是master和dev两个分支。我就是一直在dev分支上开发，出现严重错误直接reset –hard把之前写的代码全部删掉。也有代码写得很谨慎的，会新开一个分支，完成之后再merge。在本地要怎么建分支主要看个人习惯，没必要死规定。
+
+Deploy
+
+既然代码托管在Github上，最简单的方式自然是在服务器上git clone一份readonly的代码，然后将其部署。实际项目中表现最好的是Nginx + uwsgi的配置方式，百万级PV仍然表现良好，相应的配置方法网上都有。如果是一个每天pv不超过4000的网站——更大的我没测试过，有相关数据欢迎补充——用测试服务器跑就可以了，nginx配置文件如下：
+
+server {
+    listen          80;
+    server_name     .dmyz.org;
+    access_log      off;
+    location / {
+        proxy_pass http://127.0.0.1:8010/;
+        proxy_buffer_size 8k;
+        client_max_body_size 25m;
+        proxy_send_timeout 90;
+        proxy_read_timeout 90;
+        proxy_buffers 8 32k;
+        proxy_busy_buffers_size 64k;
+        proxy_temp_file_write_size 64k;
+        proxy_headers_hash_bucket_size 128;
+        proxy_headers_hash_max_size 512;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+
+如果要换成uwsgi的时候，把proxy_pass改成uwsgi_pass就可以了，测试服务器功能很弱，不能多线程，控制超时，所以尽快更换过来比较好。
+
+Update
+
+现在服务器上是master分支，本地是用来开发的dev分支，和默认的master分支，在dev上开发，代码更新到github上，确认没有问题，merge并提交到master分支。这时候最好是服务器能自动知道master分支有更新了，自动pull代码。github提供了很方便的接口用来调用数据，以下是可运行的例子，在服务器上用cron运行或者是django-celery来跑都可以：
+
+# -*- coding: utf-8 -*-
+
+import urllib2
+import json
+import subprocess
+
+#通过git log命令获得最新的sha
+run1 = subprocess.Popen(['git', 'log', '-1'],  stdout=subprocess.PIPE)
+run2 = subprocess.Popen(["grep", "commit"], stdin=run1.stdout, stdout = subprocess.PIPE)
+commit, error = run2.communicate()
+local_sha = str(commit).rstrip('\n').split(' ')[-1]
+
+#通过github的api获得当前github上最新的sha
+response = urllib2.urlopen('https://api.github.com/repos/github用户名/github仓库名/commits').read()
+json_data = json.loads(response)
+remote_sha = json_data[0]['sha']
+
+#如果不相等，用git pull命令更新代码
+if not local_sha == remote_sha:
+    subprocess.Popen(['git', 'pull'])   
+else:
+    print 'Already the latest'
+
+Reload
+
+说了代码更新，顺带说一下重新加载代码的问题。如果是直接用Django的测试服务器，会自动重启；如果是用uwsgi，需要进行额外的设置，但这和Github没太大关系，就不列在这篇文章里了，有问题可以在评论中提出。
+

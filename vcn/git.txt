@@ -1,6 +1,18 @@
 git
 ====
 
+2012.04.17
+----------
+
+1. 使用Dropbox作为远程私人git服务器
+cd ~/Dropbox
+mkdir org.git
+cd org.git
+git init --bare
+--现在创建一份本地clone
+cd ~
+git clone /home/lowstz/Dropbox/org.git org
+
 2012.03.31
 ----------
 
