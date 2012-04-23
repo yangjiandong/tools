@@ -14,6 +14,16 @@ day tips
    
    https://github.com/ddollar/foreman
 
+   3. javascript 文档生成工具
+   gem install jsduck
+   https://github.com/senchalabs/jsduck
+   --需DevKit-tdm-32-4.5.2-20110712-1620-sfx
+   example:
+   $ jsduck ext-4.0.7/src \
+         --builtin-classes \
+         --images ext-4.0.7/docs/images \
+         --output your/docs
+
 2012.04.17
 ----------
 
