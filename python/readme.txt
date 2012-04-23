@@ -1,6 +1,18 @@
 python
 ========
 
+2012.04.23
+----------
+
+   1. virtualenv in win7
+   >pip install virtualenv 
+   >md v_env
+   >cd v_env
+   >virtualenv --distribute --no-site-packages MyNewEnv
+
+   To use an environment, run the activate.bat batch file in the Scripts subdirectory of that environment
+   other/Getting Started with Python on Heroku/Cedar.txt
+
 2012.04.19
 ----------
 

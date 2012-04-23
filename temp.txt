@@ -1,6 +1,19 @@
 day tips
 ========
 
+2012.04.23
+----------
+
+   1. python virtualenv
+   
+   定义python环境包
+   pip freeze > requirements.txt
+
+   2. ruby
+   gem install foreman
+   
+   https://github.com/ddollar/foreman
+
 2012.04.17
 ----------
 

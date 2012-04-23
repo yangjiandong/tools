@@ -1,0 +1,217 @@
+Getting Started with Python on Heroku/Cedar
+-------------------------------------------
+ 
+Table of Contents
+Prerequisites
+Local Workstation Setup
+Start Flask App Inside a Virtualenv
+Declare Dependencies with Pip
+Declare Process Types With Foreman/Procfile
+Store Your App in Git
+Deploy to Heroku/Cedar
+Shell
+Using A Different WSGI Server
+Running a Worker
+Next Step: Database-driven Apps via Django
+ 
+This quickstart will get you going with Python and the Flask web framework on the Cedar stack. For Django apps, please see the Django quickstart.
+Prerequisites
+Basic Python knowledge, including installed versions of Python, Virtualenv, and Pip.
+Your application must run on Python v2.7.
+Your application must use Pip to manage dependencies.
+A Heroku user account. Signup is free and instant.
+Local Workstation Setup
+Install the Heroku Toolbelt on your local workstation. This ensures that you have access to the Heroku command-line client, Foreman, and the Git revision control system.
+Once installed, you can use the heroku command from your command shell. Log in using the email address and password you used when creating your Heroku account:
+$ heroku login
+Enter your Heroku credentials.
+Email: adam@example.com
+Password:
+Could not find an existing public key.
+Would you like to generate one? [Yn]
+Generating new SSH public key.
+Uploading ssh public key /Users/adam/.ssh/id_rsa.pub
+Press enter at the prompt to upload your existing ssh key or create a new one, used for pushing code later on.
+Start Flask App Inside a Virtualenv
+You may be starting from an existing Python app. If not, here’s a simple “hello, world” application you can use.
+Start by making an empty top-level directory for the project:
+$ mkdir helloflask && cd helloflask
+Create a Virtualenv (v0.7):
+$ virtualenv venv --distribute
+New python executable in venv/bin/python
+Installing distribute...............done.
+Installing pip...............done.
+To activate the new environment, you’ll need to source it:
+Windows users can run venv\Scripts\activate.bat for the same effect.
+$ source venv/bin/activate
+This will change your prompt to include the project name. (You must source the virtualenv environment for each terminal session where you wish to run your app.)
+Install dependencies with pip:
+$ pip install flask
+Downloading/unpacking flask
+  Downloading Flask-0.8.tar.gz (494Kb): 494Kb downloaded
+  Running setup.py egg_info for package flask
+
+Downloading/unpacking Werkzeug>=0.6.1 (from flask)
+  Downloading Werkzeug-0.8.2.tar.gz (1.1Mb): 1.1Mb downloaded
+  Running setup.py egg_info for package Werkzeug
+
+Downloading/unpacking Jinja2>=2.4 (from flask)
+  Downloading Jinja2-2.6.tar.gz (389Kb): 389Kb downloaded
+  Running setup.py egg_info for package Jinja2
+
+Installing collected packages: flask, Werkzeug, Jinja2
+  Running setup.py install for flask
+  Running setup.py install for Werkzeug
+  Running setup.py install for Jinja2
+
+Successfully installed flask Werkzeug Jinja2
+Cleaning up...
+app.py
+Now we have a clean Flask environment setup. Let’s create our application, app.py:
+import os
+
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    return 'Hello World!'
+
+if __name__ == '__main__':
+    # Bind to PORT if defined, otherwise default to 5000.
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
+Declare Dependencies with Pip
+Cedar recognizes Python apps by the existence of a requirements.txt.
+Create a pip requirements file which declares our required Python modules:
+$ pip freeze > requirements.txt
+Make sure that there aren’t any “editable” modules (lines that start with a -e) in this list. They should never be used in production.
+All packages required should be declared explicitly in requirements.txt:
+$ cat requirements.txt
+Flask==0.8
+Declare Process Types With Foreman/Procfile
+To run your web process, you need to declare what command to use. In this case, we simply need to execute our Python program. We’ll use Procfile to declare how our web process type is run.
+Here’s a Procfile for the sample app we’ve been working on:
+web: python app.py
+Now that you have a Procfile, you can start your application with Foreman:
+$ foreman start
+09:17:46     web.1  | started with pid 80875
+09:17:46     web.1  |  * Running on http://0.0.0.0:5000/
+Your app will come up on port 5000 (as specified in app.py). Test that it’s working with curl or a web browser, then Ctrl-C to exit.
+Store Your App in Git
+Exclude Virtualenv artifacts from source control tracking:
+GitHub provides an excellent Python gitignore file that can be installed system-wide.
+.gitignore
+venv
+*.pyc
+We now have the three major components of our app: dependencies in requirements.txt, process types in Procfile, and our application source in app.py. Let’s put it into Git:
+$ git init
+$ git add .
+$ git commit -m "init"
+Deploy to Heroku/Cedar
+Create the app on the Cedar stack:
+$ heroku create --stack cedar
+Creating stark-window-524... done, stack is cedar
+http://stark-window-524.herokuapp.com/ | git@heroku.com:stark-window-524.git
+Git remote heroku added
+Deploy your code:
+$ git push heroku master
+Counting objects: 6, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (6/6), 687 bytes, done.
+Total 6 (delta 0), reused 0 (delta 0)
+
+-----> Heroku receiving push
+-----> Python app detected
+-----> Preparing virtualenv version 1.7
+       New python executable in ./bin/python2.7
+       Also creating executable in ./bin/python
+       Installing distribute............done.
+       Installing pip...............done.
+-----> Byte-compiling code
+-----> Installing dependencies using pip version 1.2.0
+       Downloading/unpacking Flask==0.8 (from -r requirements.txt (line 1))
+       ...
+       Successfully installed Flask Werkzeug Jinja2
+       Cleaning up...
+-----> Discovering process types
+       Procfile declares types -> web
+-----> Compiled slug size is 3.5MB
+-----> Launching... done, v2
+       http://stark-window-524.herokuapp.com deployed to Heroku
+
+To git@heroku.com:stark-window-524.git
+ * [new branch]      master -> master
+Before looking at the app on the web, we’ll need to scale the web process:
+$ heroku ps:scale web=1
+Scaling web processes... done, now running 1
+Now, let’s check the state of the app’s processes:
+$ heroku ps
+Process       State               Command
+------------  ------------------  ------------------------------
+web.1         up for 10s          python app.py
+The web process is up. Review the logs for more information:
+$ heroku logs
+2011-08-20T16:33:39+00:00 heroku[slugc]: Slug compilation started
+2011-08-20T16:34:07+00:00 heroku[api]: Config add PYTHONUNBUFFERED by craig@example.com
+2011-08-20T16:34:07+00:00 heroku[api]: Release v1 created by craig@example.com
+2011-08-20T16:34:07+00:00 heroku[api]: Deploy 67b7e54 by craig@example.com
+2011-08-20T16:34:07+00:00 heroku[api]: Release v2 created by craig@example.com
+2011-08-20T16:34:08+00:00 heroku[web.1]: State changed from created to starting
+2011-08-20T16:34:08+00:00 heroku[slugc]: Slug compilation finished
+2011-08-20T16:34:10+00:00 heroku[web.1]: Starting process with command `python app.py`
+2011-08-20T16:34:10+00:00 app[web.1]:  * Running on http://0.0.0.0:17658/
+2011-08-20T16:34:11+00:00 heroku[web.1]: State changed from starting to up
+Looks good. We can now visit the app with heroku open.
+Shell
+Cedar allows you to launch a Python shell attached to your local terminal for experimenting in your app’s environment:
+$ heroku run python
+Running python attached to terminal... up, run.1
+Python 2.7.1 (r271:86832, Jun 26 2011, 01:08:11)
+[GCC 4.4.3] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+From here you can import some of your application modules.
+Using A Different WSGI Server
+The examples above used the default HTTP server for Flask. For production apps, you may wish to use a more production-ready embedded webserver, such as Tornado, gevent’s WSGI server, or Gunicorn.
+Let’s try adding Gunicorn to our Flask app by adding the gunicorn dependency to our Pip file, and changing what command used to run the web process in Procfile:
+requirements.txt
+Flask==0.8
+gunicorn==0.13.4
+Procfile
+web: gunicorn app:app -b 0.0.0.0:$PORT -w 3
+Update dependencies:
+$ pip install -r requirements.txt
+Requirement already satisfied (use --upgrade to upgrade): Flask==0.8 in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 1))
+Downloading/unpacking gunicorn==0.13.4 (from -r requirements.txt (line 2))
+...
+Successfully installed gunicorn
+Cleaning up...
+Run locally with Foreman:
+$ foreman start
+23:57:27 web.1     | started with pid 87365
+23:57:27 web.1     | 2011-08-26 23:57:27 [87366] [INFO] Starting gunicorn 0.13.4
+23:57:27 web.1     | 2011-08-26 23:57:27 [87366] [INFO] Listening at: http://0.0.0.0:5000 (87366)
+23:57:27 web.1     | 2011-08-26 23:57:27 [87366] [INFO] Using worker: sync
+23:57:27 web.1     | 2011-08-26 23:57:27 [87367] [INFO] Booting worker with pid: 87367
+Deploy:
+$ git commit -am "use gunicorn"
+$ git push heroku master
+Running a Worker
+The Procfile format lets you run any number of different process types. For example, let’s say you wanted a worker process to complement your web process:
+Procfile
+web: python app.py
+worker: python worker.py
+Running more than one dyno for an extended period may incur charges to your account. Read more about dyno-hour costs.
+Push this change to Heroku, then launch a worker:
+$ heroku ps:scale worker=1
+Scaling worker processes... done, now running 1
+Check heroku ps to see that your worker comes up, and heroku logs to see your worker doing its work.
+Next Step: Database-driven Apps via Django
+The Django tutorial will guide you through setting up a database-driven Django app on Heroku.
+ 
+The Reference:
+      https://devcenter.heroku.com/articles/python
+https://devcenter.heroku.com/
+
