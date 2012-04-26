@@ -1,6 +1,32 @@
 day tips
 ========
 
+2012.04.26
+----------
+
+   1. 显示代码提交动画效果
+   https://code.google.com/p/codeswarm/
+   http://www.cnblogs.com/cos2004/archive/2012/01/18/2325851.html
+   >svn log -v > my_svn.log 
+   Convert the log to our event-based XML format:
+   > python convert_logs/convert_logs.py -s path/to/my_svn.log -o svn_log.xml
+   
+   --把xml文件拷贝到codeswarm/data下，备份原来的sample-repevents.xml文件，然后把你的xml文件改名为sample-repevents.xml 
+   找到data/sample.config文件打开，配置你的动画参数，例如改以下参数可以使字体更大，我的是20：
+   FontSize=20
+   BoldFontSize=20
+   InfoFontSize=20
+   ColorAssign这个参数是表示某种类型的代码的颜色，如：
+   ColorAssign1="js",".*js.*", 0,0,255, 0,0,255
+   表示js代码为动画里蓝色的点 。
+   TakeSnapshots为是否保存截图
+   ...更多配置自己去发掘。
+   
+   到这已经完成了所有配置了。双击打开根目录下的run.bat文件，然后enter就可以看到动画了
+
+   git
+   https://github.com/yangjiandong/code_swarm
+
 2012.04.23
 ----------
 
