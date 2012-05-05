@@ -1,6 +1,37 @@
 python
 ========
 
+2012.05.05
+----------
+
+   1. pyc,pyo
+
+   批量生成pyc文件
+   一般来说，我们的工程都是在一个目录下的，一般不会说仅仅编译一个py文件而已，而是需要把整个文件夹下的py文件都编译为pyc文件，python又为了我们提供了另一个模块：compileall 。使用方法如下：
+   import compileall
+   compileall.compile_dir(r’H:\game’)
+
+compile_dir(dir[, maxlevels[, ddir[, force[, rx[, quiet]]]]])
+dir 表示需要编译的文件夹位置
+maxlevels 表示需要递归编译的子目录的层数，默认是10层，即默认会把10层子目录中的py文件编译为pyc
+ddir 英文没明白，原文：it is used as the base path from which the filenames used in error messages will be generated。
+force 如果为True，则会强制编译为pyc，即使现在的pyc文件是最新的，还会强制编译一次，pyc文件中包含有时间戳，python编译器会根据时间来决定，是否需要重新生成一次pyc文件
+rx 表示一个正则表达式，比如可以排除掉不想要的目录，或者只有符合条件的目录才进行编译
+quiet 如果为True，则编译后，不会在标准输出中，打印出信息
+
+   如果需要特殊的单独编译，则只需要使用py_complie这个模块就行了，如下
+import py_compile
+py_compile.compile(r’H:\game\test.py’)
+compile函数原型：
+compile(file[, cfile[, dfile[, doraise]]])
+file 表示需要编译的py文件的路径
+cfile 表示编译后的pyc文件名称和路径，默认为直接在file文件名后加c 或者 o，o表示优化的字节码
+dfile 错误消息保存的路径
+doraise 可以是两个值，True或者False，如果为True，则会引发一个PyCompileError，否则如果编译文件出错，则会有一个错误，默认显示sys.stderr中，而不会引发异常
+
+   2. list python installed module
+   yolk -l
+
 2012.04.23
 ----------
 
@@ -12,7 +43,11 @@ python
 
    To use an environment, run the activate.bat batch file in the Scripts subdirectory of that environment
    other/Getting Started with Python on Heroku/Cedar.txt
-
+   
+   -- 不同版本
+   virtualenv --python=c:\Python25\python.exe envname
+   virtualenv --python=/usr/bin/python2.6 myvirtualenv
+   
 2012.04.19
 ----------
 
