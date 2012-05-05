@@ -1,6 +1,13 @@
 day tips
 ========
 
+2012.04.29
+----------
+
+   1. ipython editor in windows
+   http://stackoverflow.com/questions/655530/how-to-configure-ipython-to-use-gvim-on-windows
+   set EDITOR=gvim -f
+
 2012.04.26
 ----------
 
