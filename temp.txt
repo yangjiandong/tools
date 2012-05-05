@@ -1,6 +1,16 @@
 day tips
 ========
 
+2012.04.28
+----------
+
+   1. 如何把BT种子隐藏在图片内 
+   http://www.sharezy8.com/wangluozatan/463.html
+   a.将zhongzi.torrent压缩为rar文件，得到zhongzi.rar压缩包。 
+   b. cmd
+   copy/b d：huangtu.jpg+d：zhongzi.rar d：huangtu.jpg
+   c. 这就OK了，打开huangtu.jpg，图没变，把它改成rar格式看一看吧 
+   
 2012.04.26
 ----------
 
