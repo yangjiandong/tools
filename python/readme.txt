@@ -1,6 +1,22 @@
 python
 ========
 
+2012.05.08
+----------
+
+   1. bpython,类似ipython,unix风格
+   需要curses, http://www.lfd.uci.edu/~gohlke/pythonlibs/ 
+
+   其他日常module
+   pyflakes,rope,sphinx,numpy,scipy,matplotlib,pylint,pep8
+
+   2. portable python2.7 自带比较好用的ide
+   pyscripter
+
+   3. 最新版 python-guide
+   https://github.com/kennethreitz/python-guide
+   fork版本不能同步？
+
 2012.05.05
 ----------
 
