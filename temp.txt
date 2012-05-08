@@ -19,6 +19,52 @@ gem "eventmachine", "1.0.0.beta.4.1"
    ...
    
    -- 没成功
+
+   2. sphinx pdf
+   install rst2pdf
+   register rst2pdf in your conf.py Sphinx config
+   extensions = ['sphinx.ext.autodoc','rst2pdf.pdfbuilder']
+   run
+   sphinx-build -bpdf sourcedir outdir
+   参考： http://d.hatena.ne.jp/re_guzy/20101012/p1 
+
+   conf.py:
+pdf_stylesheets = ['sphinx','ja']
+import os
+font_dir = os.path.abspath(os.path.join(os.path.split(__file__)[0], os.pardir, 'fonts'))
+pdf_font_path = [font_dir, 'C:\WINDOWS\Fonts']
+pdf_language = "ja"
+
+   ja.json
+{
+  "embeddedFonts" : [
+    [
+        "VL-Gothic-Regular.ttf",
+        "VL-PGothic-Regular.ttf",
+        "ipam.ttf",
+        "verdanaz.ttf"
+     ]
+  ],
+  "fontsAlias" : {
+    "stdFont": "VL-PGothic-Regular",
+    "stdBold": "VL-PGothic-Regular",
+    "stdItalic": "VL-PGothic-Regular",
+    "stdBoldItalic": "VL-PGothic-Regular",
+    "stdMono": "VL-PGothic-Regular",
+    "stdMonoBold": "VL-PGothic-Regular",
+    "stdSanBold": "VL-PGothic-Regular",
+    "stdSansBold": "VL-PGothic-Regular"
+  },
+  "styles" : [
+    ["base" , {
+      "wordWrap": "CJK",
+      "kerning" : true
+    }],
+    ["literal" , {
+      "wordWrap": "None"
+    }]
+  ]
+}
    
 2012.04.29
 ----------
