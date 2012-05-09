@@ -1,6 +1,39 @@
 python
 ========
 
+2012.05.09
+----------
+
+   1. Python 中一条语句解决「去重 tuple、list 类型的元素数据」，
+   我经常使用这 2 种奇淫巧计
+   （input = [1,2,3,4,3,2] ）。
+   1:「 {}.fromkeys(input).keys() 」
+   2:「 [x for x in input if x not in locals()['_[ 1 ]']] 」
+
+   2. sphinx pdf
+   other/sphinx.rst2pdf.txt
+
+   3. python user dll
+   ctypes:
+import ctypes
+# give location of dll
+mydll = ctypes.cdll.LoadLibrary("C:\\demo.dll")
+
+   http://starship.python.net/crew/theller/ctypes/tutorial.html 
+   http://python.net/crew/theller/ctypes/tutorial.html 
+
+   or swing,create c head to python 
+   http://www.swig.org/translations/chinese/index.html
+
+   pefile,read and work with Portable executable files
+   https://code.google.com/p/pefile/ 
+
+   4. pil for python2.7
+   The _imagingft C module is not installed   
+   -- 重新下载安装  http://www.lfd.uci.edu/~gohlke/pythonlibs/ 
+   -- 900 k 的版本
+
+
 2012.05.08
 ----------
 
