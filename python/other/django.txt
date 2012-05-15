@@ -1,0 +1,270 @@
+django
+=======
+
+2012.05.07
+----------
+
+   1. django log
+
+   http://obroll.com/setup-logger-in-django-1-3-to-show-warning-error-in-console-development/
+   settings_local.py
+   -- Also make sure your enable DEBUG in settings.py. Now, you can see that logger show up in the console 
+ 
+2012.05.04
+----------
+
+   1. django webservice
+   Welcome to Tastypie!
+   Tastypie is an webservice API framework for Django. It provides a convenient, yet powerful and highly customizable, abstraction for creating REST-style interfaces.
+
+2012.02.24
+----------
+
+   1. 在top监视窗口显示Django当前正在执行的请求URL
+   http://ahuaxuan.iteye.com/blog/286277
+   forum/middleware/process_request.py
+
+   在django中写一个middleware.然后在 process_request方法中修改当前进程的名称
+
+2012.02.23
+----------
+
+   1. use cherrypy
+   http://www.defuze.org/archives/262-hosting-a-django-application-on-a-cherrypy-server.html
+
+   pip install cherrypy
+   run_cherrypy.py
+
+2012.02.20
+----------
+
+   1. django 访问存储过程
+   http://stackoverflow.com/questions/805393/what-is-the-best-way-to-access-stored-procedures-in-djangos-orm
+
+   http://djangosnippets.org/snippets/118/
+   models/model.util.py
+
+   other:
+   use the connection utility in Django:
+   from django.db import connection
+   cursor = connection.cursor()
+   cursor.execute("SQL STATEMENT CAN BE ANYTHING")
+   then you can fetch the data:
+
+   cursor.fetchone()
+   or:
+   cursor.fetchall()
+   More info here: http://docs.djangoproject.com/en/dev/topics/db/sql/
+
+   Executing custom SQL directly
+
+   2. django 项目
+   https://github.com/p2pu/lernanta
+
+2012.02.19
+----------
+
+   1. django,solr
+   http://dmyz.org/archives/354
+
+   pip install pysolr,django-haystack
+   src/forum/skins/default/templates/search/search.html
+   src/search_sites.py
+   src/settings.py
+   src/urls.py
+
+   2. django less
+   http://dmyz.org/archives/336
+
+   npm install less -g
+
+   3. django use nosql,mongodb
+   pip install -U mongoengine
+   pip install pymongo
+
+2012.02.17
+----------
+
+   1. django reverse()
+   自动对应url,
+   url配置好后,如(r^'list/member','haha'),不需硬编码，编码中只要用reverse('haha')
+
+2012.02.16
+----------
+
+   1. 关注下 https://github.com/vicalloy
+   https://github.com/vicalloy/timeline-site
+   https://github.com/vicalloy/LBForum
+   Branch_0.7 \scripts\create_lbforum_env.py初始化lbforum的python虚拟环境
+
+2012.02.14
+----------
+
+   1. 表字段维护
+   book model 中增加定义:
+   num_pages = models.IntegerField(blank=True, null=True)
+
+   显示相应sql:
+   manage.py sqlall books
+
+   数据库后台操作:
+   ALTER TABLE books_book ADD COLUMN num_pages integer;
+   --以上操作有点笨
+
+   2. 增加额外的manager方法是为模块添加表级功能的首选办法
+   class BookManager(models.Manager):
+     def title_count(self, keyword):
+       return self.filter(title__icontains=keyword).count()
+
+   3. property 方法
+   def _get_full_name(self):
+        "Returns the person's full name."
+        return u'%s %s' % (self.first_name, self.last_name)
+   full_name = property(_get_full_name)
+
+   4. 执行原始SQL查询
+from django.db import connection, models
+
+class PersonManager(models.Manager):
+    def first_names(self, last_name):
+        cursor = connection.cursor()
+        cursor.execute("""
+            SELECT DISTINCT first_name
+            FROM people_person
+            WHERE last_name = %s""", [last_name])
+        return [row[0] for row in cursor.fetchone()]
+
+class Person(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    objects = PersonManager()
+
+Person.objects.first_names('Lennon')
+
+2012.02.13
+----------
+
+   1. html自动转意
+   用safe过滤器为单独的变量关闭自动转意
+   用标签autoescape来包装整个模板(或者模板中常用的部分)
+
+   2. 合法的标签库
+   templatetags/
+   请在你的模块的顶部插入如下语句：
+   from django import template
+   register = template.Library()
+
+   需要用 Library 实例来注册它，这样就能通过Django的模板语言来使用了：
+   register.filter('cut', cut)
+   register.filter('lower', lower)
+   或
+   装饰器register.filter()：
+   @register.filter(name='cut')
+
+2012.02.12
+----------
+
+   1. #需要在每个URL后添加斜杠
+   APPEND_SLASH = True
+
+   2. 正则表达式字符串的开头字母“r”。 它告诉Python这是个原始字符串，不需要处理里面的反斜杠（转义字符）
+   (r'^time/plus/(\d{1,2})/$', hours_ahead),
+
+   3. 模板避免调用同名方法
+   delete.alters_data = True
+
+   4. 硬编码
+   def book_list(request):
+    db = MySQLdb.connect(user='me', db='mydb', passwd='secret', host='localhost')
+    cursor = db.cursor()
+    cursor.execute('SELECT name FROM books ORDER BY name')
+    names = [row[0] for row in cursor.fetchall()]
+    db.close()
+    return render_to_response('book_list.html', {'names': names})
+
+   5. models
+   命令验证模型的有效性：
+   python manage.py validate
+
+   命令来生成 CREATE TABLE 语句
+   python manage.py sqlall books
+
+   python manage.py syncdb
+
+   6. model
+    __unicode__() 方法告诉Python如何将对象以unicode的方式显示出来
+
+    verbose_name, 字段标签
+
+2012.02.11
+----------
+
+   1. django multi database
+   https://docs.djangoproject.com/en/1.3/topics/db/multi-db/#an-example
+
+2012.02.10
+----------
+
+   1. django 的设计模式
+   http://dreamond.flycoder.org/?p=139
+   save/django.pattern.txt
+
+   2. Model proxy
+   如果一个model A继承了另一个model B，并且A和B仅仅是行为方法上的不同，那就没必要为A新建一个表，
+   而可以把A的增删改查代理给B，这在Django中称为proxy model
+
+   3. ~models.Q
+
+   简化 sql 操作
+
+   4. 装饰器 decorator
+
+2012.02.09
+----------
+
+   1. django-book 2.0
+   http://code.google.com/p/djangobook-2-code/
+
+2012.02.07
+----------
+
+   1. django 的国际化
+
+   http://djangobook.py3k.cn/2.0/chapter19/
+
+   from django.utils.translation import ugettext_lazy as _
+
+   移除国际化:
+   a. USE_I18N = False
+   b. or
+   TEMPLATE_CONTEXT_PROCESSORS 设置中移除 'django.core.context_processors.i18n'
+
+   国际化步骤:
+   a. 使用函数 ugettext() 来指定一个翻译字符串,example:output = _("Welcome to my site.")
+   b. 惰性翻译,使用 django.utils.translation.gettext_lazy() 函数，使得其中的值只有在访问时才会被翻译，而不是在 gettext_lazy() 被调用时翻译。
+   c. 模板代码,Django模板使用两种模板标签，且语法格式与Python代码有些许不同。 为了使得模板访问到标签，需要将 {% load i18n %} 放在模板最前面。
+      {% trans %}模板标记翻译一个常量字符串 (括以单或双引号) 或 可变内容
+      ...
+   d. 创建语言文件
+      django-admin.py makemessages -l de
+      --指定扩展名
+      django-admin.py makemessages -l de -e html,txt -e xml
+
+      update:
+      django-admin.py makemessages -a
+
+      编译信息文件
+      django-admin.py compilemessages
+
+django 项目
+===========
+
+   1. https://github.com/p2pu/lernanta
+
+   2. https://github.com/yangjiandong/courtside
+   --结合google map 制定game，比较有趣
+
+   3. https://github.com/renxing/quora-python
+   Quora clone write in Python + Tornado + MongoDB
+
+   --END

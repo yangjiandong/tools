@@ -1,6 +1,18 @@
 python examples
 ===============
 
+2012.05.15
+----------
+
+   1. python china
+   http://python-china.org/
+   https://github.com/lepture/june
+   
+   2. PyCoder's Weekly
+   http://pycoders-weekly-chinese.readthedocs.org/en/latest/
+   https://github.com/PyCodersCN/PyCodersCN
+  
+  
 2011.12.08
 ----------
 

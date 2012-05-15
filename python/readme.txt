@@ -1,6 +1,27 @@
 python
 ========
 
+2012.05.15
+----------
+
+   1. use ming32 compile
+   install MinGW with C++ Compiler option checked
+   add C:\MinGW\bin to your PATH
+   in PYTHONPATH\Lib\distutils, create a file distutils.cfg and add these lines:
+   [build]
+   compiler=mingw32
+
+   >cd D:\ruby-1.9.3-p0-i386-mingw32
+   >msys.bat
+   >cd ..
+   >pip install -r requirements.txt
+
+   2. delply
+   http://dmyz.org/archives/381
+   nginx.conf,update.py
+
+   use: nginx + uwsgi
+   
 2012.05.09
 ----------
 

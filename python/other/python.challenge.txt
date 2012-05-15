@@ -1,0 +1,48 @@
+python challange
+================
+
+http://holger.thoelking.name/python-challenge/all
+
+2012.02.22
+----------
+
+1. level 1
+
+Python String maketrans() Method
+--字符替换，定义好需替换的字符，然后处理字符串
+
+#!/usr/bin/python
+
+from string import maketrans   # Required to call maketrans function.
+
+intab = "aeiou"
+outtab = "12345"
+trantab = maketrans(intab, outtab)
+
+str = "this is string example....wow!!!";
+print str.translate(trantab);
+This will produce following result:
+
+th3s 3s str3ng 2x1mpl2....w4w!!!
+
+2. Level 2
+
+URI:
+http://www.pythonchallenge.com/pc/def/ocr.html
+
+print "/".join(re.findall("[A-Za-z]", data))
+--以 / 连接 data 中匹配[A-Za-z]正则表达式的字符
+
+3. Level 3
+
+4. Level 4
+python-challenge-4.py
+
+re.search(nothing_rep, source).group(1)
+
+5. Level 5
+
+URI:
+http://www.pythonchallenge.com/pc/def/peak.html
+
+   --END
