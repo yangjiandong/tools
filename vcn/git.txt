@@ -1,6 +1,19 @@
 git
 ====
 
+2012.05.19
+----------
+
+1. git中的merge和rebase
+
+   使用git时，如果遇到分支的情况，
+   比如两个开发人员都从commit2开始各自开发，然后分贝在本地完成了两个commit，
+   合并起来，通常会有两种方式，一种对两个分支的代码进行merge，通常会执行的命令为:
+   1: git pull,此时需采用merge
+   or
+   2: git pull --rebase,
+   是一种良好的实践，当本地有commit，而需要和别人的commit合并时，建议使用rebase来保证修改历史的轨迹的简洁 
+
 2012.04.17
 ----------
 
@@ -21,6 +34,8 @@ use cygwin:
   '
 
   git push origin master
+
+  -- 暂时采用cygwin中的git解决push路径问题
 
 2012.03.31
 ----------
