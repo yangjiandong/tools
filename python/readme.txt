@@ -1,6 +1,12 @@
 python
 ========
 
+2012.05.17
+----------
+
+   1. python 常用模块
+   pefile: windows pe文件解析器 , https://code.google.com/p/pefile/wiki/UsageExamples 
+
 2012.05.15
 ----------
 
