@@ -1,6 +1,13 @@
 python examples
 ===============
 
+2012.05.29
+----------
+
+   1. zinnia blog
+
+   git://github.com/Fantomas42/django-blog-zinnia.git
+
 2012.05.24
 ----------
 
