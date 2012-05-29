@@ -1,10 +1,26 @@
 python examples
 ===============
 
+2012.05.24
+----------
+
+   1. django
+   https://github.com/django-debug-toolbar/django-debug-toolbar
+   https://github.com/coleifer/django-utils
+   git://github.com/jezdez/django_compressor.git
+
+   django site
+   http://www.djangosites.org/with-source/
+
+   twilio:
+   Twilio is a powerful HTTP API that allows you to build powerful voice & SMS apps.
+   https://github.com/rdegges/django-twilio  
+
 2012.05.15
 ----------
 
    1. python china
+   -- 只是个引擎，没什么意义
    http://python-china.org/
    https://github.com/lepture/june
    

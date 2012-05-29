@@ -1,6 +1,21 @@
 python
 ========
 
+2012.05.29
+----------
+
+   1. pip 安装模块弹出窗口的解决
+   http://stackoverflow.com/questions/5814759/python-packages-open-new-window
+
+   a. 对一个.py文件右键-》打开方式-》选择python并勾住始终是用选择的程序打开这种文件。 
+      -- 如果选择不了python，先要给python目录赋予系统管理员权限
+
+   b. create pip2.bat
+@echo off
+python "D:\Portable Python 2.7.3.1\App\Scripts\pip-script.py" %*
+   
+   use: pip2 install xxx
+
 2012.05.17
 ----------
 
