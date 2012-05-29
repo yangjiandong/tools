@@ -1,3 +1,6 @@
+pip install ipython
+pip install bpython
+curses http://www.lfd.uci.edu/~gohlke/pythonlibs/#curses
 
 Graphical interface	wxPython	http://wxpython.org	
 Graphical interface	pyGtk	http://www.pygtk.org	
