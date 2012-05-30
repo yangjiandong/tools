@@ -23,6 +23,13 @@ python examples
    Twilio is a powerful HTTP API that allows you to build powerful voice & SMS apps.
    https://github.com/rdegges/django-twilio  
 
+   django debug:
+   django-debug-toolbar 为django站点增加调试功能，支持查看django生成的sql语句，及sql的执行时间等，功能强大。不过由于该组件使用了jquery，似乎会使用部分使用了jquery的站点无法正常工作。
+   django-sentry  disqus的开源项目。将django的所有异常保存到数据库，并提供异常的察看界面。
+      https://github.com/dcramer/sentry 
+   django-devserver django开发服务器扩展。将SQL语句/执行时间等调试信息直接显示在控制台上，而且是以彩色的方式显示。
+      https://github.com/dcramer/django-devserver 
+
 2012.05.20
 ----------
 
