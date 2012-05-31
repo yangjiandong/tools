@@ -1,6 +1,14 @@
 day tips
 ========
 
+2012.05.30
+----------
+
+   1. Chrome专用！
+
+修改Chrome的默认搜索引擎为：。http://64.233.183.132/search?gbv=1&tbo=1&as_qdr=all&hl=en&num=50&q=%s
+选项 - 高级 - 内容设置 （chrome://settings/content） 里禁用掉 64.233.183.132 这个域名的javascript运行权限。
+
 2012.05.08
 ----------
 
