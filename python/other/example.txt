@@ -25,6 +25,10 @@ python examples
 
    网上贴图，界面比较清新
    https://github.com/overshard/pinry 
+   timeline
+   git://github.com/vicalloy/timeline-site.git
+   simpletodo
+   http://haoluobo.com/2011/07/simple-todo-django/
 
    django debug:
    django-debug-toolbar 为django站点增加调试功能，支持查看django生成的sql语句，及sql的执行时间等，功能强大。不过由于该组件使用了jquery，似乎会使用部分使用了jquery的站点无法正常工作。

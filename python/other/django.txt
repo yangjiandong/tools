@@ -1,6 +1,61 @@
 django
 =======
 
+2012.06.02
+----------
+
+   1. south
+
+   a. 生成初始化数据库的south脚本。
+   允许上述命令后将在对于的app目录下生成 migrations目录，south的数据库迁移脚本即保存在该目录。
+   ./manage.py schemamigration southtut --initial
+   
+   b. 在所用south后，syncdb命令不会为使用south托管的app生成数据库。
+   migrate命令用于执行south的数据库迁移脚本， 实现数据库更改。
+   在这里执行的操作是为southtut创建相关的数据库表。
+   不带app名字时，将对project中的所有app进行migrate操 作。
+   ./manage.py migrate southtut
+   
+   c. 在很多应用场景中，我们已经用syncdb将数据库给创建好了。
+   这时候运行上面的migrate命令将会提示相关表已经存在，命令执行失败。
+   这 时候我们需要告诉south需要跳过某些migrate操作。
+   上面的命令将告诉south，系统已经执行过了0001号数据库迁移脚本。
+   ./manage.py migrate southtut 0001 --fake
+   
+   d. 接下来我们对models进行了某些改动，修改后增减了某些字段。
+   
+   c. 该命令将自动生成数据库的迁移脚本。
+   在migrations目录下可以看到新增加了文件0002_xxx.py，该文件即是此次models改动的数据库升级脚本。
+   打开文件后可看到其中有一个类Migration，类中有两个方法forwards和backwards。
+   这两个方法分别实现数据库升级和会滚时对数据库的操作，具体指令的含义参考south的数据库API。
+   ./manage.py schemamigration southtut --auto
+   
+   d. 应用models的改动到数据库
+   ./manage.py migrate southtut
+
+   2. 合理的配置文件组织方式
+
+|~settings/
+| |-__init__.py
+| |-base.py   #默认配置信息
+| |-dev.py    #开发环境的配置
+| |-local.sample    #本地的扩展配置在dev和production的最后进行import
+| |-pre.sample    #设置当前使用的配置为生产环境还是开发环境
+| `-production.py    #生产环境的配置
+   
+   使用方式
+   DJANGO_SETTINGS_MODULE
+   django的admin脚本提供了settings参数用于指定当前使用的配置文件
+      django-admin.py shell --settings=settings.dev
+
+   在wsgi脚本中则可直接设置需要使用的settings
+   deploy.wsgi
+      os.environ['DJANGO_SETTINGS_MODULE'] = settings.production
+
+   简化参数
+   当然，如果每次使用django-admin.py的时候都要带上settings参数还是非常恼人，所以推荐的做法是在pre.py中配置自己所需要使用的配置文件。
+   SETTINGS = 'production' #dev     
+   
 2012.05.07
 ----------
 
