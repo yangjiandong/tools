@@ -1,0 +1,665 @@
+Python的神奇方法指南
+关注戴铭
+添加标签： 
+内容目录
+介绍
+构建和初始化
+使操作符在自定义类内工作
+描述你的类
+属性访问控制
+制作自定义序列
+反射
+可调用对象
+上下文管理
+构建描述符对象
+Pickling你的对象
+总结
+附录：如何调用神奇方法
+ 
+ 
+1.介绍
+这份指南是几个月内最有价值的Blog投稿精华。它的主题是向大家讲述Python中的神奇方
+法。何为神奇方法呢？它们是面向Python中的一切，是一些特殊的方法允许在自己的定义
+类中定义增加“神奇”的功能。它们总是使用双下划线（比如 __init__或__lt__），但它们
+的文档没有很好地把它们表现出来。所有这些神奇方法都出现在Python的官方文档中，但
+内容相对分散，组织结 构也显得松散。还有你会难以发现一个实例（虽然他们被设计很棒
+，在语言参考中被详细描述，可之后就会伴随着枯燥的语法描述等）。所以，为了解决我
+认为在Python文档中的一大败笔，我打算用更多纯英语，实例驱动的文档来说明Python的
+神奇方法。然后我就开始花了几周的时间来写blog，而现在我已经完成了它们，并将它们
+合订成一份指南。我希望你喜欢它。把它当作一个教程，进阶，或者使用参考；我希望它
+能够成为一份针对Python方法的用户友好指南。
+
+
+2.构建和初始化
+相信大家都熟悉这个最基础的神奇方法__init__。它令你能自定义一个对象的初始化行为
+。而当我调用x=SomeClass()时，__init__ 并不是最先被调用的。实际上有一个叫做
+__new__的方法，事实上是它创建了实例，它传递任何参数给初始化程序来达到创建的目的
+。在对象生命周期结束 时，调用__del__。让我们更近地观察下这3个神奇方法吧：
+
+__new__(cls,[...)
+一 个对象的实例化时__new__是第一个被调用的方法。在类中传递其他任何参数到
+__init__。__new__很少被使用，这样做确实有其目的，特别 是当一个子类继承一个不可
+改变的类型(一个元组或一个字符串)时。我不打算再继续深入追求__new__的细节了，因为
+这不会产生多大用处，因为在Python Docs内已经涵盖了一份巨详细的说明了。
+
+
+__init__(self,[...)
+类的初始化。它会获得初始构建调用传过来的任何东西（举例来说就是，当我们调用
+x=SomeClass(10,'foo'),__init__就会把传过来的10和'foo'作为参数。__init__在Python
+的类定义中几乎普遍被使用）
+
+
+__del__(self)如 果__new__和__init__是对象的构造器，那么__del__就是析构器。它不
+实现声明为del x(这样的代码不会解释成x.__del__())的行为。相反，它定义为当一个对
+象被垃圾回收时的行为。这可能对可能需要额外清理的对象相当有用，比如 sockets或文
+件对象。但要小心，如果对象仍处于存活状态而当被解释退出时，__del__没有保证就会被
+执行，因此这样的__del__不能作为良 好的编码规范的替代。（就像当你完成操作总是要
+关闭一次连接。但事实上，__del__几乎永远不会执行，就因为它处于不安全情况被调用了
+。使用时保持警 惕！）
+
+
+把上述这些内容合在一起，就成了一份__init__和__del__的实际使用用例：
+from os.path import join
+class FileObject:
+    '''对文件对象的包装，确保文件在关闭时得到删除'''
+                                                     
+    def __init__(self, filepath='~', filename='sample.txt'):
+        # 按filepath，读写模式打开名为filename的文件
+        self.file=open(join(filepath,filename), 'r+')
+                                                         
+    def __del__(self):
+        self.file.close()
+        del self.file
+ 
+ 
+3.使操作符在自定义类内工作
+使用Python神奇方法的优势之一就是它提供了一种简单的方式能让对象的行为像内建类型
+。这意味着你可以避免用丑陋，反直觉和非标准方法执行基本运算。在某些语言中，通常
+会这样做：
+ 
+if instance.equals(other_instance):
+    # do something
+ 
+ 
+ 
+你也应该在Python确实会这样做，但同时它会增加用户的疑惑以及不必要的冗长。不同的
+库可能会对相同的运算采用不同的命名，这使得用户比平常干了更多的事。依靠神奇方法
+的力量，你可以定义一个方法(比如__eq__),然后带代替我们真实的意图：
+ 
+if instance == other_instance:
+    # do something
+现在你看到的是神奇方法力量的一部分。绝大多数都允许我们定义为运算符本身的意义，
+当用在我们自己定义的类上就像它们是内建类型。
+
+
+3.1 神奇方法——比较
+Python有一整套神奇方法被设计用来通过操作符实现对象间直观的比较，而非别扭的方法
+调用。它们同样提供了一套覆盖Python对象比较的默认行为(通过引用)。以下是这些方法
+的列表以及做法：
+
+
+__cmp__(self, other) __cmp__ 是神奇方法中最基础的一个。实际上它实现所有比较操作
+符行为(<,==,!=,等)，但它有可能不按你想要的方法工作(例如，一个实例是否等于另一
+个这取决于比较的准则，以及一个实例是否大于其他的这也取决于其他的准则)。如果self
+< other，那__cmp__应当返回一个负整数；如果self == other，则返回0；如果self >
+other，则返回正整数。它通常是最好的定义，而不需要你一次就全定义好它们，但当你需
+要用类似的准则进行所有的比较时，__cmp__会是一个很好的 方式，帮你节省重复性和提
+高明确度。
+
+
+__eq__(self, other)
+定义了相等操作符，==的行为。
+__ne__(self, other)
+定义了不相等操作符，!=的行为。
+__lt__(self, other)
+定义了小于操作符，<的行为。
+__gt__(self, other)
+定义了大于操作符，>的行为。
+__le__(self, other)
+定义了小于等于操作符，<=的行为。
+__ge__(self, other)
+定义了大于等于操作符，>=的行为。
+
+
+举一个例子，设想对单词进行类定义。我们可能希望能够按内部对string的默认比较行为
+，即字典序(通过字母)来比较单词，也希望能够基于某些其他的准则，像是长度或音节数
+。在本例中，我们通过单词长度排序，以下给出实现：
+ 
+class Word(str):
+    '''单词类，比较定义是基于单词长度的'''
+                                            
+    def __new__(cls, word):
+        # 注意，我们使用了__new__,这是因为str是一个不可变类型，
+        # 所以我们必须更早地初始化它（在创建时）
+        if ' ' in word:
+            print "单词内含有空格，截断到第一部分"
+            word = word[:word.index(' ')] # 在出现第一个空格之前全是字符了现在
+        return str.__new__(cls, word)
+                                                
+    def __gt__(self, other):
+        return len(self) > len(other)
+    def __lt__(self, other):
+        return len(self) < len(other)
+    def __ge__(self, other):
+        return len(self) >= len(other)
+    def __le__(self, other):
+        return len(self) <= len(other)
+ 
+现在，我们可以创建2个单词（通过Word('foo')和Word('bar'))并基于它们的长度进行比
+较了。注意，我们没有定义__eq__ 和 __ne__。这是因为这可能导致某些怪异的行为（特
+别是当比较Word('foo') == Word('bar')将会得到True的结果）。基于单词长度的相等比
+较会令人摸不清头脑，因此我们就沿用了str本身的相等比较的实现。
+
+
+现在可能是一个好时机来提醒你一下，你不必重载每一个比较相关的神奇方法来获得各种
+比较。标准库已经友好地为我们在模板functools中提供了一个装 饰(decorator)类，定义
+了所有比较方法。你可以只重载__eq__和一个其他的方法（比如__gt__,__lt__，等）。这
+个特性只在 Python2.7(后?)适用，但当你有机会的话应该尝试一下，它会为你省下大量的
+时间和麻烦。你可以通过在你自己的重载方法在加上 @total_ordering来使用。
+
+
+3.2 神奇方法——数字就像你可以通过重载比较操作符的途径来创建你自己的类实例，你同
+样可以重载数字操作符。系好你们的安全带，朋友们，还有很多呢。处于本文组织的需要
+，我会把数字的神奇方法分割成5块：一元操作符，常规算术操作符，反射算术操作符，增
+量赋值，类型转换。
+
+
+一元操作符
+一元运算和函数仅有一个操作数，比如负数，绝对值等
+__pos__(self)
+实现一元正数的行为(如：+some_object)
+__neg__(self)
+实现负数的行为(如: -some_object)
+__abs__(self)
+实现内建abs()函数的行为
+__invert__(self)
+实现用~操作符进行的取反行为。你可以参考Wiki:bitwise operations来解释这个运算符究竟会干什么
+
+
+常规算术操作符
+现在我们涵盖了基本的二元运算符:+，-，*等等。其中大部分都是不言自明的。
+__add__(self, other)
+实现加法
+__sub__(self, other)
+实现减法
+__mul__(self, other)
+实现乘法
+__floordiv__(self, other)
+实现地板除法，使用//操作符
+__div__(self, other)
+实现传统除法，使用/操作符
+__truediv__(self, other)
+实现真正除法。注意，只有当你from __future__ import division时才会有效
+__mod__(self, other)
+实现求模，使用%操作符
+__divmod__(self, other)
+实现内建函数divmod()的行为
+__pow__(self, other)
+实现乘方，使用**操作符
+__lshift__(self, other)
+实现左按位位移，使用<<操作符
+__rshift__(self, other)
+实现右按位位移，使用>>操作符
+__and__(self, other)
+实现按位与，使用&操作符
+__or__(self, other)
+实现按位或，使用|操作符
+__xor__(self, other)
+实现按位异或，使用^操作符
+
+
+反射算术操作符
+你知道我会如何解释反射算术操作符？你们中的有些人或许会觉得它很大，很可怕，是国外的概念。但它实际上很简单，下面给一个例子：
+ 	some_object + other
+这是“常规的”加法。而反射其实相当于一回事，除了操作数改变了改变下位置：
+ 	other + some_object
+因此，所有这些神奇的方法会做同样的事等价于常规算术操作符，除了改变操作数的位置
+关系，比如第一个操作数和自身作为第二个。此外没有其他的操作方式。在 大多数情况下
+，反射算术操作的结果等价于常规算术操作，所以你尽可以在刚重载完__radd__就调用
+__add__。干脆痛快：__radd__(self, other)
+实现反射加法
+__rsub__(self, other)
+实现反射减法
+__rmul__(self, other)
+实现反射乘法
+__rfloordiv__(self, other)
+实现反射地板除，用//操作符
+__rdiv__(self, other)
+实现传统除法，用/操作符
+__rturediv__(self, other)
+实现真实除法，注意，只有当你from __future__ import division时才会有效
+__rmod__(self, other)
+实现反射求模，用%操作符
+__rdivmod__(self, other)
+实现内置函数divmod()的长除行为，当调用divmod(other,self)时被调用
+__rpow__(self, other)
+实现反射乘方，用**操作符
+__rlshift__(self, other)
+实现反射的左按位位移，使用<<操作符
+__rrshift__(self, other)
+实现反射的右按位位移，使用>>操作符
+__rand__(self, other)
+实现反射的按位与，使用&操作符
+__ror__(self, other)
+实现反射的按位或，使用|操作符
+__rxor__(self, other)
+实现反射的按位异或，使用^操作符
+
+
+
+增量赋值
+Python也有各种各样的神奇方法允许用户自定义增量赋值行为。你可能已经熟悉增量赋值
+，它结合了“常规的”操作符和赋值。如果你仍不明白我在说什么，下面有一个例子：
+ 
+def __setattr__(self, name, value):
+    self.name = value
+    # 当每次给一个类属性赋值时，会调用__setattr__(),这就形成了递归
+    # 因为它真正的含义是 self.__setattr__('name', value)
+    # 所以这方法不停地调用它自己，变成了一个无法退出的递归最终引发crash
+                                     
+def __setattr__(self, name, value):
+    self.__dict__[name] = value # 给字典中的name赋值
+    # 在此自定义行为
+再一次，Python的神奇方法向我们展示了其难以置信的能力，同时巨大的力量也伴随着重
+大的责任。重要的是让你明白正确使用神奇方法，这样你就不会破坏其他代码。
+
+
+那么，我们在关于定制类属性访问中学习了什么？不要轻易地使用，事实上它过于强大以
+及反直觉。这也是它为何存在的理由：Python寻求干坏事的可能性， 但会把它们弄得很难
+。自由是至高无上的，所以你可以做任何你想做的事情。以下是一个关于特殊属性访问方
+法的实际例子（注意，我们使用super因为并非所 有类都有__dict__类属性）：
+ 
+class AccessCounter:
+    '''一个类包含一个值和实现了一个访问计数器。
+    当值每次发生变化时，计数器+1'''
+                                
+    def __init__(self, val):
+        super(AccessCounter, self).__setattr__('counter',0)
+        super(AccessCounter, self).__setattr__('value', val)
+                                    
+    def __setattr__(self, name, value):
+        if name == 'value':
+            super(AccessCounter, self).__setattr__('counter', self.counter + 1)
+        # Make this unconditional.
+        # 如果你想阻止其他属性被创建，抛出AttributeError(name)异常
+        super(AccessCounter, self).__setattr__(name, value)
+                                
+    def __delattr__(self, name)
+        if name == 'value':
+            super(AccessCounter, self).__setattr__('counter', self.counter + 1)
+        super(AccessCounter, self).__delattr__(name)
+
+ 
+6.制作自定义序列
+很有多种方式可以让你的类表现得像内建序列(字典，元组，列表，字符串等)。这些是我
+迄今为止最喜欢的神奇方法了，因为不合理的控制它们赋予了你一种魔术般地让你的类实
+例整个全局函数数组漂亮工作的方式。在我们开始讲解这个内容之前，让我们先快速理清
+需求。
+
+需求现在我们正在谈论如何创建你自己的序列。也是什么谈一谈protocol了。protocol在
+某些地方跟接口很相似。接口在其他语言中，是一组给定的方 法，而你必须定义它们。然
+而，在Python中protocol是完全非正式的，而且不要求显式声明去实现。更进一步说，它
+们更像是准则。为何我们现在要谈论protocol？因为在Python中要实现自定义容器类型会
+涉及使用到这其中某些protocol。首先，有一个protocol 是为定义不可变容器的：为了制
+作一个不可变容器，你只需要定义__len__和__getitem__（稍后详述）。可变容器
+protocol要求所有不 可变容器增加__setitem__和__delitem__。然后，如果你希望你的对
+象是可迭代的，那你还得定义一个会返回迭代器iterator的 __iter__方法。并且这个迭代
+器必须遵守一个迭代protocol，也就是要求迭代器有回调方法__iter__（返回自身）和
+next。
+
+
+隐藏在容器背后的魔法
+已经迫不及待了？以下便是容器使用的神奇魔法：
+__len__(self)
+返回容器的长度。部分protocol同时支持可变和不可变容器
+__getitem__(self, key)
+定义当某一个item被访问时的行为，使用self[key]表示法。这个同样也是部分可变和不可变容器protocol。这也可抛出适当的异常:TypeError 当key的类型错误，或没有值对应Key时。
+__setitem__(self, key, value)
+定义当某一个item被赋值时候的行为，使用self[key]=value表示法。这也是部分可变和不可变容器protocol。再一次重申，你应当在适当之处抛出KeyError和TypeError异常。
+__delitem__(self, key)
+定义当某一个item被删除（例如 del self[key]）时的行为。这仅是部分可变容器的protocol。在一个无效key被使用后，你必须抛出一个合适的异常。
+__iter__(self)
+应该给容器返回一个迭代器。迭代器会返回若干内容,大多使用内建函数iter()表示。当一个容器使用形如for x in container:的循环。迭代器本身就是其对象，同时也要定义好一个__iter__方法来返回自身。
+__reversed__(self)
+当定义调用内建函数reversed()时的行为。应该返回一个反向版本的列表。
+__contains__(self, item)
+__contains__为成员关系，用in和not in测试时定义行为。那你会问这个为何不是一个序列的protocol的一部分？这是因为当__contains__未定义，Python就会遍历序列，如果遇到正在寻找的item就会返回True。
+__concat__(self, other)
+最后，你可通过__concat__定义你的序列和另外一个序列的连接。应该从self和other返回一个新构建的序列。当调用2个序列时__concat__涉及操作符+
+
+
+一个例子
+在我们的例子中，让我们看一下一个list实现的某些基础功能性的构建。可能会让你想起你使用的其他语言（比如Haskell）。
+ 
+class FunctionalList:
+    '''类覆盖了一个list的某些额外的功能性魔法，像head，
+    tail，init，last，drop，and take'''
+    def __init__(self, values=None):
+        if values is None:
+            self.values = []
+        else:
+            self.values = values
+                                 
+    def __len__(self):
+        return len(self.values)
+                             
+    def __getitem__(self, key):
+        # 如果key是非法的类型和值，那么list valuse会抛出异常
+        return self.values[key]
+                                 
+    def __setitem__(self, key, value):
+        self.values[key] = value
+                                 
+    def __delitem__(self, key):
+        del self.values[key]
+                             
+    def __iter__(self):
+        return iter(self.values)
+                                 
+    def __reversed__(self):
+        return reversed(self.values)
+                             
+    def append(self, value):
+        self.values.append(value)
+    def head(self):
+        # 获得第一个元素
+        return self.values[0]
+    def tail(self):
+        # 获得在第一个元素后的其他所有元素
+        return self.values[1:]
+    def init(self):
+        # 获得除最后一个元素的序列
+        return self.values[:-1]
+    def last(last):
+        # 获得最后一个元素
+        return self.values[-1]
+    def drop(self, n):
+        # 获得除前n个元素的序列
+        return self.values[n:]
+    def take(self, n):
+        # 获得前n个元素
+        return self.values[:n]
+
+ 
+通过这个(轻量的)有用的例子你知道了如何实现你自己的序列。当然，还有很多更有用的
+应用，但是它们其中的很多已经被标准库实现了，像Counter, OrderedDict, NamedTuple
+
+
+7.反射
+你也可以通过定义神奇方法来控制如何反射使用内建函数isinstance()和issubclass()的行为。这些神奇方法是：
+__instancecheck__(self, instance)
+检查一个实例是否是你定义类中的一个实例(比如，isinstance(instance, class))
+__subclasscheck__(self, subclass)
+检查一个类是否是你定义类的子类（比如，issubclass(subclass, class)）
+这对于神奇方法的用例情况来说可能较小，可它的确是真的。我并不想花费太多的时间在
+反射方法上面，因为他们不是那么地重要。不过它们反映了在Python 中关于面对对象编程
+一些重要的东西，而且在Python中的普遍：总是在找一种简单的方式来做某些事情，即使
+它能被用到的不多。这些神奇方法似乎看上去不 那么有用，但当你需要使用它们的时候你
+会感激它们的存在(和你阅读的这本指南!)。
+
+
+8.可调用对象
+正如你可能已经知道，在Python中函数是第一类对象。这就意味着它们可以被传递到函数
+和方法，就像是任何类型的对象。这真是一种难以置信强大的特性。这是Python中一个特
+别的神奇方法，它允许你的类实例像函数。所以你可以“调用”它们，把他们当做参数传递
+给函数等等。这是另一个强大又便利的特性让Python的编程变得更可爱了。
+__call__(self, [args...])
+允许类实例像函数一样被调用。本质上，这意味着x()等价于x.__call__()。注意，__call__需要的参数数目是可变的，也就是说可以对任何函数按你的喜好定义参数的数目定义__call__
+
+
+__call__可能对于那些经常改变状态的实例来说是极其有用的。“调用”实例是一种顺应直
+觉且优雅的方式来改变对象的状态。下面一个例子是一个类表示一个实体在一个平面上的
+位置：
+ 
+class Entity:
+    '''描述实体的类，被调用的时候更新实体的位置'''
+                          
+    def __init__(self, size, x, y):
+        self.x, self.y = x, y
+        self.size = size
+                              
+    def __call__(self, x, y):
+        '''改变实体的位置'''
+        self.x, self.y = x, y
+                              
+    #省略...
+
+ 
+
+9.上下文管理
+在 Python2.5里引入了一个新关键字（with）使得一个新方法得到了代码复用。上下文管
+理这个概念在Python中早已不是新鲜事了（之前它作为库 的一部分被实现过），但直到
+PEP343（http://www.python.org/dev/peps/pep-0343/）才作为第一个类语言结构 取得了
+重要地位而被接受。你有可能早就已经见识过with声明：
+ 
+
+with open('foo.txt') as bar:
+    # 对bar执行某些动作
+上下文管理允许对对象进行设置和清理动作，用with声明进行已经封装的操作。上下文操作的行为取决于2个神奇方法：
+__enter__(self)
+定义块用with声明创建出来时上下文管理应该在块开始做什么。注意，__enter__的返回值必须绑定with声明的目标，或是as后面的名称。
+__exit__(self,  exception_type, exception_value, traceback)
+定义在块执行（或终止）之后上下文管理应该做什么。它可以用来处理异常，进行清理，
+或行动处于块之后某些总是被立即处理的事。如果块执行成功的 话，excepteion_type，
+exception_value，和traceback将会置None。否则，你可以选择去处理异常，或者让用户
+自 己去处理。如果你想处理，确保在全部都完成之后__exit__会返回True。如果你不想让
+上下文管理处理异常，那就让它发生好了。
+
+
+__enter__和__exit__对那些已有良好定义和对设置，清理行为有共同行为的特殊类是有用
+。你也可以使用这些方法去创建封装其他对象通用的上下文管理。看下面的例子：
+ 
+15
+class Closer:
+    '''用with声明一个上下文管理用一个close方法自动关闭一个对象'''
+                   
+    def __init__(self, obj):
+        self.obj = obj
+                       
+    def __enter__(self):
+        return self.obj # 绑定目标
+                   
+    def __exit__(self, exception_type, exception_val, trace):
+        try:
+            self.obj.close()
+        except AttributeError: #obj不具备close
+            print 'Not closable.'
+            return True # 成功处理异常
+
+以下是一个对于Closer实际应用的一个例子，使用一个FTP连接进行的演示（一个可关闭的套接字）：
+ 
+>>> from magicmethods import Closer
+>>> from ftplib import :;;
+>>> with Closer(FTP('ftp.somsite.com')) as conn:
+...     conn.dir()
+...
+# 省略的输出
+>>> conn.dir()
+# 一个很长的AttributeError消息， 不能关闭使用的一个连接
+>>> with Closer(int(5)) as i:
+...     i += 1
+...
+Not closeable.
+>>> i
+6
+
+ 
+瞧见我们如何漂亮地封装处理正确或不正确的用例了吗？那就是上下文管理和神奇方法的威力。
+
+
+10.构建描述符对象
+描 述符可以改变其他对象，也可以是访问类中任一的getting,setting,deleting。描述符
+不意味着孤立；相反，它们意味着会被它们的所有 者类控制。当建立面向对象数据库或那
+些拥有相互依赖的属性的类时，描述符是有用的。当描述符在几个不同单元或描述计算属
+性时显得更为有用。作为一个描述符，一个类必须至少实现__get__,__set__,和
+__delete__中的一个。让我们快点看一下这些神奇方法吧：
+
+
+__get__(self, instance, owner)
+当描述符的值被取回时定义其行为。instance是owner对象的一个实例，owner是所有类。
+__set__(self, instance, value)
+当描述符的值被改变时定义其行为。instance是owner对象的一个实例，value是设置的描述符的值
+__delete__(self, instance)
+当描述符的值被删除时定义其行为。instance是owner对象的一个实例。
+
+
+现在，有一个有用的描述符应用例子：单位转换策略
+ 
+class Meter(object):
+    '''米描述符'''
+            
+    def __init__(self, value=0.0):
+        self.value = float(value)
+    def __get__(self, instance, owner):
+        return self.value
+    def __set__(self, instance, value):
+        self.value = float(value)
+            
+class Foot(object):
+    '''英尺描述符'''
+                
+    def __get__(self, instance, owner):
+        return instance.meter * 3.2808
+    def __set__(self, instance, value):
+        instance.meter = float(value) / 3.2808
+            
+class Distance(object):
+    '''表示距离的类，控制2个描述符：feet和meters'''
+    meter = Meter()
+    foot = Foot()
+
+ 
+ 
+11.Pickling你的对象
+假 如你花时间和其他Pythonistas打交道，那么你至少有可能听到过Pickling这个词。
+Pickling是一种对Python数据结构的序列化 过程。如果你需要存储一个对象，之后再取回
+它（通常是为了缓存）那么它就显得格外地有用了。同时，它也是产生忧虑和困惑的主要
+来源。Pickling是那么地重要以至于它不仅有自己专属的模块(pickle)，还有自己的
+protocol和神奇方法与其相伴。但首先用简要的文字来解释下如何pickle已经存在的类型
+（如果你已经懂了可以随意跳过这部分内容）
+
+
+Pickling:盐水中的快速浸泡
+让我们跳入pickling。话说你有一个词典你想要保存它并在稍后取回。你可以把它的内容
+写到一个文件中去，需要非常小心地确保你写了正确的语法，然后 用exec()或处理文件的
+输入取回写入的内容。但这是不稳定的:如果你你在纯文本中保存重要的数据，它有可能被
+几种方法改变，导致你的程序crash或 在你的计算机上运行了恶意代码而出错。于是，我
+们准备pickle它：
+ 
+import pickle
+         
+data = {'foo': [1,2,3],
+        'bar': ('Hello','world!'),
+        'baz': True}
+jar = open('data.pk1', 'wb')
+pickle.dump(data, jar) # 把pickled数据写入jar文件
+jar.close()
+好了现在，已经过去了几个小时。我们希望拿回数据，而我们需要做的事仅仅是unpickle它：
+ 
+import pickle
+      
+pk1_file = open('data.pk1','rb') #连接pickled数据
+data = pickle.load(pk1_file) #把数据load到一个变量中去
+print data
+pk1_file.close()
+发生了什么事？正如你的预期，我们获得了data。
+现在，我要给你一些忠告：pickling并非完美。Pickle文件很容易因意外或出于故意行为
+而被损毁。Pickling可能比起使用纯文本文件安全 些，但它仍旧有可能会被用来跑恶意代
+码。还有因为Python版本的不兼容问题，所以不要期望发布Pickled对象，也不要期望人们
+能够打开它们。但 是，它依然是一个强大的缓存工具和其他常见序列化任务。
+
+
+Pickling你自定义的对象
+Pickling不仅可用在内建类型上，还可以用于遵守pickle协议的任何类。pickle协议有4个
+可选方法用于定制Python对象如何运行（这跟C扩展有点不同，但那不在我们讨论的范围内
+）：
+
+
+__getinitargs__(self)
+如果你想当你的类unpickled时调用__init__，那你可以定义__getinitargs__，该方法应
+该返回一个元组的参数，然后你可以把他传递给__init__。注意，该方法仅适用于旧式类
+。
+__getnewargs__(self)
+对于新式类，你可以影响有哪些参数会被传递到__new__进行unpickling。该方法同样应该返回一个元组参数，然后能传递给__new__
+__getstate__(self)
+代替对象的__dict__属性被保存。当对象pickled，你可返回一个自定义的状态被保存。当对象unpickled时，这个状态将会被__setstate__使用。
+__setstate__(self, state)
+对象unpickled时，如果__setstate__定义对象状态会传递来代替直接用对象的__dict__属
+性。这正好跟__getstate__手牵手：当二者都被定义了，你可以描述对象的pickled状态，
+任何你想要的。
+
+
+一个例子： 
+我们的例子是Slate类，它会记忆它曾经的值和已经写入的值。然而，当这特殊的slate每一次pickle都会被清空:当前值不会被保存。
+ 
+import time
+   
+class Slate:
+    '''存储一个字符串和一个变更log，当Pickle时会忘记它的值'''
+   
+    def __init__(self, value):
+        self.value = value
+        self.last_change = time.asctime()
+        self.history = {}
+   
+    def change(self, new_value):
+        # 改变值，提交最后的值到历史记录
+        self.history[self.last_change] = self.value
+        self.value = new_value
+        self.last_change = time.asctime()
+   
+    def print_changes(self):
+        print 'Changelog for Slate object:'
+        for k, v in self.history.items():
+            print '%st %s' % (k, v)
+   
+    def __getstate__(self):
+        # 故意不返回self.value 或 self.last_change.
+        # 当unpickle，我们希望有一块空白的"slate"
+        return self.history
+   
+    def __setstate__(self, state):
+        # 让 self.history = state 和 last_change 和 value被定义
+        self.history = state
+        self.value, self.last_change = None, None
+
+ 
+12.总结
+这 份指南的目标就是任何人读一读它，不管读者们是否具备Python或面对对象的编程经验
+。如果你正准备学习Python，那你已经获得了编写功能丰富，优 雅，易用的类的宝贵知识
+。如果你是一名中级Python程序员，你有可能已经拾起了一些新概念和策略和一些好的方
+法来减少你和你的用户编写的代码量。如果 你是一名Pythonista专家，你可能已经回顾了
+某些你可能已经被你遗忘的知识点，或着你又学习到了一些新技巧。不管你的的经验等级
+，我希望这次 Python神奇方法的旅程达到了真正神奇的效果。（我无法控制自己在最后不
+用个双关语）
+
+附录：如果调用神奇方法
+Python中的一些神奇方法直接映射到内建函数；在这种情况下，调用它们的方法是相当明
+显的。然而，在其他情况下，那些调用方法就不这么明显了。本附录致力于揭开能够引导
+神奇方法被调用的非明显语法。
+神奇方法	 调用方法	 说明
+__new__(cls [,...])	instance = MyClass(arg1, arg2)	__new__ 在创建实例的时候被调用
+__init__(self [,...])	instance = MyClass(arg1, arg2)	__init__ 在创建实例的时候被调用
+__cmp__(self, other)	self == other, self > other, 等	在比较的时候调用
+__pos__(self)	+self	一元加运算符
+__neg__(self)	-self	一元减运算符
+__invert__(self)	~self	取反运算符
+__index__(self)	x[self]	对象被作为索引使用的时候
+__nonzero__(self)	bool(self)	对象的布尔值
+__getattr__(self, name)	self.name      # name不存在	访问一个不存在的属性时
+__setattr__(self, name, val)	self.name = val	对一个属性赋值时
+__delattr__(self, name)	del self.name	删除一个属性时
+__getattribute(self, name)	self.name	访问任何属性时
+__getitem__(self, key)	self[key]	使用索引访问元素时
+__setitem__(self, key, val)	self[key] = val	对某个索引值赋值时
+__delitem__(self, key)	del self[key]	删除某个索引值时
+__iter__(self)	for x in self	迭代时
+__contains__(self, value)	value in self, value not in self	使用 in 操作测试关系时
+__concat__(self, value)	self + other	连接两个对象时
+__call__(self [,...])	self(args)	“调用”对象时
+__enter__(self)	with self as x:	with语句上下文管理
+__exit__(self, exc, val, trace)	with self as x:	with语句上下文管理
+__getstate__(self)	pickle.dump(pkl_file, self)	序列化
+__setstate__(self)	data = pickle.load(pkl_file)	序列化
+
+

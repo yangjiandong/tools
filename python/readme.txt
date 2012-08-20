@@ -1,6 +1,13 @@
 python
 ========
 
+2012.08.20
+----------
+
+   1. Python的神奇方法指南 
+   other/magic.txt
+   http://www.starming.com/index.php?action=plugin&v=wave&tpl=union&ac=viewgrouppost&gid=73&tid=21099 
+
 2012.05.29
 ----------
 
