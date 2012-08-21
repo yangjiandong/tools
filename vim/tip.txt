@@ -46,7 +46,155 @@ vim -e -s -c ":set key=$1" -c ':wq' $2
 echo "$2 encrypted."
 fi
 
---END
+vim tip
+========
+
+2012.04.17
+----------
+
+   1. vim jsbeautify,js格式化
+
+.vim/plugin/jsbeautify.vim
+
+    vim .vimrc # 設定 <leader> 鍵值 (若已經有設好 <leader> 鍵, 此步驟請跳過)
+    let mapleader=","
+    use format:
+    ,fo
+
+   2. vim remove ^M 有效方法
+
+http://www.oualline.com/vim-cook.html
+
+    :1,$s/^M//
+    :1,$s/{Ctrl+V}{Ctrl+M}//{Enter}
+
+2012.03.15
+----------
+
+   1. https://github.com/Shougo/neocomplcache
+   据说很牛
+   
+2012.01.18
+----------
+
+   1. http://sontek.net/turning-vim-into-a-modern-python-ide
+
+   cd vimfiles
+   git init
+   git submodule add http://github.com/tpope/vim-fugitive.git bundle/fugitive
+   (gitmodules.txt)   
+   git submodule init
+   git submodule update
+   git submodule foreach git submodule init
+   git submodule foreach git submodule update
+
+    -- 有点小问题，每次nedtree 打开文件都会报 press enter or type command to continue
+    
+   2. portablevim
+   
+   data/settings/_vimrc:
+   source ~/vimfiles/vimrc2
+   
+   3. git submodule add https://github.com/amitdev/vimpy.git bundle/vimpy
+   Extract vimpy.zip to your vim plugins folder. 
+   -- 有问题
+
+   4. git submodule add git://github.com/klen/python-mode.git bundle/python-mode
+   -- cool
+   Python-mode is a vim plugin that allows you to use the pylint, rope, pydoc library in vim to provide features like python code looking for bugs, refactoring and some other useful things.
+
+2012.01.17
+-----------
+
+   1. https://github.com/garbas/vim-snipmate
+   TODO SELF DEFINE SNIPMATE CODE
+   
+   2. 在vi模式下，直接使用zi就可以展开和折叠了
+   
+   3. python 
+   
+代码补全(pysmell)
+这个东东和pydiction用处差不多，选一个搞就行了。大概的区别是：
+按键没有pydiction方便
+字典信息放在项目目录里，不污染全局，这个想法不错
+easy_install pysmell
+copy pysmell.vim to ~/.vim/plugins
+编辑vimrc:  
+autocmd FileType python setlocal omnifunc=pysmell#Complete
+imap <F4> <C-X><C-O>  “把缺省的Ctrl – X + O 改为 F4
+到Python 目录下  
+pysmell . -x site-package test -o PYSMELLTAGES.pythonlib;
+pysmell site-package/django -o PYSMELLTAGES.django
+项目目录下
+pysmell . -o PYSMELLTAGS
+就可以使用Vim 的自动补全了，按键：
+F4  呼出待选窗口
+Ctrl – N 向下选择
+Ctrl – P 向上选择
+   
+   4. ack
+   
+   http://betterlogic.com/roger/2008/12/how-to-use-ack-in-windows/
+   
+old
+----   
+
+1. set:Data\settings\_vimrc
+path=D:\gVimPortable;%path%
+
+2. cd workspace
+gVimPortable
+f9 show current workspace dir
+
+3. snippets
+http://spf13.com/post/vim-plugins-snipmate
+
+git clone git://github.com/scrooloose/snipmate-snippets.git snippets
+
+Copy the snippets directories into ~/.vim/snippets
+
+backup old snippets to snippets.old
+
+4.VimIM的的模式
+http://vimim.googlecode.com/svn/vimim/vimim.html
+
+〖点石成金〗输入模式
+适用于只是临时输入少量中文，热键为ctrl+6， 优点：保持 vim 缺省工作环境，没有所谓“状态”切换。
+〖中文输入模式〗
+适用于连续输入中文，热键为ctrl+\， 相当于使用安装在Windows内的输入法。
+
+5. git
+
+http://lazyhack.net/using-git-with-vim-2/
+
+-- 效果不错的开发环境
+huacnlee
+http://github.com/huacnlee/vimmate ,
+
+6. 结合 App\AppInfo\Launcher\gVimPortable.ini 设置的HOME 配置backup 目录
+
+set backup                     " make backup file and leave it around
+set backupdir=$HOME/backup  " where to put backup file
+set directory=$HOME/temp    " where to put swap file
+
+7. .gvimrc 增加
+
+nmap <F11> 1G=G
+imap <F11> <ESC>1G=Ga
+map <C-u> :FufFile **/<CR>
+map <C-e> :MRU<CR>
+
+C-u 查找文件
+
+8. grails-vim
+http://www.vim.org/scripts/script.php?script_id=3120
+
+9. FuzzyFinder
+http://www.vim.org/scripts/script.php?script_id=1984
+
+
+   --END
+
 
 
 
