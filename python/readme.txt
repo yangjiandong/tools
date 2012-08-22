@@ -8,6 +8,59 @@ python
    other/magic.txt
    http://www.starming.com/index.php?action=plugin&v=wave&tpl=union&ac=viewgrouppost&gid=73&tid=21099 
 
+   2. sphinx.rst2pdf
+   http://www.douban.com/group/topic/28559278/?start=0&post=ok#last
+
+1. 安装rst2pdf， easy_install rst2pdf 
+2. 在conf.py里面加入以下东东： 
+1) extensions 加入 'rst2pdf.pdfbuilder'; 
+2) 加入下面几行： 
+pdf_stylesheets = ['yahei'] 
+pdf_style_path = ['.', '_static'] 
+
+pdf_documents = [ 
+('latexindex', 'Flask-docs', u'Flask 文档', u'Armin Ronacher'), 
+] 
+pdf_use_modindex = False 
+pdf_elements = { 
+'fontpkg': r'\usepackage{mathpazo}', 
+'papersize': 'a4paper', 
+'pointsize': '12pt', 
+'preamble': r'\usepackage{flaskstyle}' 
+} 
+pdf_use_parts = True 
+pdf_additional_files = ['flaskstyle.sty', 'logo.pdf'] 
+pdf_fit_mode = 'shrink' 
+pdf_break_level = 1 
+pdf_use_number_links = True 
+pdf_fit_background_mode = 'scale' 
+
+   在rst2pdf包的styles目录里新建一个与pdf_stylesheets 里相同的文件（这里是yahei，随便copy一个，然后把里面的字体改成你电脑里有的可以支持中文的字体， 下面是我的配置） 
+fontsAlias: 
+stdBold: Microsoft YaHei Bold 
+stdBoldItalic: Microsoft YaHei Bold 
+stdFont: Microsoft YaHei 
+stdItalic: Microsoft YaHei 
+stdMono: Microsoft YaHei 
+stdMonoBold: Microsoft YaHei Bold 
+stdMonoBoldItalic: Microsoft YaHei Bold 
+stdMonoItalic: Microsoft YaHei 
+stdSans: Microsoft YaHei 
+stdSansBold: Microsoft YaHei Bold 
+stdSansBoldItalic: Microsoft YaHei Bold 
+stdSansItalic:Microsoft YaHei 
+stdSerif: Microsoft YaHei 
+
+styles: base: yahei: true 
+
+   make.bat
+if "%1" == "pdf" (
+	%SPHINXBUILD% -b pdf %ALLSPHINXOPTS% %BUILDDIR%/pdf
+	echo.
+	echo.Testing of doctests in the sources finished, look at the ^
+	goto end
+)   
+   
 2012.05.29
 ----------
 
