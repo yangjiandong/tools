@@ -1,6 +1,49 @@
 python
 ========
 
+2012.09.05
+----------
+
+   1. centos5.8 python2.7
+# yum install zlib-devel
+# yum install bzip2-devel
+# yum install openssl-devel
+# yum install ncurses-devel
+Download, compile and install Python
+ wget http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2
+# tar xf Python-2.7.3.tar.bz2
+# cd Python-2.7.3
+# ./configure --prefix=/usr/local
+# make && make altinstall
+
+将系统默认的python指向到2.7版本
+    #mv /usr/bin/python /usr/bin/python.bak （或者rm -rf /usr/bin/python） 
+    #ln -s /usr/local/bin/python2.7 /usr/bin/python
+测试是否成功
+    # python -V 
+    Python 2.7.2
+yum是基于 python2.4才能正常工作，不敢轻易卸载。
+这是系统自带的 Python 2.4
+    # /usr/bin/python2.4 -V 
+    Python 2.4.3
+--以下不是必须的
+解决系统python软链接指向python2.7版本后，yum不能正常工作
+    # vi /usr/bin/yum
+将文本编辑显示的第一行
+    #!/usr/bin/python
+修改为
+    #!/usr/bin/python2.4
+测试是否成功
+    # yum
+
+# wget http://pypi.python.org/packages/source/d/distribute/distribute-0.6.27.tar.gz
+# tar xf distribute-0.6.27.tar.gz
+# cd distribute-0.6.27
+# python2.7 setup.py install
+The commands above will generate the script /usr/local/bin/easy_install-2.7. Use this script to install packages for your new Python version:
+
+# easy_install-2.7 virtualenv
+
 2012.08.20
 ----------
 
