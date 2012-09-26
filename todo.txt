@@ -1,6 +1,14 @@
 TODO
 =====
 
+2012.09.06
+----------
+
+   1. javascript chart
+   http://nvd3.com/ -- 免费
+   http://www.highcharts.com/demo/ -- 商业收费
+   fusioncharts -- 使用破解版
+
 2012.01.19
 ----------
 

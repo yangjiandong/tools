@@ -1,0 +1,976 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0038)http://news.open-open.com/view/111850f -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" dir="ltr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Python性能鸡汤 - 软件编程 - OPEN开源资讯</title>
+
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="expires" content="0">
+
+<link rel="search" type="application/opensearchdescription+xml" href="http://news.open-open.com/opensearchnews.xml" title="OpenNews">
+ 
+
+
+<meta name="keywords" content="Python,软件编程">
+
+
+<meta name="Robots" content="All">
+<link rel="stylesheet" type="text/css" href="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/style.css" media="screen">
+<link rel="stylesheet" type="text/css" href="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/jGrowl.css" media="screen">
+<!--[if lte IE 6]>
+    <script type="text/javascript">
+    /* <![CDATA[ */
+       blankimgpath = '/images/blank.gif';
+     /* ]]> */
+    </script>
+    <style type="text/css" media="screen">
+      @import "/css/ie6.css";
+      body{ behavior:url("/js/ie6hoverfix.htc"); }
+      img{ behavior: url("/js/ie6pngfix.htc"); }
+    </style>
+    <![endif]-->
+<script type="text/javascript" src="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/jquery-1.3.2.min.js"></script><style type="text/css"></style>
+<script type="text/javascript" src="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/fusion.js"></script>
+<script type="text/javascript" src="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/view.js"></script>
+<script type="text/javascript" src="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/jquery.jgrowl_minimized.js"></script>
+
+
+
+<link rel="icon" href="http://news.open-open.com/favicon.ico" type="image/x-icon">
+<script type="text/javascript">
+
+/* <![CDATA[ */
+ jQuery(document).ready(function(){
+  // body .safari class
+  if (jQuery.browser.safari) jQuery('body').addClass('safari');
+
+  // layout controls
+
+   jQuery("#layoutcontrol a").click(function() {
+     switch (jQuery(this).attr("class")) {
+	   case 'setFont' : setFontSize();	break;
+	   case 'setLiquid'	: setPageWidth();	break;
+	 }
+	 return false;
+    });
+   // set the font size from cookie
+   var font_size = jQuery.cookie('fontSize');
+   if (font_size == '.7em') { jQuery('body').css("font-size",".7em"); }
+   if (font_size == '.95em') { jQuery('body').css("font-size",".95em"); }
+   if (font_size == '.8em') { jQuery('body').css("font-size",".8em"); }
+
+   // set the page width from cookie
+   var page_width = jQuery.cookie('pageWidth');
+   if (page_width) jQuery('#page').css('width', page_width);
+
+
+  jQuery('#secondary-tabs').minitabs(333, 'slide');
+
+  if (document.all && !window.opera && !window.XMLHttpRequest && jQuery.browser.msie) { var isIE6 = true; }
+  else { var isIE6 = false;} ;
+  jQuery.browser.msie6 = isIE6;
+  if (!isIE6) {
+    initTooltips({
+		timeout: 6000
+   });
+  }
+  tabmenudropdowns();
+  simple_tooltip("a.with-tooltip","tooltip");
+
+  // some jquery effects...
+  jQuery('#sidebar ul.nav li ul li a').mouseover(function () {
+   	jQuery(this).animate({ marginLeft: "4px" }, 100 );
+  });
+  jQuery('#sidebar ul.nav li ul li a').mouseout(function () {
+    jQuery(this).animate({ marginLeft: "0px" }, 100 );
+  });
+  // scroll to top
+  jQuery("a#toplink").click(function(){
+    jQuery('html, body').animate({scrollTop:0}, 'slow');
+  });
+
+ });
+ var rooturl='';
+ /* ]]> */
+</script>
+</head>
+<body dir="ltr" class="safari">
+
+
+
+
+<!-- page wrappers (100% width) -->
+<div id="page-wrap1">
+<div id="page-wrap2"><!-- page (actual site content, custom width) -->
+<div id="page" class="with-sidebar">
+
+ <!-- main wrapper (side & main) -->
+<div id="main-wrap"><!-- mid column wrap -->
+<div id="mid-wrap"><!-- sidebar wrap -->
+<div id="side-wrap"><!-- mid column -->
+<div id="mid">
+
+<!-- header -->
+<div id="header">
+<div id="topnav" class="description">
+<ul>
+		<li class="first"><a href="http://www.open-open.com/" title="Java开源大全"><span>Java开源</span></a></li>
+		<li><a href="http://ajax.open-open.com/" title="JS脚本大全"><span>JS脚本大全</span></a></li>
+		<li><a href="http://doc.open-open.com/" title="OPEN文档"><span>OPEN文档</span></a></li>
+		<li><a href="http://home.open-open.com/" title="OPEN家园"><span>OPEN家园</span></a></li>
+		<li><a href="http://www.open-open.com/bbs/" title="OPEN论坛"><span>OPEN论坛</span></a></li>
+		<li><a href="http://lib.open-open.com/" title="OPEN经验库"><span>OPEN经验库</span></a></li>
+		<li><a href="http://news.open-open.com/cloud"><span>标签云</span></a></li>
+</ul>
+</div>
+<h1 id="title"><a href="http://news.open-open.com/">OPEN资讯</a></h1>
+<!-- top tab navigation -->
+<div id="tabs">
+<ul>
+		<li><a href="http://news.open-open.com/"><span><span>最新资讯</span></span></a></li>
+		<li><a href="http://news.open-open.com/hot/4/0"><span><span>热门资讯</span></span></a></li>
+		<li><a href="http://news.open-open.com/submit/add"><span><span>分享资讯</span></span></a></li>
+</ul>
+
+</div>
+<!-- /top tabs -->
+
+</div>
+<!-- /header -->
+
+
+<script language="JavaScript" type="text/javascript">
+<!--
+   
+$(document).ready(function() {	   
+   //refresh imgcode
+   $("#code").bind("click",function(e){
+    preloadimg($('#cv')[0]);
+   });
+   
+   $("#cv").bind("click",function(e){
+	preloadimg($('#cv')[0]);
+	return false;
+   });
+});
+
+function preloadimg(obj){
+	url = '/register/imgcode?'+Math.random();
+	var img=new Image();
+	obj.innerHTML="<p>图片加载中...</p>";
+	img.onload=function(){obj.innerHTML="";obj.style.width=String(img.width)+"px";obj.appendChild(img);};
+	img.onerror=function(){obj.innerHTML="图片加载失败，点击我重新取得验证码！"};
+	img.src=url;
+	img.title='点击刷新图片！';
+}
+
+	function Trim(str)
+	{
+ 			var tmpStr = new String(str);
+ 			return tmpStr.replace(/(^\s*)|(\s*$)/g, "");
+	}
+	function checkForm(){
+
+		if(Trim($("#comment_content").val())==''){
+				msg('请填写评论内容！');
+				$("#comment_content")[0].focus();
+				return false;
+		}
+		$("#bto")[0].value='提交中...';
+		$("#bto")[0].disabled=true;
+		$("#thisform").submit();
+	}
+		
+	function msg(str){	
+		var msg='<font color=red><strong>'+str+'</strong></font>';
+			$.jGrowl('<p></p>'+msg, {
+				theme: 	'warning',
+				position: 'center',
+				header: '提醒信息',
+				life:	3500
+			});	
+	}		
+//-->
+</script>
+	<script type="text/javascript" src="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/shCore.js"></script>
+	<script type="text/javascript" src="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/shBrush.js"></script>
+	<link type="text/css" rel="stylesheet" href="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/shCore.css">
+	<link type="text/css" rel="stylesheet" href="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/shThemeDefault.css">
+	<script type="text/javascript">
+		SyntaxHighlighter.config.clipboardSwf = 'http://static.open-open.com/comres/syntaxhighlighter_2.1.382/scripts/clipboard.swf';
+		SyntaxHighlighter.all();
+	</script>
+
+              <!-- mid content -->
+              <div id="mid-content" style="margin: 10px">
+              	
+<div><a href="http://news.open-open.com/category/0">所有分类</a>→<a href="http://news.open-open.com/category/11">软件编程</a></div>
+
+<div class="story" id="xnews-0" style="border:0px">
+
+				<div class="vote published">
+					<span class="votenumber">
+						<a id="xvotes-0" href="javascript:vote(0,'111850f',0,'e9eebbb3b659427cd076ac9cd5d03210',10)">1</a> 
+					</span><br>
+					<span class="subtext" id="xvote-0">
+						<a href="javascript:vote(0,'111850f',0,'e9eebbb3b659427cd076ac9cd5d03210',10)">  顶</a> 
+				    </span>
+				
+ 				</div>
+
+
+
+	
+<!-- story header -->
+<div class="postheader" id="h-0">
+  <p class="storycategory">
+    <a href="http://news.open-open.com/category/11" class="category">软件编程</a>
+     <span class="tags">
+       
+			<a href="http://news.open-open.com/tags/Python">Python</a>
+		 
+     </span>
+  </p>
+
+  		<h3>
+          	  Python性能鸡汤
+	    </h3>
+
+  <div class="postinfo">
+   <p>
+    作者&nbsp;<a href="http://news.open-open.com/user/profile?uid=2869">fmms</a> 2012-03-26 12:18:22 
+
+    </p>
+
+</div>
+
+</div>
+<!-- /story header -->
+
+<!-- story summary -->
+<div class="postbody clearfix">	
+
+	
+  
+  
+  <span style="font-weight:bold;">第一部分</span> 
+  <br> 
+  <br> 阅读 
+  <a href="http://www.python.org/dev/peps/pep-0020/" rel="nofollow" target="_blank">Zen of Python</a>,在Python解析器中输入 
+  <span style="font-style:italic;">import this</span>. 一个犀利的Python新手可能会注意到"解析"一词, 认为Python不过是另一门脚本语言. "它肯定很慢!" 
+  <br> 
+  <br> 毫无疑问:Python程序没有编译型语言高效快速. 甚至Python拥护者们会告诉你Python不适合这些领域. 然而,YouTube已用Python服务于每小时4千万视频的请求. 你所要做的就是编写高效的代码和需要时使用外部实现(C/C++)代码. 这里有一些建议,可以帮助你成为一个更好的Python开发者: 
+  <br> 
+  <br> 
+  <p>1. <span style="font-weight:bold;">使用内建函数:</span></p> 
+  <p>&nbsp;&nbsp;&nbsp; 你可以用Python写出高效的代码,但很难击败内建函数. 经查证. 他们非常快速.</p> 
+  <p><a href="http://static.oschina.net/uploads/space/2012/0323/202425_H3MP_1579.png" target="_blank"><img style="cursor:pointer;" alt="Python性能鸡汤" src="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/20120326121738_404.png" width="268" height="134"></a> </p> 
+  <p><span style="font-weight:bold;"><br> </span></p> 
+  <p><span style="font-weight:bold;">2.使用join()连接字符串.</span></p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 你可以使用 "+" 来连接字符串. 但由于string在Python中是不可变的,每一个"+"操作都会创建一个新的字符串并复制旧内容. 常见用法是使用Python的数组模块单个的修改字符;当完成的时候,使用 join() 函数创建最终字符串. 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; #This is good to glue a large number of strings 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; for chunk in input(): 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt;&nbsp;&nbsp;&nbsp; my_string.join(chunk) 
+  <br> 
+  <br> 
+  <span style="font-weight:bold;">3. 使用Python多重赋值，交换变量</span> 
+  <br> &nbsp;&nbsp;&nbsp; 这在Python中即优雅又快速: 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; x, y = y, x 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 这样很慢: 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; temp = x 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; x = y 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; y = temp&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  <br> 
+  <br> 
+  <span style="font-weight:bold;">4. 尽量使用局部变量</span> 
+  <br> &nbsp;&nbsp;&nbsp; Python 检索局部变量比检索全局变量快. 这意味着,避免 "global" 关键字. 
+  <br> 
+  <br> 
+  <span style="font-weight:bold;">5. 尽量使用 "in"</span> 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 使用 "in" 关键字. 简洁而快速. 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; for key in sequence: 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt;&nbsp;&nbsp;&nbsp;&nbsp; print “found” 
+  <br> 
+  <br> 
+  <span style="font-weight:bold;">6. 使用延迟加载加速</span> 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 將 "import" 声明移入函数中,仅在需要的时候导入. 换句话说,如果某些模块不需马上使用,稍后导入他们. 例如,你不必在一开使就导入大量模块而加速程序启动. 该技术不能提高整体性能. 但它可以帮助你更均衡的分配模块的加载时间. 
+  <br> 
+  <br> 
+  <span style="font-weight:bold;">7. 为无限循环使用 "while 1"</span> 
+  <br> 
+  <a href="http://static.oschina.net/uploads/space/2012/0323/203236_jpS5_1579.jpeg" target="_blank"><img style="cursor:pointer;" alt="Python性能鸡汤" align="right" src="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/20120326121738_518.jpeg" width="264" height="176"></a> &nbsp;&nbsp;&nbsp; 有时候在程序中你需一个无限循环.(例如一个监听套接字的实例) 尽管 "while true" 能完成同样的事, 但 "while 1" 是单步运算. 这招能提高你的Python性能. 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; while 1: 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt;&nbsp;&nbsp;&nbsp; #do stuff, faster with while 1 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; while True: 
+  <br> 
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt;&nbsp;&nbsp;&nbsp; # do stuff, slower with wile True </p> 
+  <br> 8. 
+  <span style="font-weight:bold;">使用list comprehension</span> 
+  <br> &nbsp;&nbsp;&nbsp; 从Python 2.0 开始,你可以使用 list comprehension 取代大量的 "for" 和 "while" 块. 使用List comprehension通常更快，Python解析器能在循环中发现它是一个可预测的模式而被优化.额外好处是，list comprehension更具可读性（函数式编程），并在大多数情况下，它可以节省一个额外的计数变量。例如，让我们计算1到10之间的偶数个数： 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; # the good way to iterate a range 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; evens = [ i for i in range(10) if i%2 == 0] 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; [0, 2, 4, 6, 8] 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; # the following is not so Pythonic 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; i = 0 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; evens = [] 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; while i &lt; 10: 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt;&nbsp;&nbsp;&nbsp; if i %2 == 0: evens.append(i) 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt;&nbsp;&nbsp;&nbsp; i += 1 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; [0, 2, 4, 6, 8] 
+  <br> 
+  <br> 
+  <span style="font-weight:bold;">9. 使用xrange()处理长序列：</span> 
+  <br> &nbsp;&nbsp;&nbsp; 这样可为你节省大量的系统内存，因为xrange()在序列中每次调用只产生一个整数元素。而相反 range()，它將直接给你一个完整的元素列表，用于循环时会有不必要的开销。 
+  <br> 
+  <br> 
+  <span style="font-weight:bold;">10. 使用 Python generator：</span> 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 这也可以节省内存和提高性能。例如一个视频流，你可以一个一个字节块的发送，而不是整个流。例如，&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; chunk = ( 1000 * i for i in xrange(1000)) 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; chunk 
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  <generator <genexpr="" object="">
+    at 0x7f65d90dcaa0&gt; 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; chunk.next() 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; chunk.next() 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1000 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; chunk.next() 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2000 
+   <br> 
+   <br> 
+   <span style="font-weight:bold;">11. 了解itertools模块：</span> 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 该模块对迭代和组合是非常有效的。让我们生成一个列表[1，2，3]的所有排列组合,仅需三行Python代码： 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; import itertools 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; iter = itertools.permutations([1,2,3]) 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; list(iter) 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [(1, 2, 3), (1, 3, 2), (2, 1, 3), (2, 3, 1), (3, 1, 2), (3, 2, 1)] 
+   <br> 
+   <br> 
+   <span style="font-weight:bold;">12. 学习bisect模块保持列表排序：</span> 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 这是一个免费的二分查找实现和快速插入有序序列的工具。也就是说，你可以使用： 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; import bisect 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; bisect.insort(list, element) 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 你已將一个元素插入列表中, 而你不需要再次调用 sort() 来保持容器的排序, 因为这在长序列中这会非常昂贵. 
+   <br> 
+   <br> 
+   <span style="font-weight:bold;">13. 理解Python列表，实际上是一个数组：</span> 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Python中的列表实现并不是以人们通常谈论的计算机科学中的普通单链表实现的。Python中的列表是一个数组。也就是说，你可以以常量时间O(1) 检索列表的某个元素，而不需要从头开始搜索。这有什么意义呢？ Python开发人员使用列表对象insert（）时, 需三思. 例如：&gt;&gt;&gt; list.insert（0，item） 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在列表的前面插入一个元素效率不高, 因为列表中的所有后续下标不得不改变. 然而，您可以使用list.append()在列表的尾端有效添加元素. 挑先deque，如果你想快速的在两插入或时。它是快速的，因为在Python中的deque用双链表实现。不再多说。 :) 
+   <br> 
+   <br> 
+   <p><span style="font-weight:bold;">14. 使用dict 和 set 测试成员：</span></p> 
+   <p><a href="http://static.oschina.net/uploads/space/2012/0323/203626_LOj4_1579.jpeg" target="_blank"><img style="cursor:pointer;" alt="Python性能鸡汤" align="right" src="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/20120326121738_299.jpeg" width="225" height="224"></a> </p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 检查一个元素是在dicitonary或set是否存在 这在Python中非常快的。这是因为dict和set使用哈希表来实现。查找效率可以达到O(1)。因此，如果您需要经常检查成员，使用 set 或 dict做为你的容器. 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; mylist = ['a', 'b', 'c'] #Slower, check membership with list: 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; ‘c’ in mylist 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; True 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; myset = set(['a', 'b', 'c']) # Faster, check membership with set: 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; ‘c’ in myset: 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; True 
+   <br> 
+   <br> 
+   <p><span style="font-weight:bold;">15. 使用Schwartzian Transform 的 sort():</span></p> 
+   <p><a href="http://static.oschina.net/uploads/space/2012/0323/203832_4IfS_1579.jpg" target="_blank"><img style="cursor:pointer;" alt="Python性能鸡汤" align="right" src="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/20120326121738_110.jpg" width="300" height="425"></a><br> </p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 原生的list.sort（）函数是非常快的。 Python会按自然顺序排序列表。有时，你需要非自然顺序的排序。例如，你要根据服务器位置排序的IP地址。 Python支持自定义的比较，你可以使用list.sort（CMP（）），这会比list.sort（）慢，因为增加了函数调用的开销。如果性能有问 题，你可以申请Guttman-Rosler Transform,基于Schwartzian Transform. 它只对实际的要用的算法有兴趣，它的简要工作原理是，你可以变换列表，并调用Python内置list.sort（） - &gt; 更快，而无需使用list.sort（CMP（） ）-&gt;慢。 
+   <br> 
+   <br> 
+   <br> 
+   <span style="font-weight:bold;">16. Python装饰器缓存结果：</span> 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “@”符号是Python的装饰语法。它不只用于追查，锁或日志。你可以装饰一个Python函数，记住调用结果供后续使用。这种技术被称为memoization的。下面是一个例子： 
+   <br> 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; from functools import wraps 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; def memo(f): 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt;&nbsp;&nbsp;&nbsp; cache = { } 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt;&nbsp;&nbsp;&nbsp; @wraps(f) 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt;&nbsp;&nbsp;&nbsp; def&nbsp; wrap(*arg): 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if arg not in cache: cache['arg'] = f(*arg) 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return cache['arg'] 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt;&nbsp;&nbsp;&nbsp; return wrap 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 我们也可以对 Fibonacci 函数使用装饰器: 
+   <a href="http://static.oschina.net/uploads/space/2012/0323/204055_JlqC_1579.jpeg" target="_blank"><img style="cursor:pointer;" alt="Python性能鸡汤" align="right" src="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/20120326121739_725.jpeg" width="280" height="180"></a> 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; @memo 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt; def fib(i): 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt;&nbsp;&nbsp;&nbsp; if i &lt; 2: return 1 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;&gt;&nbsp;&nbsp;&nbsp; return fib(i-1) + fib(i-2) 
+   <br> &nbsp;&nbsp;&nbsp; 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp; 这里的关键思想是:增强函数(装饰)函数,记住每个已经计算的Fibonacci值;如果它们在缓存中,就不需要再计算了. 
+   <br> 
+   <br> 
+   <span style="font-weight:bold;">17. 理解Python的GIL（全局解释器锁）：</span> 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GIL是必要的，因为CPython的内存管理是非线程安全的。你不能简单地创建多个线程，并希望Python能在多核心的机器上运行得更快。这是因为 GIL將会防止多个原生线程同时执行Python字节码。换句话说，GIL將序列化您的所有线程。然而，您可以使用线程管理多个派生进程加速程序，这些程 序独立的运行于你的Python代码外。 
+   <br> 
+   <br> 
+   <span style="font-weight:bold;">18. 像熟悉文档一样的熟悉Python源代码：</span> 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Python有些模块为了性能使用C实现。当性能至关重要而官方文档不足时，可以自由探索源代码。你可以找到底层的数据结构和算法。 Python的源码库就是一个很棒的地方：http://svn.python.org/view/python/trunk/Modules 
+   <br> 
+   <br> 结论： 
+   <br> 这些不能替代大脑思考. 打开引擎盖充分了解是开发者的职责,使得他们不会快速拼凑出一个垃圾设计. 本文的Python建议可以帮助你获得好的性能. 如果速度还不够快, Python將需要借助外力:分析和运行外部代码.我们將在本文的第二部分中涉及. 
+   <br> 
+   <br> 
+   <span style="font-weight:bold;">第二部分</span> 
+   <br> 
+   <br> 
+   <p>有益的提醒,静态编译的代码仍然重要. 仅例举几例, Chrome,Firefox,MySQL,MS Office 和 Photoshop都是高度优化的软件,我们每天都在使用. Python作为解析语言,很明显不适合. 不能单靠Python来满足那些性能是首要指示的领域.&nbsp; 这就是为什么Python支持让你接触底层裸机基础设施的原因, 将更繁重的工作代理给更快的语言如C. 这高性能计算和嵌入式编程中是关键的功能. Python性能鸡汤第一部分讨论了怎样高效的使用Python. 在第二部分, 我们將涉及监控和扩展Python. </p> 
+   <p>1. <span style="font-weight:bold;">首先, 拒绝调优诱惑</span></p> 
+   <p><a href="http://static.oschina.net/uploads/space/2012/0326/004610_i9hd_1579.png" target="_blank"><img style="cursor:pointer;" alt="Python性能鸡汤" src="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/20120326121739_347.png" width="350" height="156"></a><br> </p> &nbsp;&nbsp;&nbsp; 调优给你的代码增加复杂性. 集成其它语言之前, 请检查下面的列表. 如果你的算法是"足够好", 优化就没那么迫切了. 
+   <br> &nbsp;&nbsp;&nbsp; 1. 你做了性能测试报告吗? 
+   <br> &nbsp;&nbsp;&nbsp; 2. 你能减少硬盘的 I/O 访问吗? 
+   <br> &nbsp;&nbsp;&nbsp; 3. 你能减少网络 I/O 访问吗? 
+   <br> &nbsp;&nbsp;&nbsp; 4. 你能升级硬件吗? 
+   <br> &nbsp;&nbsp;&nbsp; 5. 你是为其它开发者编译库吗? 
+   <br> &nbsp;&nbsp;&nbsp; 6.你的第三方库软件是最新版吗? 
+   <br> 
+   <br> 2. 
+   <span style="font-weight:bold;">使用工具监控代码, 而不是直觉</span> 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 速度的问题可能很微妙, 所以不要依赖于直觉. 感谢 "cprofiles" 模块, 通过简单的运行你就可以监控Python代码 
+   <br> “python -m cProfile myprogram.py” 
+   <br> 
+   <a href="http://static.oschina.net/uploads/space/2012/0326/004627_qOTi_1579.png" target="_blank"><img style="width:546px;height:182px;cursor:pointer;" alt="Python性能鸡汤" src="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/20120326121739_651.png" width="644" height="215"></a> 
+   <br> 
+   <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 我们写了个测试程序. 基于黑盒监控. 这里的瓶颈是 "very_slow()" 函数调用. 我们还可以看到 "fast()" 和 "slow()"都被调用200次. 这意味着, 如果我们可以改善 "fast()" 和 "slow()" 函数, 我们可以获得全面的性能提升. cprofiles 模块也可以在运行时导入. 这对于检查长时间运行的进程非常有用.</p> 
+   <p><a href="http://static.oschina.net/uploads/space/2012/0326/004641_nClP_1579.png" target="_blank"><img style="cursor:pointer;" alt="Python性能鸡汤" src="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/20120326121739_938.png" width="249" height="250"></a></p> 
+   <br> 3. 
+   <span style="font-weight:bold;">审查时间复杂度</span> 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 控制以后, 提供一个基本的算法性能分析. 恒定时间是理想值. 对数时间复度是稳定的. 阶乘复杂度很难扩展. 
+   <br> 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; O(1) -&gt; O(lg n) -&gt; O(n lg n) -&gt; O(n^2) -&gt; O(n^3) -&gt; O(n^k) -&gt; O(k^n) -&gt; O(n!) 
+   <br> 
+   <br> 4. 
+   <span style="font-weight:bold;">使用第三方包</span> 
+   <br> 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 有很多为Python设计的高性能的第三方库和工具. 下面是一些有用的加速包的简短列表. 
+   <br> 
+   <br> &nbsp;&nbsp;&nbsp; 1. 
+   <a href="http://www.oschina.net/p/numpy" rel="nofollow" target="_blank">NumPy</a>: 一个开源的相当于MatLab的包 
+   <br> &nbsp;&nbsp;&nbsp; 2. 
+   <a href="http://www.oschina.net/p/scipy" rel="nofollow" target="_blank">SciPy</a>: 另一个数值处理库 
+   <br> &nbsp;&nbsp; &nbsp;3. 
+   <a href="http://www.oschina.net/p/gpulib" rel="nofollow" target="_blank">GPULib</a>: 使用GPUs加速代码 
+   <br> &nbsp;&nbsp; &nbsp;4. 
+   <a href="http://www.oschina.net/p/pypy" rel="nofollow" target="_blank">PyPy</a>: 使用 just-in-time 编译器优化Python代码 
+   <br> &nbsp;&nbsp; &nbsp;5. 
+   <a href="http://www.oschina.net/p/cython" rel="nofollow" target="_blank">Cython</a>: 將Python优码转成C 
+   <br> 
+   <p>&nbsp;&nbsp; &nbsp;6. <a href="http://www.oschina.net/p/shedskin" rel="nofollow" target="_blank">ShedSkin</a>: 將Python代码转成C++ </p> 
+   <p><a href="http://static.oschina.net/uploads/space/2012/0326/004729_MwTI_1579.png" target="_blank"><img style="cursor:pointer;" alt="Python性能鸡汤" src="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/20120326121739_520.png" width="200" height="212"></a> </p> 
+   <br> 5. 
+   <span style="font-weight:bold;">使用multiprocessing模块实现真正的并发</span> 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 因为GIL会序列化线程, Python中的多线程不能在多核机器和集群中加速. 因此Python提供了multiprocessing模块, 可以派生额外的进程代替线程, 跳出GIL的限制. 此外, 你也可以在外部C代码中结合该建议, 使得程序更快. 
+   <br> 
+   <br> 
+   <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 注意, 进程的开销通常比线程昂贵, 因为线程自动共享内存地址空间和文件描述符. 意味着, 创建进程比创建线程会花费更多, 也可能花费更多内存. 这点在你计算使用多处理器时要牢记.</p> 
+   <p><a href="http://static.oschina.net/uploads/space/2012/0326/004911_O7Up_1579.png" target="_blank"><img style="cursor:pointer;" alt="Python性能鸡汤" src="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/20120326121740_74.png" width="268" height="94"></a></p> 
+   <br> 6. 
+   <span style="font-weight:bold;">本地代码</span> 
+   <br> 
+   <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 好了, 现在你决定为了性能使用本地代码. 在标准的ctypes模块中, 你可以直接加载已编程的二进制库(.dll 或 .so文件)到Python中, 无需担心编写C/C++代码或构建依赖. 例如, 我们可以写个程序加载libc来生成随机数. 
+   <br> 
+   <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 然而, 绑定ctypes的开销是非轻量级的. 你可以认为ctypes是一个粘合操作系库函数或者硬件设备驱动的胶水. 有几个如 SWIG, Cython和Boost 此类Python直接植入的库的调用比ctypes开销要低. Python支持面向对象特性, 如类和继承. 正如我们看到的例子, 我们可以保留常规的C++代码, 稍后导入. 这里的主要工作是编写一个包装器 (行 10~18).</p> 
+   <p><a href="http://static.oschina.net/uploads/space/2012/0326/004951_VAT0_1579.png" target="_blank"><img style="cursor:pointer;" alt="Python性能鸡汤" src="./Python性能鸡汤 - 软件编程 - OPEN开源资讯_files/20120326121740_765.png" width="311" height="336"></a></p> 
+   <br> 总结: 
+   <br> 
+   <br> 
+   <p>&nbsp;&nbsp;&nbsp;&nbsp; 我希望这些Python建议能让你成为一个更好的开发者. 最后, 我需要指出, 追求性能极限是一个有趣的游戏, 而过度优化就会变成嘲弄了. 虽然Python授予你与C接口无缝集成的能力, 你必须问自己你花数小时的艰辛优化工作用户是否买帐. 另一方面, 牺牲代码的可维护性换取几毫秒的提升是否值得. 团队中的成员常常会感谢你编写了简洁的代码. 尽量贴近Python的方式, 因为人生苦短. :)</p> 
+   <p>英文原文:<a href="http://blog.monitis.com/index.php/2012/02/13/python-performance-tips-part-1/" rel="nofollow" target="_blank">http://blog.monitis.com/index.php/2012/02/13/python-performance-tips-part-1/</a></p> 
+   <p>英文原文:<a href="http://blog.monitis.com/index.php/2012/03/21/python-performance-tips-part-2/" rel="nofollow" target="_blank">http://blog.monitis.com/index.php/2012/03/21/python-performance-tips-part-2/</a></p> OSCHINA原创翻译 
+  </generator>  
+ 
+
+
+</div>
+<div style="margin-top: 20px;">
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-7963911354665843";
+/* 300x250, 创建于 11-8-9 */
+google_ad_slot = "8505223059";
+google_ad_width = 300;
+google_ad_height = 250;
+//-->
+</script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-7963911354665843";
+/* 300x250, 创建于 11-8-9 */
+google_ad_slot = "8505223059";
+google_ad_width = 300;
+google_ad_height = 250;
+//-->
+</script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+</div>
+<!-- /story summary -->
+  <div class="copyright">
+          	本站文章除注明转载外，均为本站原创或翻译<br>
+			欢迎任何形式的转载，但请务必注明出处<br>
+ 
+			
+</div>
+
+    <p class="postcontrols" style="margin-top: -10px;">
+        <a href="http://news.open-open.com/view/111850f#tab-comments" class="no comments">0&nbsp;评</a>		
+  		&nbsp;
+  			<span id="cai0">
+ 				
+					<a href="javascript:vote(0,'111850f',0,'e9eebbb3b659427cd076ac9cd5d03210',-10)">踩</a> 
+				
+				
+ 			</span>
+ 
+			
+	
+
+	&nbsp;
+	<!--
+	<label style="color: #000">已1353人阅读</label>	
+	-->
+	</p>
+
+
+
+</div>
+
+
+<div id="secondary-tabs">
+
+<ul class="menu">
+  <li><a href="http://news.open-open.com/view/111850f#tab-comments" class="current"><span><span>评论</span></span></a></li>
+  <li><a href="http://news.open-open.com/view/111850f#tab-whovoted"><span><span>谁投了票</span></span></a></li>
+  
+</ul>
+
+	<div id="tab-comments">
+		
+			<div align="center" style="margin-left:auto;font-weight:bold;margin-right:auto;border:#ccc solid 2px;padding-top:8px; margin-bottom:20px;border-width:1px;width:600px;text-align:center; padding-bottom: 8px;">
+				<a href="http://news.open-open.com/members/login">请登录后发表评论</a> 或者先注册 <a href="http://news.open-open.com/members/register">这里</a>.
+			</div>
+		
+		
+
+
+
+
+	
+
+
+			
+		
+			
+
+
+
+		
+	</div>
+
+	<div id="tab-whovoted" style="display: none;">
+			<ol>
+			
+			</ol>
+	</div>
+
+
+
+</div>
+       			        		
+	
+
+
+
+
+</div>
+              <!-- mid content -->
+              
+
+
+
+
+</div>
+<!-- /mid --> 
+
+<!-- sidebar -->
+<div id="sidebar"><!-- sidebar 1st container -->
+<div id="sidebar-wrap1"><!-- sidebar 2nd container -->
+<div id="sidebar-wrap2">
+<ul id="sidelist">
+
+		<li id="sidebar-toplinks">
+		        </li><li id="sidebar-toplinks">
+		         
+         		  
+         		
+         			<a href="http://news.open-open.com/members/register">注册</a> | <a href="http://news.open-open.com/members/login">登录</a> 
+         		             
+         </li>
+		
+		
+		
+		<li id="sidebar-search">
+		<div id="searchtab">
+		<div class="inside">
+		<form action="http://news.open-open.com/search" method="get" accept-charset="GBK" onsubmit="document.charset=&#39;GBK&#39;;" name="thisform-search" id="thisform-search"><input type="text" size="20" class="searchfield" x-webkit-speech="" name="q" id="searchsite" value="搜索.." onfocus="if(this.value == &#39;搜索..&#39;) {this.value = &#39;&#39;;}" onblur="if (this.value == &#39;&#39;) {this.value = &#39;搜索..&#39;;}"> <input type="submit" value="开始" class="searchbutton" style="cursor: pointer;"></form>
+		<div class="clear"></div>
+		</div>
+		</div>
+		</li>
+		<li class="sidebar-block">		
+		<h4 style="margin-top: 8px" class="title_blue">资讯分类</h4>
+		<ul class="nav" style="margin: 0px">
+				
+						<li class="dir cat-item"><span class="linux type">&nbsp;&nbsp;</span><a href="http://news.open-open.com/category/4">开源软件</a>
+							<a href="http://news.open-open.com/category/rss/4" target="_blank" class="rss tip"></a>
+						<!-- 
+						<ul>
+								
+						</ul>
+						 -->
+						</li>
+				
+						<li class="dir cat-item"><span class="put type">&nbsp;&nbsp;</span><a href="http://news.open-open.com/category/5">前端技术</a>
+							<a href="http://news.open-open.com/category/rss/5" target="_blank" class="rss tip"></a>
+						<!-- 
+						<ul>
+								
+						</ul>
+						 -->
+						</li>
+				
+						<li class="dir cat-item"><span class="web type">&nbsp;&nbsp;</span><a href="http://news.open-open.com/category/6">互联网</a>
+							<a href="http://news.open-open.com/category/rss/6" target="_blank" class="rss tip"></a>
+						<!-- 
+						<ul>
+								
+						</ul>
+						 -->
+						</li>
+				
+						<li class="dir cat-item"><span class="home type">&nbsp;&nbsp;</span><a href="http://news.open-open.com/category/7">IT业界</a>
+							<a href="http://news.open-open.com/category/rss/7" target="_blank" class="rss tip"></a>
+						<!-- 
+						<ul>
+								
+						</ul>
+						 -->
+						</li>
+				
+						<li class="dir cat-item"><span class="mobile type">&nbsp;&nbsp;</span><a href="http://news.open-open.com/category/8">移动开发</a>
+							<a href="http://news.open-open.com/category/rss/8" target="_blank" class="rss tip"></a>
+						<!-- 
+						<ul>
+								
+						</ul>
+						 -->
+						</li>
+				
+						<li class="dir cat-item"><span class="database type">&nbsp;&nbsp;</span><a href="http://news.open-open.com/category/9">数据库</a>
+							<a href="http://news.open-open.com/category/rss/9" target="_blank" class="rss tip"></a>
+						<!-- 
+						<ul>
+								
+						</ul>
+						 -->
+						</li>
+				
+						<li class="dir cat-item"><span class="window type">&nbsp;&nbsp;</span><a href="http://news.open-open.com/category/10">操作系统</a>
+							<a href="http://news.open-open.com/category/rss/10" target="_blank" class="rss tip"></a>
+						<!-- 
+						<ul>
+								
+						</ul>
+						 -->
+						</li>
+				
+						<li class="dir cat-item"><span class="edit type">&nbsp;&nbsp;</span><a href="http://news.open-open.com/category/11">软件编程</a>
+							<a href="http://news.open-open.com/category/rss/11" target="_blank" class="rss tip" style="display: none; opacity: 0; top: -3px;"></a>
+						<!-- 
+						<ul>
+								
+						</ul>
+						 -->
+						</li>
+				
+			
+
+<li class="sidebar-block">
+	<h4 style="margin-top: 8px" class="title_yellow">相关资讯</h4>
+	<div id="tab-related">
+	
+					
+						<div style="margin-top:10px;margin-bottom:8px;">
+					
+							
+		1、<a href="http://news.open-open.com/view/722971" target="_blank">Python解释器 PyPy 1.8 发布，继续提升性能</a>
+	
+					
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+							
+		2、<a href="http://news.open-open.com/view/d4ddbf" target="_blank">Python解释器 PyPy 1.7 发布，性能大幅提升</a>
+	
+					
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+							
+		3、<a href="http://news.open-open.com/view/6de523" target="_blank">Python的ODBC接口 ceODBC 2.0.1 发布</a>
+	
+					
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+							
+		4、<a href="http://news.open-open.com/view/15a2e3c" target="_blank">编程语言 Python 3.2.2 发布</a>
+	
+					
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+							
+		5、<a href="http://news.open-open.com/view/1d1483a" target="_blank">Van Rossum称Python不慢</a>
+	
+					
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+							
+		6、<a href="http://news.open-open.com/view/f8a010" target="_blank">Python 3.2.2 正式版发布</a>
+	
+					
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+							
+		7、<a href="http://news.open-open.com/view/107fb05" target="_blank">Python解释器 PyPy 1.6 发布</a>
+	
+					
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+							
+		8、<a href="http://news.open-open.com/view/1949feb" target="_blank">Python feedparser 5.1 发布</a>
+		
+	</div>
+</div></div></div></div></div></div></div></div></li>
+
+
+<div style="margin-top: 8px;border: 1px dashed #ffffff;" id="baiduad"> 
+<script type="text/javascript">
+/*250*250，创建于2012-9-5*/
+var cpro_id = "u1049775";
+</script>
+<script src="http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script>
+</div>
+	
+
+
+
+<li class="sidebar-block">
+	<h4 style="margin-top: 8px" class="title_green">相关文档 - <a href="http://doc.open-open.com/">更多</a></h4>
+	
+	
+							
+						<div style="margin-top:10px;margin-bottom:8px;">
+					
+						1、<a href="http://doc.open-open.com/view/20d0774e21a14165a80123fac3e9c64b" target="_blank">Python Tutorial Python 2.5 入门指南.pdf</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						2、<a href="http://doc.open-open.com/view/312ecae0fa124ad2887e0b162ef00bd2" target="_blank">Python  Documentation &amp; Startup .pdf</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						3、<a href="http://doc.open-open.com/view/cd99dd1a23514882b7203856d1fc7503" target="_blank">Python 学习笔记.pdf</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						4、<a href="http://doc.open-open.com/view/8e3efa2929e1467cbc67d50101924a8e" target="_blank">深入Python(Dive into Python)中文版.chm</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						5、<a href="http://doc.open-open.com/view/1ac9809dbcf5435f83c61e7fcb1ab551" target="_blank">The Python Standard Library By Example  2011 [Python标准库示例].pdf</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						6、<a href="http://doc.open-open.com/view/257728be6a964951b00396de9212d57c" target="_blank">Python Imaging Library Overview.pdf</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						7、<a href="http://doc.open-open.com/view/38469b25a2114cb9bc028911f843b36a" target="_blank">Think Python.pdf</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						8、<a href="http://doc.open-open.com/view/13b71c77df65465bb9ac6c66db0073cc" target="_blank">Dive Into Python中文版.doc</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						9、<a href="http://doc.open-open.com/view/f189289efc5540f29bae5918dc3783ba" target="_blank">解读mod_python.doc</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						10、<a href="http://doc.open-open.com/view/3c51b51c8628483fb91a3b32a3d8161f" target="_blank">Python-C 语言扩展.doc</a></div>
+		
+	
+</li>
+	
+
+
+
+
+<li class="sidebar-block">
+	<h4 style="margin-top: 8px" class="title_red">相关分享经验 - <a href="http://lib.open-open.com/">更多</a></h4>
+	
+	
+							
+						<div style="margin-top:10px;margin-bottom:8px;">
+					
+						1、<a href="http://lib.open-open.com/view/open1324111811343.html" target="_blank">高性能的Python并发框架 Gevent</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						2、<a href="http://lib.open-open.com/view/open1346028211973.html" target="_blank">Python for android</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						3、<a href="http://lib.open-open.com/view/open1324907077343.html" target="_blank">Python OpenID</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						4、<a href="http://lib.open-open.com/view/open1324528181608.html" target="_blank">支持HandlerSocket MySQL插件Python库 python-handler-socket</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						5、<a href="http://lib.open-open.com/view/open1325855576656.html" target="_blank">EasyEclipse for Python</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						6、<a href="http://lib.open-open.com/view/open1329050076921.html" target="_blank">Python图像处理 Mahotas</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						7、<a href="http://lib.open-open.com/view/open1325855145890.html" target="_blank">Python的C语言扩展 Cython</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						8、<a href="http://lib.open-open.com/view/open1337503249714.html" target="_blank">Python队列服务 Python RQ</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						9、<a href="http://lib.open-open.com/view/open1325857868250.html" target="_blank">Python 解释器 PyPy</a></div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						10、<a href="http://lib.open-open.com/view/open1325926559906.html" target="_blank">Python 包和工具 Webware for Python</a></div>
+		
+	
+</li>
+	
+	
+					
+
+
+				
+<li class="sidebar-block">
+	<h4 style="margin-top: 8px" class="title_gray">相关讨论 - <a href="http://www.open-open.com/bbs/">更多</a></h4>
+	
+							
+						<div style="margin-top:10px;margin-bottom:8px;">
+					
+						
+		1、<a href="http://www.open-open.com/bbs/view/1319457330842" target="_blank">Python数据库对象映射框架 SQLObject </a>
+		</div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						
+		2、<a href="http://www.open-open.com/bbs/view/1318425287890" target="_blank">五分钟理解Python元类（Metaclasses）</a>
+		</div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						
+		3、<a href="http://www.open-open.com/bbs/view/1325382401984" target="_blank">一个Python程序员的进化</a>
+		</div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						
+		4、<a href="http://www.open-open.com/bbs/view/1319506853577" target="_blank">Python 实现的守护进程</a>
+		</div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						
+		5、<a href="http://www.open-open.com/bbs/view/1318343599405" target="_blank">30本免费的编程电子书籍(英文)</a>
+		</div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						
+		6、<a href="http://www.open-open.com/bbs/view/1318171014155" target="_blank">基于 Java 技术的OPEN论坛上线了！</a>
+		</div>
+	
+							
+					
+						<div style="padding-top: 5px;margin-top:5px;margin-bottom:5px;border-top: 1px solid #d9d9d9;">
+						
+		7、<a href="http://www.open-open.com/bbs/view/1319336402796" target="_blank">开源mp3解码库 MAD （libmad）</a>
+		</div>
+		
+	
+</li>								
+
+		
+		</ul>
+</li></ul></div>
+<!-- /sidebar 2nd container --></div>
+<!-- /sidebar 1st container --></div>
+<!-- /sidebar --></div>
+<!-- /side wrap --></div>
+<!-- /mid column wrap --></div>
+<!-- /main wrapper --> <!-- clear main & sidebar sections -->
+<div class="clearcontent"></div>
+<!-- /clear main & sidebar sections --> <!-- footer -->
+<div id="footer">
+<p>Powered by <a href="http://www.open-open.com/">OPEN-OPEN</a> | <a href="http://news.open-open.com/category/rss/0" class="rss">订阅最新的资讯</a></p>
+</div>
+<!-- /footer -->
+ <div id="layoutcontrol">
+   <a href="javascript:void(0);" class="setFont" title="增大/缩小字体大小"><span>设置网页字体大小</span></a>
+   <a href="javascript:void(0);" class="setLiquid" title="网页宽度调整"><span>设置网页宽度</span></a>
+ </div>
+<!-- /page --></div>
+</div>
+<!-- /page wrappers -->
+
+	
+<div id="baiduadcode" style="display:none"> 
+<script type="text/javascript">
+/*250*250，创建于2012-9-5*/
+var cpro_id = "u1049775";
+</script>
+<script src="http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script>
+</div>  
+<script language="javascript">  
+
+document.getElementById("baiduad").innerHTML = document.getElementById("baiduadcode").innerHTML;  
+
+</script>
+
+	
+
+
+</div></body></html>
